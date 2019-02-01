@@ -14,10 +14,10 @@ import rx.Subscriber;
  * @author freak
  * @date 2019/01/25
  */
-public class SubscriberCallBack extends Subscriber {
-    private ApiCallback apiCallback;
+public class SubscriberCallBack<T> extends Subscriber<T> {
+    private ApiCallback<T> apiCallback;
 
-    public SubscriberCallBack(ApiCallback apiCallback) {
+    public SubscriberCallBack(ApiCallback<T> apiCallback) {
         this.apiCallback = apiCallback;
     }
 
@@ -63,7 +63,7 @@ public class SubscriberCallBack extends Subscriber {
      * @param o
      */
     @Override
-    public void onNext(Object o) {
+    public void onNext(T o) {
         apiCallback.onSuccess(o);
     }
 }
