@@ -13,6 +13,9 @@ import com.orhanobut.logger.Logger;
 
 import org.reactivestreams.Subscription;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+
 
 /**
  * @author Administrator
@@ -21,7 +24,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private final static String TAG = "MainActivity";
     private EditText username, pwd;
     private TextView tvResult;
-    private Subscription mSubscribe;
+    private Disposable mSubscribe;
 
     @Override
     protected int getLayout() {
@@ -33,15 +36,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         username = findViewById(R.id.username);
         pwd = findViewById(R.id.pwd);
         tvResult = findViewById(R.id.result);
-//        mSubscribe = RxBus.getDefault().tObservable(RxEvent.class).subscribe(new Action1<RxEvent>() {
-//            @Override
-//            public void call(RxEvent rxEvent) {
-//                if (rxEvent.getCode() == 1000) {
-//                    username.setText(rxEvent.getUserName());
-//                    pwd.setText(rxEvent.getPassWord());
-//                }
-//            }
-//        });
+        mSubscribe = RxBus.getDefault().tObservable(RxEvent.class).subscribe(new Consumer<RxEvent>() {
+            @Override
+            public void accept(RxEvent rxEvent) throws Exception {
+                if (rxEvent.getCode() == 1000) {
+                    username.setText(rxEvent.getUserName());
+                    pwd.setText(rxEvent.getPassWord());
+                }
+            }
+        });
     }
 
     @Override
@@ -78,16 +81,17 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     public void rxBusOnclick(View view) {
         RxBusActivity.startAction(this);
-        finish();
+//        finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        if (mSubscribe != null) {
-//            if (mSubscribe.isUnsubscribed()) {
-//                mSubscribe.unsubscribe();
-//            }
-//        }
+        if (mSubscribe != null) {
+            if (mSubscribe.isDisposed()){
+                mSubscribe.dispose();
+            }
+
+        }
     }
 }
