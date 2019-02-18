@@ -6,13 +6,14 @@ package com.freak.httpmanage.app;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.net.HttpResult;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
-import rx.Observable;
+
 
 
 /**

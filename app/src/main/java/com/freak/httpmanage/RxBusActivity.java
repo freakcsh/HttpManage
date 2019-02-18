@@ -23,7 +23,7 @@ public class RxBusActivity extends Activity {
     }
 
     public void rxBus(View view) {
-        RxBus.getDefault().post(new RxEvent("RxFreak", "Rx123456", 1000));
+//        RxBus.getDefault().post(new RxEvent("RxFreak", "Rx123456", 1000));
         finish();
     }
 }

@@ -2,7 +2,7 @@ package com.freak.httphelper;
 
 import android.text.TextUtils;
 
-import rx.functions.Func1;
+import io.reactivex.functions.Function;
 
 /**
  * 此方法是接口返回数据的解析
@@ -11,33 +11,34 @@ import rx.functions.Func1;
  * @author freak
  * @date 2019/01/25
  */
-public class HttpResultFunc<T> implements Func1<AbstractHttpResult<T>, T> {
+public class HttpResultFunc<T> implements Function<AbstractHttpResult<T>, T> {
+
     @Override
-    public T call(AbstractHttpResult<T> tHttpResult) {
+    public T apply(AbstractHttpResult<T> tAbstractHttpResult) throws Exception {
         //int类型结果码
-        if (TextUtils.isEmpty(tHttpResult.getStringSuccessCode())) {
-            if (tHttpResult.getIntResultCode() != tHttpResult.getIntSuccessCode()) {
-                int[] otherCode = tHttpResult.getIntOtherCode();
+        if (TextUtils.isEmpty(tAbstractHttpResult.getStringSuccessCode())) {
+            if (tAbstractHttpResult.getIntResultCode() != tAbstractHttpResult.getIntSuccessCode()) {
+                int[] otherCode = tAbstractHttpResult.getIntOtherCode();
                 for (int code : otherCode) {
-                    if (tHttpResult.getIntResultCode() == code) {
-                        throw new ApiException(tHttpResult.getIntResultCode() + "");
+                    if (tAbstractHttpResult.getIntResultCode() == code) {
+                        throw new ApiException(tAbstractHttpResult.getIntResultCode() + "");
                     }
                 }
-                throw new ApiException(tHttpResult.getResultErrorMsg());
+                throw new ApiException(tAbstractHttpResult.getResultErrorMsg());
             }
-            return tHttpResult.getResultData();
+            return tAbstractHttpResult.getResultData();
         } else {
             //string类型结果码
-            if (!tHttpResult.getStringSuccessCode().equals(tHttpResult.getStringResultCode())) {
-                String[] otherCode = tHttpResult.getStringOtherCode();
+            if (!tAbstractHttpResult.getStringSuccessCode().equals(tAbstractHttpResult.getStringResultCode())) {
+                String[] otherCode = tAbstractHttpResult.getStringOtherCode();
                 for (String code : otherCode) {
-                    if (tHttpResult.getStringResultCode().equals(code)) {
-                        throw new ApiException(tHttpResult.getStringResultCode());
+                    if (tAbstractHttpResult.getStringResultCode().equals(code)) {
+                        throw new ApiException(tAbstractHttpResult.getStringResultCode());
                     }
                 }
-                throw new ApiException(tHttpResult.getResultErrorMsg());
+                throw new ApiException(tAbstractHttpResult.getResultErrorMsg());
             }
-            return tHttpResult.getResultData();
+            return tAbstractHttpResult.getResultData();
         }
     }
 }

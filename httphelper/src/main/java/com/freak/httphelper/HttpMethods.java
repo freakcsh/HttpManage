@@ -1,12 +1,18 @@
 package com.freak.httphelper;
 
 
+import android.util.ArrayMap;
+import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import okhttp3.OkHttpClient;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
@@ -32,6 +38,10 @@ public class HttpMethods {
 
     private Retrofit retrofit;
     private static HttpMethods mHttpMethods;
+
+    private static CompositeDisposable mCompositeDisposable;
+
+    private ArrayMap<String, Disposable> mDisposableList = new ArrayMap<>();
 
     /**
      * 设置服务器域名
@@ -93,12 +103,12 @@ public class HttpMethods {
         builder.writeTimeout(writeTimeOut == 0 ? WRITE_TIMEOUT : writeTimeOut, TimeUnit.SECONDS);
         /**
          * addConverterFactory 添加格式转换器工程  GsonConverterFactory
-         * addCallAdapterFactory 添加调用适配器工程 RxJavaCallAdapterFactory
+         * addCallAdapterFactory 添加调用适配器工程 RxJava2CallAdapterFactory
          * baseUrl 基础地址
          */
         retrofit = new Retrofit.Builder().client(builder.build())
                 .addConverterFactory(mFactory == null ? GsonConverterFactory.create() : mFactory)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(BaseUrl)
                 .build();
     }
@@ -115,6 +125,20 @@ public class HttpMethods {
             }
         }
         return mHttpMethods;
+    }
+
+    /**
+     * 获取单例CompositeDisposable
+     *
+     * @return
+     */
+    public static CompositeDisposable getCompositeDisposableInstance() {
+        if (mCompositeDisposable == null) {
+            synchronized (CompositeDisposable.class) {
+                mCompositeDisposable = new CompositeDisposable();
+            }
+        }
+        return mCompositeDisposable;
     }
 
     public <T> T create(Class<T> service) {

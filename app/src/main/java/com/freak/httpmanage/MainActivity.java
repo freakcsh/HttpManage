@@ -11,8 +11,7 @@ import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.event.RxEvent;
 import com.orhanobut.logger.Logger;
 
-import rx.Subscription;
-import rx.functions.Action1;
+import org.reactivestreams.Subscription;
 
 
 /**
@@ -34,15 +33,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         username = findViewById(R.id.username);
         pwd = findViewById(R.id.pwd);
         tvResult = findViewById(R.id.result);
-        mSubscribe = RxBus.getDefault().tObservable(RxEvent.class).subscribe(new Action1<RxEvent>() {
-            @Override
-            public void call(RxEvent rxEvent) {
-                if (rxEvent.getCode() == 1000) {
-                    username.setText(rxEvent.getUserName());
-                    pwd.setText(rxEvent.getPassWord());
-                }
-            }
-        });
+//        mSubscribe = RxBus.getDefault().tObservable(RxEvent.class).subscribe(new Action1<RxEvent>() {
+//            @Override
+//            public void call(RxEvent rxEvent) {
+//                if (rxEvent.getCode() == 1000) {
+//                    username.setText(rxEvent.getUserName());
+//                    pwd.setText(rxEvent.getPassWord());
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -79,15 +78,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     public void rxBusOnclick(View view) {
         RxBusActivity.startAction(this);
+        finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mSubscribe != null) {
-            if (mSubscribe.isUnsubscribed()) {
-                mSubscribe.unsubscribe();
-            }
-        }
+//        if (mSubscribe != null) {
+//            if (mSubscribe.isUnsubscribed()) {
+//                mSubscribe.unsubscribe();
+//            }
+//        }
     }
 }

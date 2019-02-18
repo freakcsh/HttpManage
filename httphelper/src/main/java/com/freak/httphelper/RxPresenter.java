@@ -1,12 +1,9 @@
 package com.freak.httphelper;
 
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author freak
@@ -14,25 +11,12 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class RxPresenter<T extends RxBaseView> implements BasePresenter<T> {
     protected T mView;
-    protected CompositeSubscription mCompositeSubscription;
 
     /**
      * 解除订阅
      */
     protected void unSubscribe() {
-        if (mCompositeSubscription != null) {
-            mCompositeSubscription.unsubscribe();
-        }
-    }
-
-    /**
-     * 添加订阅
-     */
-    protected void addSubscribe(Subscription subscription) {
-        if (mCompositeSubscription == null) {
-            mCompositeSubscription = new CompositeSubscription();
-        }
-        mCompositeSubscription.add(subscription);
+        HttpMethods.getCompositeDisposableInstance().clear();
     }
 
     /**
@@ -40,17 +24,13 @@ public class RxPresenter<T extends RxBaseView> implements BasePresenter<T> {
      * 添加订阅
      *
      * @param observable
-     * @param subscriber
+     * @param observer
      * @param <T>
      */
-    public <T> void addSubscription(Observable<T> observable, Subscriber<T> subscriber) {
-        if (mCompositeSubscription == null) {
-            mCompositeSubscription = new CompositeSubscription();
-        }
-        mCompositeSubscription.add(observable
-                .subscribeOn(Schedulers.io())
+    public <T> void addSubscription(Observable<T> observable, Observer<T> observer) {
+        observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber));
+                .subscribe(observer);
     }
 
     /**
