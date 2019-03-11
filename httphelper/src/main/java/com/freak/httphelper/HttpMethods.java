@@ -101,7 +101,6 @@ public class HttpMethods {
 
     private static CompositeDisposable mCompositeDisposable;
 
-    private ArrayMap<String, Disposable> mDisposableList = new ArrayMap<>();
 
     /**
      * 设置服务器域名

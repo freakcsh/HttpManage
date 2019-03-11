@@ -11,7 +11,7 @@ public class Constants {
      */
 //    public static final String BASE_URL = "http://192.168.1.89:8014/";
 //    public static final String BASE_URL = "http://wanandroid.com/";
-    public static final String BASE_URL = "http://192.168.1.167:9999";
+    public static final String BASE_URL = "http://169.254.246.219:9999";
     public static final String org_number = "Y1000000001";
     public static final String user_mobile = "18000000001";
     public static final String user_password = "123456";

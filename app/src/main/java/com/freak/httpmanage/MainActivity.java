@@ -74,7 +74,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
 
     public void login(View view) {
-        Logger.e("开始请求");
         mPresenter.doLogin(username.getText().toString().trim(), pwd.getText().toString().trim());
     }
 
@@ -84,9 +83,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     public void rxBusOnclick(View view) {
-//        RxBusActivity.startAction(this);
-//        finish();
-        jsonTest();
+        RxBusActivity.startAction(this);
+        finish();
+//        jsonTest();
     }
     public void jsonTest(){
         String json="{\n" +
@@ -107,5 +106,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             }
 
         }
+    }
+
+    public void login2(View view) {
+        mPresenter.doLogin2(username.getText().toString().trim(), pwd.getText().toString().trim());
     }
 }

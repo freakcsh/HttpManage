@@ -47,7 +47,7 @@ public class App extends Application {
 //        HttpMethods.setConnectTimeOut(6);
 //        HttpMethods.setReadTimeOut(10);
 //        HttpMethods.setWriteTimeOut(10);
-        LogUtil.init("HttpHelper",false);
+        LogUtil.init("HttpHelper",true);
         HttpMethods.setBaseUrl(Constants.BASE_URL);
         HttpMethods.setInterceptor(new CommonParametersInterceptor());
         HttpMethods.setLevel(HttpMethods.BODY);

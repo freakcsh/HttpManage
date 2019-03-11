@@ -31,7 +31,15 @@ public interface ApiServer {
     Observable<BaseBean> login(@Query("userName") String userName,
                                @Query("pwd") String pwd
     );
-
+    /**
+     * 用户登陆
+     *
+     * @return
+     */
+    @POST("/login")
+    Observable<HttpResult<LoginBean>> login2(@Query("userName") String userName,
+                               @Query("pwd") String pwd
+    );
     /**
      * apk文件下载
      * @param apkUrl

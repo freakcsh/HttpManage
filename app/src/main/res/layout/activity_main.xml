@@ -11,7 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="login"
-        android:text="请求接口" />
+        android:text="请求接口(不抽取返回结果封装)" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="login2"
+        android:text="请求接口(抽取返回结果封装)" />
 
     <Button
         android:layout_width="match_parent"
