@@ -34,6 +34,12 @@ public class CommonParametersInterceptor implements Interceptor {
         return response;
     }
 
+    /**
+     * 添加公共参数
+     *
+     * @param oldRequest
+     * @return
+     */
     private Request addParam(Request oldRequest) {
 
         HttpUrl.Builder builder = oldRequest.url()

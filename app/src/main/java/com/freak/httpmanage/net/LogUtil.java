@@ -10,14 +10,15 @@ import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 
 /**
- * Created by XiaoJianjun on 2017/1/16.
+ * Created by freak on 2019/03/12.
  * Log日志工具，封装logger
  */
 public class LogUtil {
     /**
      * 初始化log工具，在app入口处调用
      *
-     * @param logName 是否打印log
+     * @param logName 打印日志名字
+     * @param isLog 是否打印log
      */
     public static void init(String  logName, final boolean isLog) {
         FormatStrategy mFormatStrategy = PrettyFormatStrategy.newBuilder()

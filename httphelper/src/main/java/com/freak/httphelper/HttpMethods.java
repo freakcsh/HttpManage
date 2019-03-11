@@ -1,13 +1,10 @@
 package com.freak.httphelper;
 
 
-import android.util.ArrayMap;
-import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
