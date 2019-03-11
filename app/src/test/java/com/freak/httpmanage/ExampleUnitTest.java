@@ -1,5 +1,9 @@
 package com.freak.httpmanage;
 
+import com.freak.httpmanage.net.HttpResult;
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,4 +18,5 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
+
 }

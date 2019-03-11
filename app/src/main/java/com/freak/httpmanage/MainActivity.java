@@ -9,6 +9,9 @@ import com.freak.httphelper.RxBus;
 import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.event.RxEvent;
+import com.freak.httpmanage.net.BaseBean;
+import com.freak.httpmanage.net.HttpResult;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.reactivestreams.Subscription;
@@ -71,6 +74,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
 
     public void login(View view) {
+        Logger.e("开始请求");
         mPresenter.doLogin(username.getText().toString().trim(), pwd.getText().toString().trim());
     }
 
@@ -80,8 +84,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     public void rxBusOnclick(View view) {
-        RxBusActivity.startAction(this);
+//        RxBusActivity.startAction(this);
 //        finish();
+        jsonTest();
+    }
+    public void jsonTest(){
+        String json="{\n" +
+                "\"msg\": \"666666\",\n" +
+                "\"code\": \"10000\",\n" +
+                "\"data\": \"\"\n" +
+                "}";
+        BaseBean httpResult=new Gson().fromJson(json,BaseBean.class);
+        Logger.d(httpResult);
     }
 
     @Override

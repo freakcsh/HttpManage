@@ -1,6 +1,5 @@
 package com.freak.httphelper;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.JsonSyntaxException;
@@ -9,7 +8,6 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeoutException;
 import io.reactivex.Observer;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 

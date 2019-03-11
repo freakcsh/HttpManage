@@ -8,7 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
@@ -34,8 +36,66 @@ public class HttpMethods {
     private static final int WRITE_TIMEOUT = 10;
 
     private static String BaseUrl;
-    public static Converter.Factory mFactory;
+    private static Converter.Factory mFactory;
+    private static Interceptor mInterceptor;
+    private static HttpLoggingInterceptor.Logger mLogger;
+    /**
+     * No logs.
+     */
+    public final static HttpLoggingInterceptor.Level NONE = HttpLoggingInterceptor.Level.NONE;
+    /**
+     * Logs request and response lines.
+     * <p>
+     * <p>Example:
+     * <pre>{@code
+     * --> POST /greeting http/1.1 (3-byte body)
+     *
+     * <-- 200 OK (22ms, 6-byte body)
+     * }</pre>
+     */
+    public final static HttpLoggingInterceptor.Level BASIC = HttpLoggingInterceptor.Level.BASIC;
+    /**
+     * Logs request and response lines and their respective headers.
+     * <p>
+     * <p>Example:
+     * <pre>{@code
+     * --> POST /greeting http/1.1
+     * Host: example.com
+     * Content-Type: plain/text
+     * Content-Length: 3
+     * --> END POST
+     *
+     * <-- 200 OK (22ms)
+     * Content-Type: plain/text
+     * Content-Length: 6
+     * <-- END HTTP
+     * }</pre>
+     */
+    public final static HttpLoggingInterceptor.Level HEADERS = HttpLoggingInterceptor.Level.HEADERS;
+    /**
+     * Logs request and response lines and their respective headers and bodies (if present).
+     * <p>
+     * <p>Example:
+     * <pre>{@code
+     * --> POST /greeting http/1.1
+     * Host: example.com
+     * Content-Type: plain/text
+     * Content-Length: 3
+     *
+     * Hi?
+     * --> END POST
+     *
+     * <-- 200 OK (22ms)
+     * Content-Type: plain/text
+     * Content-Length: 6
+     *
+     * Hello!
+     * <-- END HTTP
+     * }</pre>
+     */
+    public final static HttpLoggingInterceptor.Level BODY = HttpLoggingInterceptor.Level.BODY;
 
+    private static HttpLoggingInterceptor.Level Level;
     private Retrofit retrofit;
     private static HttpMethods mHttpMethods;
 
@@ -54,11 +114,39 @@ public class HttpMethods {
 
     /**
      * 设置解析库
+     * 可自定义解析逻辑
      *
      * @param factory 解析库
      */
     public static void setFactory(Converter.Factory factory) {
         mFactory = factory;
+    }
+
+    /**
+     * 设置拦截器
+     *
+     * @param interceptor
+     */
+    public static void setInterceptor(Interceptor interceptor) {
+        mInterceptor = interceptor;
+    }
+
+    /**
+     * 设置日志打印logger拦截器
+     *
+     * @param logger HttpLoggingInterceptor.Logger
+     */
+    public static void setLogger(HttpLoggingInterceptor.Logger logger) {
+        mLogger = logger;
+    }
+
+    /**
+     * 设置日志打印级别
+     *
+     * @param level
+     */
+    public static void setLevel(HttpLoggingInterceptor.Level level) {
+        Level = level;
     }
 
     /**
@@ -101,6 +189,16 @@ public class HttpMethods {
         builder.readTimeout(readTimeOut == 0 ? READ_TIMEOUT : readTimeOut, TimeUnit.SECONDS);
 
         builder.writeTimeout(writeTimeOut == 0 ? WRITE_TIMEOUT : writeTimeOut, TimeUnit.SECONDS);
+        if (mInterceptor != null) {
+            builder.addInterceptor(mInterceptor);
+        }
+        if (mLogger != null) {
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(mLogger);
+            //设置日志界级别
+            httpLoggingInterceptor.setLevel(Level == null ? HttpLoggingInterceptor.Level.BODY : Level);
+            builder.addNetworkInterceptor(httpLoggingInterceptor);
+        }
+
         /**
          * addConverterFactory 添加格式转换器工程  GsonConverterFactory
          * addCallAdapterFactory 添加调用适配器工程 RxJava2CallAdapterFactory
