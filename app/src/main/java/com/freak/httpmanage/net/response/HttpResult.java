@@ -1,4 +1,4 @@
-package com.freak.httpmanage.net;
+package com.freak.httpmanage.net.response;
 
 
 /**
@@ -39,10 +39,10 @@ public class HttpResult<T> {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        if (null != data) {
-            sb.append(data.toString());
-        }
-        return sb.toString();
+        return "HttpResult{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

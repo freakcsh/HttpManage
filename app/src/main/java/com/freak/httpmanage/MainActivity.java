@@ -9,12 +9,10 @@ import com.freak.httphelper.RxBus;
 import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.event.RxEvent;
-import com.freak.httpmanage.net.BaseBean;
-import com.freak.httpmanage.net.HttpResult;
+
+import com.freak.httpmanage.net.response.HttpResult;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
-
-import org.reactivestreams.Subscription;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -60,11 +58,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void onSuccess(LoginBean loginBean) {
         Logger.e("onSuccess");
         Logger.d(loginBean);
+        tvResult.setText(loginBean.toString());
     }
+
+    @Override
+    public void onSuccess(HttpResult loginBean) {
+        tvResult.setText(loginBean.toString());
+    }
+
 
     @Override
     public void onError(String msg) {
         Log.e(TAG, msg);
+        tvResult.setText(msg);
     }
 
 
@@ -84,18 +90,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     public void rxBusOnclick(View view) {
         RxBusActivity.startAction(this);
-        finish();
 //        jsonTest();
     }
-    public void jsonTest(){
-        String json="{\n" +
-                "\"msg\": \"666666\",\n" +
-                "\"code\": \"10000\",\n" +
-                "\"data\": \"\"\n" +
-                "}";
-        BaseBean httpResult=new Gson().fromJson(json,BaseBean.class);
-        Logger.d(httpResult);
-    }
+
 
     @Override
     protected void onDestroy() {

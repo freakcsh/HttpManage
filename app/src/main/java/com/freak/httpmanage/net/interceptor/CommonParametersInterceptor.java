@@ -1,14 +1,9 @@
-package com.freak.httpmanage.net;
-
-import android.util.Log;
-
+package com.freak.httpmanage.net.interceptor;
 
 import com.freak.httpmanage.app.Constants;
-import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -44,8 +39,8 @@ public class CommonParametersInterceptor implements Interceptor {
 
         HttpUrl.Builder builder = oldRequest.url()
                 .newBuilder()
-                .setEncodedQueryParameter("lversion", Constants.BASE_URL)
-                .setEncodedQueryParameter("token", Constants.BASE_URL);
+                .setEncodedQueryParameter("renovate", Constants.RENOVATE)
+                .setEncodedQueryParameter("token", Constants.TOKEN_ABLE);
         Request newRequest = oldRequest.newBuilder()
                 .method(oldRequest.method(), oldRequest.body())
                 .url(builder.build())

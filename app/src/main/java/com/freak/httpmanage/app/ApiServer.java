@@ -2,12 +2,10 @@ package com.freak.httpmanage.app;
 
 
 import com.freak.httpmanage.bean.LoginBean;
-import com.freak.httpmanage.net.BaseBean;
-import com.freak.httpmanage.net.HttpResult;
+import com.freak.httpmanage.net.response.HttpResult;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -25,7 +23,7 @@ public interface ApiServer {
      * @return
      */
     @POST("/login")
-    Observable<BaseBean> login(@Query("userName") String userName,
+    Observable<HttpResult> login(@Query("userName") String userName,
                                @Query("pwd") String pwd);
 
     /**

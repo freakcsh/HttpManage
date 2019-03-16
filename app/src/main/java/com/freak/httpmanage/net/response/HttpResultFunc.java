@@ -1,4 +1,4 @@
-package com.freak.httpmanage.net;
+package com.freak.httpmanage.net.response;
 
 
 import com.freak.httphelper.ApiException;

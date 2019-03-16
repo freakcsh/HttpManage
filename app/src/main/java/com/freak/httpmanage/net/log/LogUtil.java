@@ -1,16 +1,16 @@
-package com.freak.httpmanage.net;
+package com.freak.httpmanage.net.log;
 
-import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
 import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.BuildConfig;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 
 /**
- * Created by freak on 2019/03/12.
+ *
+ * @author freak
+ * @date 2019/03/12
  * Log日志工具，封装logger
  */
 public class LogUtil {

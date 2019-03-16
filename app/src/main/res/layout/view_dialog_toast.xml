@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:id="@+id/tv_toast_msg"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@drawable/shape_bg_dialog_toast"
+          android:gravity="center"
+          android:maxWidth="400pt"
+          android:paddingBottom="8pt"
+          android:paddingEnd="15pt"
+          android:paddingStart="15pt"
+          android:paddingTop="8pt"
+          android:textColor="@color/colorPrimary"
+          android:textSize="14pt"
+          tools:text="当前已是最新版本"/>

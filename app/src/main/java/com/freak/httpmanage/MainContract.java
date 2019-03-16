@@ -5,6 +5,8 @@ import com.freak.httphelper.BasePresenter;
 import com.freak.httpmanage.app.BaseView;
 import com.freak.httpmanage.bean.LoginBean;
 
+import com.freak.httpmanage.net.response.HttpResult;
+
 /**
  * Created by Administrator on 2018/12/25.
  */
@@ -12,6 +14,7 @@ import com.freak.httpmanage.bean.LoginBean;
 public interface MainContract {
     interface View extends BaseView {
         void onSuccess(LoginBean loginBean);
+        void onSuccess(HttpResult loginBean);
         void onError(String msg);
     }
 

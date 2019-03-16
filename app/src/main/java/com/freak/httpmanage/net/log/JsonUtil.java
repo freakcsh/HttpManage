@@ -1,7 +1,9 @@
-package com.freak.httpmanage.net;
+package com.freak.httpmanage.net.log;
 
 /**
- * Created by Administrator on 2019/3/11.
+ *
+ * @author Administrator
+ * @date 2019/3/11
  */
 
 public class JsonUtil {

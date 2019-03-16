@@ -3,11 +3,9 @@ package com.freak.httpmanage.app;
 import android.app.Activity;
 import android.app.Application;
 
-
 import com.freak.httphelper.HttpMethods;
-import com.freak.httpmanage.net.CommonParametersInterceptor;
-import com.freak.httpmanage.net.HttpLogger;
-import com.freak.httpmanage.net.LogUtil;
+import com.freak.httpmanage.net.log.HttpLogger;
+import com.freak.httpmanage.net.log.LogUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -49,7 +47,7 @@ public class App extends Application {
 //        HttpMethods.setWriteTimeOut(10);
         LogUtil.init("HttpHelper",true);
         HttpMethods.setBaseUrl(Constants.BASE_URL);
-        HttpMethods.setInterceptor(new CommonParametersInterceptor());
+//        HttpMethods.setInterceptor(new CommonParametersInterceptor());
         HttpMethods.setLevel(HttpMethods.BODY);
         HttpMethods.setLogger(new HttpLogger());
     }
