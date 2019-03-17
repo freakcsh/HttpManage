@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.freak.httphelper.HttpMethods;
+import com.freak.httpmanage.net.interceptor.CookieJarImpl;
 import com.freak.httpmanage.net.log.HttpLogger;
 import com.freak.httpmanage.net.log.LogUtil;
 
@@ -50,6 +51,7 @@ public class App extends Application {
 //        HttpMethods.setInterceptor(new CommonParametersInterceptor());
         HttpMethods.setLevel(HttpMethods.BODY);
         HttpMethods.setLogger(new HttpLogger());
+        HttpMethods.setCookieJar(new CookieJarImpl());
     }
 
     //##################################### 以下是activity的收litepal.xml集 ####################################

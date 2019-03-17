@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
 
     public void login(View view) {
-        mPresenter.doLogin(username.getText().toString().trim(), pwd.getText().toString().trim());
+        mPresenter.doLogin1(username.getText().toString().trim(), pwd.getText().toString().trim());
     }
 
     @Override
@@ -107,5 +107,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     public void login2(View view) {
         mPresenter.doLogin2(username.getText().toString().trim(), pwd.getText().toString().trim());
+    }
+
+    public void cookieLogin(View view) {
+        mPresenter.doLogin("13790994100","caishouhui0524");
+    }
+
+    public void cookieLoginStatus(View view) {
+        mPresenter.loadLoginStatusEntity();
     }
 }

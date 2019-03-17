@@ -29,7 +29,7 @@ public class HttpLogger implements HttpLoggingInterceptor.Logger {
          * 请求或者响应结束，打印整条日志
          */
         if (message.startsWith("<-- END HTTP")) {
-            LogUtil.d(mMessage.toString());
+//            LogUtil.d(mMessage.toString());
             LogUtil.e(mMessage.toString());
         }
     }

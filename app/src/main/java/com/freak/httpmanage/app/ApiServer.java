@@ -2,6 +2,8 @@ package com.freak.httpmanage.app;
 
 
 import com.freak.httpmanage.bean.LoginBean;
+import com.freak.httpmanage.bean.LoginEntity;
+import com.freak.httpmanage.bean.LoginStatusEntity;
 import com.freak.httpmanage.net.response.HttpResult;
 
 import io.reactivex.Observable;
@@ -23,7 +25,7 @@ public interface ApiServer {
      * @return
      */
     @POST("/login")
-    Observable<HttpResult> login(@Query("userName") String userName,
+    Observable<HttpResult> login1(@Query("userName") String userName,
                                @Query("pwd") String pwd);
 
     /**
@@ -43,4 +45,17 @@ public interface ApiServer {
     @Streaming
     @GET
     Observable<ResponseBody> downloadApk(@Url String apkUrl);
+
+    /**
+     * 用户登陆
+     *
+     * @return
+     */
+    @POST("login/cellphone")
+    Observable<LoginEntity> login(@Query("phone") String phone,
+                                  @Query("password") String password
+    );
+
+    @POST("login/status")
+    Observable<LoginStatusEntity> loadLoginStatus();
 }

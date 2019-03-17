@@ -7,8 +7,12 @@ import com.freak.httphelper.RxPresenter;
 import com.freak.httphelper.SubscriberCallBack;
 import com.freak.httpmanage.app.ApiServer;
 import com.freak.httpmanage.bean.LoginBean;
+import com.freak.httpmanage.bean.LoginEntity;
+import com.freak.httpmanage.bean.LoginStatusEntity;
+import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.net.response.HttpResultFunc;
+import com.freak.httpmanage.util.ToastUtil;
 import com.orhanobut.logger.Logger;
 
 import io.reactivex.Observable;
@@ -18,8 +22,8 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
     ApiServer apiServer = HttpMethods.getInstance().create(ApiServer.class);
 
     @Override
-    public void doLogin(String userName, String pwd) {
-        Observable observable = apiServer.login(userName, pwd);
+    public void doLogin1(String userName, String pwd) {
+        Observable observable = apiServer.login1(userName, pwd);
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<HttpResult>() {
             @Override
             public void onSuccess(HttpResult model) {
@@ -54,4 +58,38 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
     }
 
 
+
+
+    @Override
+    public void loadLoginStatusEntity() {
+        Observable<LoginStatusEntity> observable = apiServer.loadLoginStatus();
+        addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<LoginStatusEntity>() {
+            @Override
+            public void onSuccess(LoginStatusEntity model) {
+                LogUtil.e(model.toString());
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                LogUtil.e(msg);
+            }
+        }));
+    }
+
+    @Override
+    public void doLogin(String phone, String password) {
+        Observable<LoginEntity> observable = apiServer.login(phone, password);
+        addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<LoginEntity>() {
+            @Override
+            public void onSuccess(LoginEntity model) {
+                LogUtil.e(model.toString());
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                ToastUtil.shortShow(msg);
+                LogUtil.e(msg);
+            }
+        }));
+    }
 }

@@ -1,10 +1,10 @@
 package com.freak.httphelper;
 
 
-
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.CompositeDisposable;
+import okhttp3.CookieJar;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -35,7 +35,9 @@ public class HttpMethods {
     private static String BaseUrl;
     private static Converter.Factory mFactory;
     private static Interceptor mInterceptor;
+    private static Interceptor mNetworkInterceptor;
     private static HttpLoggingInterceptor.Logger mLogger;
+    private static CookieJar mCookieJar;
     /**
      * No logs.
      */
@@ -172,6 +174,24 @@ public class HttpMethods {
         HttpMethods.writeTimeOut = writeTimeOut;
     }
 
+    /**
+     * 设置cookieJar
+     *
+     * @param mCookieJar
+     */
+    public static void setCookieJar(CookieJar mCookieJar) {
+        HttpMethods.mCookieJar = mCookieJar;
+    }
+
+    /**
+     * 设置网络拦截器
+     *
+     * @param mNetworkInterceptor
+     */
+    static void setmNetworkInterceptor(Interceptor mNetworkInterceptor) {
+        HttpMethods.mNetworkInterceptor = mNetworkInterceptor;
+    }
+
     public HttpMethods() {
         /**
          * 创建okHttpClient
@@ -193,6 +213,12 @@ public class HttpMethods {
             //设置日志界级别
             httpLoggingInterceptor.setLevel(Level == null ? HttpLoggingInterceptor.Level.BODY : Level);
             builder.addNetworkInterceptor(httpLoggingInterceptor);
+        }
+        if (mCookieJar != null) {
+            builder.cookieJar(mCookieJar);
+        }
+        if (mNetworkInterceptor != null) {
+            builder.addNetworkInterceptor(mNetworkInterceptor);
         }
 
         /**

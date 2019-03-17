@@ -22,6 +22,18 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="cookieLogin"
+        android:text="cookie持久化登录" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="cookieLoginStatus"
+        android:text="cookie持久化登录之检查登录状态" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="rxBusOnclick"
         android:text="RxBus" />
 
@@ -35,13 +47,14 @@
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="freak"/>
+        android:text="freak" />
 
     <EditText
         android:id="@+id/pwd"
-        android:text="123456"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="123456" />
+
     <TextView
         android:id="@+id/result"
         android:layout_width="match_parent"

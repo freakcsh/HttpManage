@@ -14,13 +14,19 @@ import com.freak.httpmanage.net.response.HttpResult;
 public interface MainContract {
     interface View extends BaseView {
         void onSuccess(LoginBean loginBean);
+
         void onSuccess(HttpResult loginBean);
+
         void onError(String msg);
     }
 
     interface Presenter extends BasePresenter<View> {
-        void doLogin(String userName, String pwd);
+        void doLogin1(String userName, String pwd);
+
         void doLogin2(String userName, String pwd);
 
+        void loadLoginStatusEntity();
+
+        void doLogin(String phone, String password);
     }
 }
