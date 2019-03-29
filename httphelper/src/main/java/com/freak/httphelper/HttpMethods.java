@@ -32,7 +32,7 @@ public class HttpMethods {
     private static final int READ_TIMEOUT = 10;
     private static final int WRITE_TIMEOUT = 10;
 
-    private static String BaseUrl;
+    public static String baseUrl;
     private static Converter.Factory mFactory;
     private static Interceptor mInterceptor;
     private static Interceptor mNetworkInterceptor;
@@ -107,7 +107,7 @@ public class HttpMethods {
      * @param url 服务器域名
      */
     public static void setBaseUrl(String url) {
-        BaseUrl = url;
+        baseUrl = url;
     }
 
     /**
@@ -229,7 +229,7 @@ public class HttpMethods {
         retrofit = new Retrofit.Builder().client(builder.build())
                 .addConverterFactory(mFactory == null ? GsonConverterFactory.create() : mFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(BaseUrl)
+                .baseUrl(baseUrl)
                 .build();
     }
 
