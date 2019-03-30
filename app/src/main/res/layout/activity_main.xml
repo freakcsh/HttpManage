@@ -40,6 +40,12 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="downOnclick"
+        android:text="下载" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="update"
         android:text="检测更新" />
 

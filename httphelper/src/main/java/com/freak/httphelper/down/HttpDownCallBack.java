@@ -16,7 +16,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
     private HttpDownInfo mHttpDownInfo;
     private ResultListener mResultListener;
 
-    public HttpDownCallBack( HttpDownInfo httpDownInfo) {
+    public HttpDownCallBack(HttpDownInfo httpDownInfo) {
         mHttpDownListener = httpDownInfo.getListener();
         mHttpDownInfo = httpDownInfo;
     }
@@ -93,39 +93,40 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
         if (mResultListener != null) {
             mResultListener.downFinish(mHttpDownInfo);
         }
+        HttpDownMethods.getInstance().remove(mHttpDownInfo);
     }
 
     /**
      * 开始下载
      */
-    public void downStart() {
-        mHttpDownInfo.setState(HttpDownStatus.START);
-        if (mHttpDownListener != null) {
-            mHttpDownListener.downStart();
+    public void downStart(HttpDownInfo httpDownInfo) {
+        httpDownInfo.setState(HttpDownStatus.START);
+        if (httpDownInfo.getListener() != null) {
+            httpDownInfo.getListener().downStart();
         }
     }
 
     /**
      * 暂停下载
      *
-     * @param progress 当前下载进度（完成大小）
+     * @param httpDownInfo 当前下载信息
      */
-    public void downPause(long progress) {
-        mHttpDownInfo.setState(HttpDownStatus.PAUSE);
-        if (mHttpDownListener != null) {
-            mHttpDownListener.downPause(mHttpDownInfo.getReadLength());
+    public void downPause(HttpDownInfo httpDownInfo) {
+        httpDownInfo.setState(HttpDownStatus.PAUSE);
+        if (httpDownInfo.getListener() != null) {
+            httpDownInfo.getListener().downPause(httpDownInfo.getReadLength());
         }
     }
 
     /**
      * 下载停止
      *
-     * @param progress 当前下载进度（完成大小）
+     * @param httpDownInfo 当前下载信息
      */
-    public void downStop(long progress) {
-        mHttpDownInfo.setState(HttpDownStatus.STOP);
-        if (mHttpDownListener != null) {
-            mHttpDownListener.downStop(mHttpDownInfo.getReadLength());
+    public void downStop(HttpDownInfo httpDownInfo) {
+        httpDownInfo.setState(HttpDownStatus.STOP);
+        if (httpDownInfo.getListener() != null) {
+            httpDownInfo.getListener().downStop(httpDownInfo.getReadLength());
         }
     }
 

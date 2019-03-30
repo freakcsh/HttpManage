@@ -26,14 +26,17 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.orhanobut:logger:2.2.0'
-        //rxJava
-        implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
-        //rxAndroid
-        implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-        implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-        implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-        implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-        implementation 'com.squareup.okhttp3:okhttp:3.12.1'
-        implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    //rxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+    //rxAndroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation project(':httphelper')
+// https://mvnrepository.com/artifact/com.tamic.fastdownloader/Android-FastDownloader
+    implementation group: 'com.tamic.fastdownloader', name: 'Android-FastDownloader', version: '1.0.3'
+
 }

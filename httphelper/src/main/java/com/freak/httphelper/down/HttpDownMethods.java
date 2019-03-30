@@ -38,17 +38,17 @@ public class HttpDownMethods {
     private static final int WRITE_TIMEOUT = 60;
     private String baseUrl;
     private Set<HttpDownInfo> mHttpDownInfoSet;
-    private Map<String, HttpDownCallBack> mCallBackMap;
+    private Map<String, HttpDownCallBack<HttpDownInfo>> mCallBackMap;
     private static HttpDownMethods mHttpDownMethods;
 
     public HttpDownMethods() {
         this.baseUrl = HttpMethods.baseUrl;
         mHttpDownInfoSet = new HashSet<>();
-        mCallBackMap = new HashMap<>();
+        mCallBackMap = new HashMap<String, HttpDownCallBack<HttpDownInfo>>();
     }
 
     public static HttpDownMethods getInstance() {
-        if (mHttpDownMethods != null) {
+        if (mHttpDownMethods == null) {
             synchronized (HttpDownMethods.class) {
                 mHttpDownMethods = new HttpDownMethods();
             }
@@ -75,7 +75,7 @@ public class HttpDownMethods {
      * @param httpDownListener 下载监听
      */
     public void downStart(HttpDownInfo httpDownInfo, HttpDownListener httpDownListener) {
-        start(httpDownInfo, httpDownListener, false);
+        downStart(httpDownInfo, httpDownListener, false);
     }
 
     /**
@@ -85,23 +85,23 @@ public class HttpDownMethods {
      * @param httpDownListener 监听
      * @param isMoreThread     是否多线程下载
      */
-    public void start(final HttpDownInfo httpDownInfo, HttpDownListener httpDownListener, boolean isMoreThread) {
-
+    public void downStart(final HttpDownInfo httpDownInfo, HttpDownListener httpDownListener, boolean isMoreThread) {
+        //正在下载不处理
         if (httpDownInfo == null || httpDownInfo.getUrl() == null) {
             return;
         }
+        //正在下载不处理
         if (mCallBackMap.get(httpDownInfo.getUrl()) != null) {
             mCallBackMap.get(httpDownInfo.getUrl()).setHttpDownInfo(httpDownInfo);
             return;
         }
 
-        if (httpDownInfo.getReadLength() == httpDownInfo.getCountLength()) {
-            httpDownInfo.setReadLength(0);
-        }
-
+//        if (httpDownInfo.getReadLength() == httpDownInfo.getCountLength()) {
+//            httpDownInfo.setReadLength(0);
+//        }
+        //添加回调处理类
         httpDownInfo.setListener(httpDownListener);
-        HttpDownCallBack callBack = new HttpDownCallBack(httpDownInfo);
-
+        HttpDownCallBack<HttpDownInfo> callBack = new HttpDownCallBack<>(httpDownInfo);
         callBack.setResultListener(new ResultListener() {
             @Override
             public void downFinish(HttpDownInfo httpDownInfo) {
@@ -114,7 +114,7 @@ public class HttpDownMethods {
             }
 
         });
-
+        //创建自定义下载拦截器
         HttpDownInterceptor interceptor = new HttpDownInterceptor(callBack);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -138,77 +138,156 @@ public class HttpDownMethods {
         downLoad(retrofit, httpDownInfo.getReadLength(), httpDownInfo).subscribe(callBack);
 
 
-        callBack.downStart();
+        callBack.downStart(httpDownInfo);
 
         httpDownInfo.setState(HttpDownStatus.START);
+        //记录回调mCallBackMap
         mHttpDownInfoSet.add(httpDownInfo);
         mCallBackMap.put(httpDownInfo.getUrl(), callBack);
     }
 
     /**
      * 单线程下载
-     * @param retrofit Retrofit
-     * @param start 开始位置
+     *
+     * @param retrofit     Retrofit
+     * @param start        开始位置
      * @param httpDownInfo 下载信息
      * @return Observable
      */
-    private Observable downLoad(Retrofit retrofit, long start, final HttpDownInfo httpDownInfo){
-        return  retrofit.create(HttpDownloadApiService.class).downFile("bytes=" + start + "-", httpDownInfo.getUrl())
+    private Observable<HttpDownInfo> downLoad(Retrofit retrofit, long start, final HttpDownInfo httpDownInfo) {
+        return retrofit.create(HttpDownloadApiService.class).downFile("bytes=" + start + "-", httpDownInfo.getUrl())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .map(new Function<ResponseBody, HttpDownInfo>() {
 
                     @Override
                     public HttpDownInfo apply(@NonNull ResponseBody responseBody) throws Exception {
-                        writeToCaches(responseBody,httpDownInfo);
+                        writeToCaches(responseBody, httpDownInfo);
                         return httpDownInfo;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread());
     }
-    private void writeToCaches(ResponseBody body,HttpDownInfo httpDownInfo){
 
-        RandomAccessFile randomAccessFile=null;
-        FileChannel fileChannel=null;
-        InputStream inputStream=null;
+    private void writeToCaches(ResponseBody body, HttpDownInfo httpDownInfo) {
 
-        File file=new File(httpDownInfo.getSavePath());
-        if(!file.getParentFile().exists()){
+        RandomAccessFile randomAccessFile = null;
+        FileChannel fileChannel = null;
+        InputStream inputStream = null;
+
+        File file = new File(httpDownInfo.getSavePath());
+        if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
         try {
             long allLength = 0 == httpDownInfo.getCountLength() ? body.contentLength() : httpDownInfo.getReadLength() + body
                     .contentLength();
 
-            randomAccessFile=new RandomAccessFile(file,"rwd");
-            fileChannel=randomAccessFile.getChannel();
-            inputStream=body.byteStream();
-            MappedByteBuffer byteBuffer=fileChannel.map(FileChannel.MapMode.READ_WRITE,httpDownInfo.getReadLength(), allLength - httpDownInfo.getReadLength());
+            randomAccessFile = new RandomAccessFile(file, "rwd");
+            fileChannel = randomAccessFile.getChannel();
+            inputStream = body.byteStream();
+            MappedByteBuffer byteBuffer = fileChannel.map(FileChannel.MapMode.READ_WRITE, httpDownInfo.getReadLength(), allLength - httpDownInfo.getReadLength());
 
-            byte[] buffer=new byte[1024*4];
+            byte[] buffer = new byte[1024 * 4];
             int len;
-            while((len=inputStream.read(buffer))!=-1){
-                byteBuffer.put(buffer,0,len);
+            while ((len = inputStream.read(buffer)) != -1) {
+                byteBuffer.put(buffer, 0, len);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
-                if(inputStream!=null) {
+                if (inputStream != null) {
                     inputStream.close();
                 }
-                if(fileChannel!=null){
+                if (fileChannel != null) {
                     fileChannel.close();
                 }
-                if(randomAccessFile!=null){
+                if (randomAccessFile != null) {
                     randomAccessFile.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
 
+    /**
+     * 停止下载
+     *
+     * @param httpDownInfo 下载信息
+     */
+    public void downStop(HttpDownInfo httpDownInfo) {
+        if (httpDownInfo == null) {
+            return;
+        }
+        if (mCallBackMap.containsKey(httpDownInfo.getUrl())) {
+            HttpDownCallBack<HttpDownInfo> callBack = mCallBackMap.get(httpDownInfo.getUrl());
+            assert callBack != null;
+            callBack.downStop(httpDownInfo);
+            mCallBackMap.remove(httpDownInfo.getUrl());
+        }
+    }
+
+    /**
+     * 下载暂停
+     *
+     * @param httpDownInfo
+     */
+    public void downPause(HttpDownInfo httpDownInfo) {
+        if (httpDownInfo == null) {
+            return;
+        }
+        if (mCallBackMap.containsKey(httpDownInfo.getUrl())) {
+            HttpDownCallBack<HttpDownInfo> callBack = mCallBackMap.get(httpDownInfo.getUrl());
+            assert callBack != null;
+            callBack.downPause(httpDownInfo);
+//            mCallBackMap.remove(httpDownInfo.getUrl());
+        }
+    }
+
+    /**
+     * 停止所有的下载
+     */
+    public void downStopAll() {
+        for (HttpDownInfo httpDownInfo : mHttpDownInfoSet) {
+            downStop(httpDownInfo);
+        }
+        mCallBackMap.clear();
+        mHttpDownInfoSet.clear();
+    }
+
+    /**
+     * 暂停所有
+     */
+    public void downPauseAll() {
+        for (HttpDownInfo httpDownInfo : mHttpDownInfoSet) {
+            downPause(httpDownInfo);
+        }
+        mCallBackMap.clear();
+        mHttpDownInfoSet.clear();
+    }
+
+    public void remove(HttpDownInfo httpDownInfo) {
+        mCallBackMap.remove(httpDownInfo.getUrl());
+        mHttpDownInfoSet.remove(httpDownInfo);
+    }
+
+    /**
+     * 判断是否处于下载队列
+     *
+     * @param urls
+     */
+    public boolean isDownloading(String... urls) {
+        for (String url : urls) {
+            if (mCallBackMap.containsKey(url)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 }

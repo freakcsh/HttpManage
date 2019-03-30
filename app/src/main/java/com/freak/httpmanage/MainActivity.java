@@ -8,10 +8,9 @@ import android.widget.TextView;
 import com.freak.httphelper.RxBus;
 import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.bean.LoginBean;
+import com.freak.httpmanage.down.DownActivity;
 import com.freak.httpmanage.event.RxEvent;
-
 import com.freak.httpmanage.net.response.HttpResult;
-import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import io.reactivex.disposables.Disposable;
@@ -26,6 +25,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private EditText username, pwd;
     private TextView tvResult;
     private Disposable mSubscribe;
+
 
     @Override
     protected int getLayout() {
@@ -115,5 +115,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     public void cookieLoginStatus(View view) {
         mPresenter.loadLoginStatusEntity();
+    }
+
+    public void downOnclick(View view) {
+        DownActivity.startAction(this);
     }
 }
