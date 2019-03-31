@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.freak.httpmanage.down.DownActivity"
+    tools:context=".down.SystemDownloadActivity"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,14 +72,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_download1"
+            android:id="@+id/btn_download3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="downloadOrPause"
             android:text="下载" />
 
         <Button
-            android:id="@+id/btn_cancel1"
+            android:id="@+id/btn_cancel3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:onClick="pause"
+            android:onClick="pause3"
             android:text="暂停" />
 
     </LinearLayout>
@@ -131,14 +131,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_download2"
+            android:id="@+id/btn_download4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="downloadOrPause"
             android:text="下载" />
 
         <Button
-            android:id="@+id/btn_cancel2"
+            android:id="@+id/btn_cancel4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -148,7 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:onClick="pause2"
+            android:onClick="pause4"
             android:text="暂停" />
     </LinearLayout>
 </LinearLayout>

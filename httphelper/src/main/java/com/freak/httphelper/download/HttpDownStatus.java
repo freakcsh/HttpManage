@@ -1,4 +1,4 @@
-package com.freak.httphelper.down;
+package com.freak.httphelper.download;
 
 public class HttpDownStatus {
     public static final int START = 1;

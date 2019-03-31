@@ -9,6 +9,7 @@ import com.freak.httphelper.RxBus;
 import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.down.DownActivity;
+import com.freak.httpmanage.down.SystemDownloadActivity;
 import com.freak.httpmanage.event.RxEvent;
 import com.freak.httpmanage.net.response.HttpResult;
 import com.orhanobut.logger.Logger;
@@ -119,5 +120,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     public void downOnclick(View view) {
         DownActivity.startAction(this);
+    }
+
+    public void systemDownOnclick(View view) {
+        SystemDownloadActivity.startAction(this);
     }
 }

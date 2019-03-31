@@ -41,7 +41,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="downOnclick"
-        android:text="下载" />
+        android:text="Okhttp下载" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="systemDownOnclick"
+        android:text="系统自带下载器下载" />
 
     <Button
         android:layout_width="match_parent"

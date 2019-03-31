@@ -16,9 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.freak.httphelper.down.HttpDownInfo;
-import com.freak.httphelper.down.HttpDownListener;
-import com.freak.httphelper.down.HttpDownMethods;
+import com.freak.httphelper.download.HttpDownInfo;
+import com.freak.httphelper.download.HttpDownListener;
+import com.freak.httphelper.download.HttpDownMethods;
 import com.freak.httpmanage.R;
 import com.freak.httpmanage.net.log.LogUtil;
 
@@ -48,12 +48,12 @@ public class DownActivity extends AppCompatActivity {
 
     private void initDownloads() {
         mHttpDownMethods = HttpDownMethods.getInstance();
+        mHttpDownMethods.setDeleteFile(true);
         mDownInfo = new HttpDownInfo();
         mDownInfo.setUrl(qqUrl);
-        mDownInfo.setSavePath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/rro/test1.apk");
+        mDownInfo.setSavePath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/text/qq.apk");
         mDownInfo2 = new HttpDownInfo();
         mDownInfo2.setUrl(wechatUrl);
-        mDownInfo2.setSavePath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/rro/test2.apk");
     }
 
     /**
@@ -84,7 +84,9 @@ public class DownActivity extends AppCompatActivity {
     public void downloadOrPause(View view) {
         switch (view.getId()) {
             case R.id.btn_download1:
-
+                if (mDownInfo == null || "".equals(mDownInfo.getUrl())) {
+                    return;
+                }
                 mHttpDownMethods.downStart(mDownInfo, new HttpDownListener() {
                     @Override
                     public void downStart() {
@@ -93,29 +95,32 @@ public class DownActivity extends AppCompatActivity {
 
                     @Override
                     public void downPause(long progress) {
-                        Toast.makeText(DownActivity.this, "暂停了!", Toast.LENGTH_SHORT).show();
                         LogUtil.e("暂停了");
+                        mDownInfo.setReadLength(progress);
                         btn_download1.setText("下载");
                     }
 
                     @Override
-                    public void downStop(long progress) {
-                        Toast.makeText(DownActivity.this, "停止了!", Toast.LENGTH_SHORT).show();
+                    public void downStop() {
                         LogUtil.e("停止了");
-                        btn_download1.setText("下载停止了");
+                        pb_progress1.setProgress(0);
+                        tv_progress1.setText(0 + "%");
+                        mDownInfo.setReadLength(0);
+                        mDownInfo.setCountLength(0);
+                        btn_download1.setText("下载");
                     }
 
                     @Override
                     public void downFinish(HttpDownInfo httpDownInfo) {
-                        Toast.makeText(DownActivity.this, "下载完成!", Toast.LENGTH_SHORT).show();
                         LogUtil.e("下载完成");
+                        mDownInfo = httpDownInfo;
                         btn_download1.setText("下载完成");
                     }
 
                     @Override
                     public void downError(HttpDownInfo httpDownInfo, String msg) {
-                        Toast.makeText(DownActivity.this, "出错了!", Toast.LENGTH_SHORT).show();
                         LogUtil.e("出错了");
+                        mDownInfo = httpDownInfo;
                         btn_download1.setText("下载出错了");
                     }
 
@@ -136,29 +141,32 @@ public class DownActivity extends AppCompatActivity {
 
                     @Override
                     public void downPause(long progress) {
-                        Toast.makeText(DownActivity.this, "暂停了!", Toast.LENGTH_SHORT).show();
                         LogUtil.e("暂停了");
+                        mDownInfo2.setReadLength(progress);
                         btn_download2.setText("下载");
                     }
 
                     @Override
-                    public void downStop(long progress) {
-                        Toast.makeText(DownActivity.this, "停止了!", Toast.LENGTH_SHORT).show();
+                    public void downStop() {
                         LogUtil.e("停止了");
-                        btn_download2.setText("下载停止了");
+                        pb_progress2.setProgress(0);
+                        tv_progress2.setText(0 + "%");
+                        mDownInfo2.setReadLength(0);
+                        mDownInfo2.setCountLength(0);
+                        btn_download2.setText("下载");
                     }
 
                     @Override
                     public void downFinish(HttpDownInfo httpDownInfo) {
-                        Toast.makeText(DownActivity.this, "下载完成!", Toast.LENGTH_SHORT).show();
                         LogUtil.e("下载完成");
+                        mDownInfo2 = httpDownInfo;
                         btn_download2.setText("下载完成");
                     }
 
                     @Override
                     public void downError(HttpDownInfo httpDownInfo, String msg) {
-                        Toast.makeText(DownActivity.this, "出错了!", Toast.LENGTH_SHORT).show();
-                        LogUtil.e("出错了"+msg);
+                        LogUtil.e("出错了" + msg);
+                        mDownInfo2 = httpDownInfo;
                         btn_download2.setText("下载出错了");
                     }
 
@@ -210,7 +218,7 @@ public class DownActivity extends AppCompatActivity {
     }
 
     public void cancelAll(View view) {
-//        mHttpDownMethods.cancel(wechatUrl, qqUrl);
+        mHttpDownMethods.downStopAll();
         btn_download1.setText("下载");
         btn_download2.setText("下载");
         btn_download_all.setText("全部下载");
@@ -235,7 +243,6 @@ public class DownActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        cancelAll(null);
     }
 
     /**
@@ -265,5 +272,18 @@ public class DownActivity extends AppCompatActivity {
      */
     protected boolean shouldShowRationale(String permission) {
         return ActivityCompat.shouldShowRequestPermissionRationale(this, permission);
+    }
+
+    public void pause(View view) {
+        mHttpDownMethods.downPause(mDownInfo);
+    }
+
+    public void pause2(View view) {
+        mHttpDownMethods.downPause(mDownInfo2);
+    }
+
+    public void pauseAll(View view) {
+        mHttpDownMethods.downPauseAll();
+
     }
 }

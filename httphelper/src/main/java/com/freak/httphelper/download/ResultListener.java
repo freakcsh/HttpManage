@@ -1,4 +1,4 @@
-package com.freak.httphelper.down;
+package com.freak.httphelper.download;
 
 public interface ResultListener {
     void downFinish(HttpDownInfo httpDownInfo);

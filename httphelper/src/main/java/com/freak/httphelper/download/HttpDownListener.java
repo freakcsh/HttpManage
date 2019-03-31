@@ -1,11 +1,11 @@
-package com.freak.httphelper.down;
+package com.freak.httphelper.download;
 
 public interface HttpDownListener {
     void downStart();
 
     void downPause(long progress);
 
-    void downStop(long progress);
+    void downStop();
 
     void downFinish(HttpDownInfo httpDownInfo);
 

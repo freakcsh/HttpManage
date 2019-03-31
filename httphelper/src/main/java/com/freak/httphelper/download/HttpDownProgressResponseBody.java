@@ -1,4 +1,4 @@
-package com.freak.httphelper.down;
+package com.freak.httphelper.download;
 
 import java.io.IOException;
 
