@@ -12,6 +12,9 @@ import com.freak.httpmanage.net.log.LogUtil;
 
 import java.io.File;
 
+/**
+ * @author Administrator
+ */
 public class DownLoadCompleteReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -47,7 +50,6 @@ public class DownLoadCompleteReceiver extends BroadcastReceiver {
                 }finally {
                     c.close();
                 }
-
             }
         }
     }

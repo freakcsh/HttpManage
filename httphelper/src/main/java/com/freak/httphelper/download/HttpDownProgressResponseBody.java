@@ -10,6 +10,11 @@ import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
 
+/**
+ * 下载进度ResponseBody
+ *
+ * @author Administrator
+ */
 public class HttpDownProgressResponseBody extends ResponseBody {
     private ResponseBody mResponseBody;
     private ProgressListener mProgressListener;

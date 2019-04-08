@@ -1,5 +1,8 @@
 package com.freak.httphelper.download;
 
+/**
+ * @author Administrator
+ */
 public interface ProgressListener {
     /**
      * 下载进度监听

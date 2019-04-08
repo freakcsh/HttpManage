@@ -5,6 +5,11 @@ import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 
+/**
+ * 下载拦截器
+ *
+ * @author Administrator
+ */
 public class HttpDownInterceptor implements Interceptor {
     private ProgressListener mProgressListener;
 

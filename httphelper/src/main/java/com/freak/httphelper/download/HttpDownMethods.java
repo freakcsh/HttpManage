@@ -30,6 +30,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * 下载助手
+ *
+ * @author Administrator
+ */
 public class HttpDownMethods {
     /**
      * 这是连接网络的时间
@@ -90,11 +95,12 @@ public class HttpDownMethods {
         downStart(httpDownInfo, httpDownListener, false);
     }
 
-    public void downStartAll(List<HttpDownInfo> httpDownInfoList){
-        for (HttpDownInfo httpDownInfo:httpDownInfoList){
+    public void downStartAll(List<HttpDownInfo> httpDownInfoList) {
+        for (HttpDownInfo httpDownInfo : httpDownInfoList) {
 //            downStart(httpDownInfo,httpDownListener);
         }
     }
+
     /**
      * 开始下载
      *
@@ -232,12 +238,13 @@ public class HttpDownMethods {
     }
 
     private String getPathname(HttpDownInfo httpDownInfo) {
-        return TextUtils.isEmpty(httpDownInfo.getSavePath()) ? Environment.getExternalStorageDirectory().getAbsolutePath() +"/download/" +getFileName(httpDownInfo.getUrl()): httpDownInfo.getSavePath();
+        return TextUtils.isEmpty(httpDownInfo.getSavePath()) ? Environment.getExternalStorageDirectory().getAbsolutePath() + "/download/" + getFileName(httpDownInfo.getUrl()) : httpDownInfo.getSavePath();
     }
 
     public String getFileName(String url) {
         return url.substring(url.lastIndexOf("/") + 1);
     }
+
     /**
      * 停止下载
      *

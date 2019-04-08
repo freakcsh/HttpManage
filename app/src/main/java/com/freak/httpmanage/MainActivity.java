@@ -2,15 +2,18 @@ package com.freak.httpmanage;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.freak.httphelper.RxBus;
+import com.freak.httphelper.rxview.RxView;
 import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.down.DownActivity;
 import com.freak.httpmanage.down.SystemDownloadActivity;
 import com.freak.httpmanage.event.RxEvent;
+import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.net.response.HttpResult;
 import com.orhanobut.logger.Logger;
 
@@ -21,12 +24,12 @@ import io.reactivex.functions.Consumer;
 /**
  * @author Administrator
  */
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, RxView.Action1 {
     private final static String TAG = "MainActivity";
     private EditText username, pwd;
     private TextView tvResult;
     private Disposable mSubscribe;
-
+    private Button rx_view;
 
     @Override
     protected int getLayout() {
@@ -36,6 +39,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @Override
     protected void initEventAndData() {
         username = findViewById(R.id.username);
+        rx_view = findViewById(R.id.rx_view);
         pwd = findViewById(R.id.pwd);
         tvResult = findViewById(R.id.result);
         mSubscribe = RxBus.getDefault().tObservable(RxEvent.class).subscribe(new Consumer<RxEvent>() {
@@ -47,6 +51,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 }
             }
         });
+        RxView.setIntervalTime(2000);
+        RxView.setOnClickListeners(this, rx_view);
     }
 
     @Override
@@ -99,7 +105,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     protected void onDestroy() {
         super.onDestroy();
         if (mSubscribe != null) {
-            if (mSubscribe.isDisposed()){
+            if (mSubscribe.isDisposed()) {
                 mSubscribe.dispose();
             }
 
@@ -111,7 +117,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     public void cookieLogin(View view) {
-        mPresenter.doLogin("13790994100","caishouhui0524");
+        mPresenter.doLogin("13790994100", "caishouhui0524");
     }
 
     public void cookieLoginStatus(View view) {
@@ -124,5 +130,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     public void systemDownOnclick(View view) {
         SystemDownloadActivity.startAction(this);
+    }
+
+    @Override
+    public void onRxViewClick(View view) {
+        switch (view.getId()) {
+            case R.id.rx_view:
+                LogUtil.e("点击了");
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -16,22 +16,27 @@ public class SystemDownloadActivity extends AppCompatActivity {
     String wechatUrl = "http://dldir1.qq.com/weixin/android/weixin703android1400.apk";
     String qqUrl = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
     String jrtt = "http://gdown.baidu.com/data/wisegame/55dc62995fe9ba82/jinritoutiao_448.apk";
+    String url = "http://pic2.zhimg.com/80/v2-4bd879d9876f90c1db0bd98ffdee17f0_hd.jpg";
+    String url2 = "http://pic1.win4000.com/wallpaper/2017-10-11/59dde2bca944f.jpg";
+
     private DownloadManager downloadManager;
     private DownLoadCompleteReceiver receiver;
     private long id;
+
     public static void startAction(Context context) {
         Intent intent = new Intent(context, SystemDownloadActivity.class);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_download);
         //获取系统服务
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        receiver=new DownLoadCompleteReceiver();
-        IntentFilter filter = new IntentFilter( DownloadManager.ACTION_DOWNLOAD_COMPLETE ) ;
-        registerReceiver( receiver , filter ) ;
+        receiver = new DownLoadCompleteReceiver();
+        IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        registerReceiver(receiver, filter);
     }
 
     public void downloadOrPauseAll(View view) {
@@ -46,10 +51,12 @@ public class SystemDownloadActivity extends AppCompatActivity {
     public void downloadOrPause(View view) {
         switch (view.getId()) {
             case R.id.btn_download3:
-                downLoadApk(qqUrl,"QQ正在下载.....");
+                downLoadApk(wechatUrl, "QQ正在下载.....");
                 break;
             case R.id.btn_download4:
-                downLoadApk(wechatUrl,"微信正在下载.....");
+                downLoadApk(qqUrl, "微信正在下载.....");
+                break;
+            default:
                 break;
         }
     }
@@ -57,15 +64,17 @@ public class SystemDownloadActivity extends AppCompatActivity {
     public void cancel(View view) {
         switch (view.getId()) {
             case R.id.btn_cancel3:
-
+                downLoadApk(url, "微信正在下载.....");
                 break;
             case R.id.btn_cancel4:
-
+                downLoadApk(url2, "微信正在下载.....");
+                break;
+            default:
                 break;
         }
     }
 
-    private void downLoadApk(String url,String descriptionMessage) {
+    private void downLoadApk(String url, String descriptionMessage) {
         //创建request对象
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         //设置什么网络情况下可以下载
@@ -97,9 +106,11 @@ public class SystemDownloadActivity extends AppCompatActivity {
         //进行下载
         id = downloadManager.enqueue(request);
     }
+
     public String getFileName(String url) {
         return url.substring(url.lastIndexOf("/") + 1);
     }
+
     public void pause3(View view) {
     }
 
@@ -108,9 +119,10 @@ public class SystemDownloadActivity extends AppCompatActivity {
 
     /**
      * 设置下载文件存储目录
+     *
      * @param request
      */
-    void setDownloadFilePath( DownloadManager.Request request ){
+    void setDownloadFilePath(DownloadManager.Request request) {
         /**
          * 方法1:
          * 目录: Android -> data -> com.app -> files -> Download -> 微信.apk
@@ -141,9 +153,9 @@ public class SystemDownloadActivity extends AppCompatActivity {
          * 系统有个下载文件夹，比如小米手机系统下载文件夹  SD卡--> Download文件夹
          */
         //创建目录
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).mkdir() ;
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).mkdir();
 
         //设置文件存放路径
-        request.setDestinationInExternalPublicDir(  Environment.DIRECTORY_DOWNLOADS  , "weixin.apk" ) ;
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "weixin.apk");
     }
 }

@@ -54,6 +54,12 @@
         android:onClick="update"
         android:text="检测更新" />
 
+    <Button
+        android:id="@+id/rx_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RxView" />
+
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"

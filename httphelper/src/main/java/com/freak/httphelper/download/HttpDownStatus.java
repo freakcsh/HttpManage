@@ -1,5 +1,10 @@
 package com.freak.httphelper.download;
 
+/**
+ * 下载状态
+ *
+ * @author Administrator
+ */
 public class HttpDownStatus {
     public static final int START = 1;
     public static final int PAUSE = 2;

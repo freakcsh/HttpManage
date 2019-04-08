@@ -10,6 +10,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+/**
+ * @author Administrator
+ */
 public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
     private HttpDownListener mHttpDownListener;
     private Disposable mDisposable;

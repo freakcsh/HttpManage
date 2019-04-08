@@ -1,5 +1,8 @@
 package com.freak.httphelper.download;
 
+/**
+ * @author Administrator
+ */
 public class HttpDownInfo {
     /**
      * id                   下载id
