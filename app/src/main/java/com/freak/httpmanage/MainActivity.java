@@ -24,7 +24,7 @@ import io.reactivex.functions.Consumer;
 /**
  * @author Administrator
  */
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, RxView.Action1 {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, RxView.OnRxViewClickListener {
     private final static String TAG = "MainActivity";
     private EditText username, pwd;
     private TextView tvResult;

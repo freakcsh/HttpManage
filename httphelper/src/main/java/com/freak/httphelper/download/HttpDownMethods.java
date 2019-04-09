@@ -2,6 +2,7 @@ package com.freak.httphelper.download;
 
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.freak.httphelper.HttpMethods;
 
@@ -12,6 +13,8 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,6 +52,10 @@ public class HttpDownMethods {
     private Set<HttpDownInfo> mHttpDownInfoSet;
     private Map<String, HttpDownCallBack<HttpDownInfo>> mCallBackMap;
     private static HttpDownMethods mHttpDownMethods;
+    private List<HttpDownInfo> mTaskList;
+    private int mTaskCount = 0;
+    private static final int TASK_COUNT = 3;
+    private HttpDownListener mHttpDownListener;
     /**
      * 取消下载\停止下载时，是否删除未下载完成的文件，默认不删除
      */
@@ -58,6 +65,8 @@ public class HttpDownMethods {
         this.baseUrl = HttpMethods.baseUrl;
         mHttpDownInfoSet = new HashSet<>();
         mCallBackMap = new HashMap<String, HttpDownCallBack<HttpDownInfo>>();
+        mTaskList = Collections.synchronizedList(new ArrayList<HttpDownInfo>());
+        setTaskCount(TASK_COUNT);
     }
 
     public static HttpDownMethods getInstance() {
@@ -67,6 +76,19 @@ public class HttpDownMethods {
             }
         }
         return mHttpDownMethods;
+    }
+
+    /**
+     * 设置下载任务个数（最多同时下载多少个）
+     *
+     * @param mTaskCount
+     */
+    public void setTaskCount(int mTaskCount) {
+        this.mTaskCount = mTaskCount;
+    }
+
+    public int getTaskCount() {
+        return mTaskCount;
     }
 
     public static void setConnectTimeOut(int connectTimeOut) {
@@ -79,6 +101,10 @@ public class HttpDownMethods {
 
     public static void setWriteTimeOut(int writeTimeOut) {
         HttpDownMethods.writeTimeOut = writeTimeOut;
+    }
+
+    public void setHttpDownListener(HttpDownListener httpDownListener) {
+        mHttpDownListener = httpDownListener;
     }
 
     public void setDeleteFile(boolean deleteFile) {
@@ -95,9 +121,78 @@ public class HttpDownMethods {
         downStart(httpDownInfo, httpDownListener, false);
     }
 
-    public void downStartAll(List<HttpDownInfo> httpDownInfoList) {
+    /**
+     * 添加下载任务
+     *
+     * @param httpDownInfo
+     */
+    public synchronized void addDownTask(HttpDownInfo httpDownInfo) {
+        if (!mTaskList.contains(httpDownInfo)) {
+            mTaskList.add(httpDownInfo);
+            moreTaskDownloadStart(mTaskList);
+        }
+    }
+
+    /**
+     * 一键添加所有下载任务
+     *
+     * @param httpDownInfo
+     */
+    public synchronized void addDownTaskList(List<HttpDownInfo> httpDownInfo) {
+        for (HttpDownInfo mHttpDownInfo : httpDownInfo) {
+            addDownTask(mHttpDownInfo);
+        }
+    }
+
+    public void moreTaskDownloadStart(List<HttpDownInfo> httpDownInfoList) {
+        downStartAll(httpDownInfoList);
+    }
+
+    private void downStartAll(List<HttpDownInfo> httpDownInfoList) {
         for (HttpDownInfo httpDownInfo : httpDownInfoList) {
-//            downStart(httpDownInfo,httpDownListener);
+            if (getTaskCount() > 0) {
+                if (httpDownInfo.getState() == HttpDownStatus.FINISH) {
+                    httpDownInfoList.remove(httpDownInfo);
+                    return;
+                }
+                if (httpDownInfo.getState() == HttpDownStatus.WAITING) {
+                    httpDownInfoList.remove(httpDownInfo);
+                    if (mHttpDownListener != null) {
+                        downStart(httpDownInfo, mHttpDownListener);
+                    } else {
+                        downStart(httpDownInfo, null);
+                    }
+                    setTaskCount(TASK_COUNT - 1);
+                }
+            }
+
+
+        }
+    }
+
+    public void handleTask(int type) {
+        switch (type) {
+            case HttpDownStatus.START:
+                Log.d("DownTask","开始下载,下载总数量"+mTaskList.size());
+                break;
+            case HttpDownStatus.PAUSE:
+                setTaskCount(TASK_COUNT + 1);
+                moreTaskDownloadStart(mTaskList);
+                break;
+            case HttpDownStatus.STOP:
+                setTaskCount(TASK_COUNT + 1);
+                moreTaskDownloadStart(mTaskList);
+                break;
+            case HttpDownStatus.FINISH:
+                setTaskCount(TASK_COUNT + 1);
+                moreTaskDownloadStart(mTaskList);
+                break;
+            case HttpDownStatus.ERROR:
+                setTaskCount(TASK_COUNT + 1);
+                moreTaskDownloadStart(mTaskList);
+                break;
+            default:
+                break;
         }
     }
 
@@ -123,7 +218,9 @@ public class HttpDownMethods {
             httpDownInfo.setReadLength(0);
         }
         //添加回调处理类
-        httpDownInfo.setListener(httpDownListener);
+        if (httpDownListener != null) {
+            httpDownInfo.setListener(httpDownListener);
+        }
         HttpDownCallBack<HttpDownInfo> callBack = new HttpDownCallBack<>(httpDownInfo);
         callBack.setResultListener(new ResultListener() {
             @Override

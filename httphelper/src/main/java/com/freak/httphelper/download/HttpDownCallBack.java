@@ -1,6 +1,8 @@
 package com.freak.httphelper.download;
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 
@@ -85,6 +87,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
         if (mResultListener != null) {
             mResultListener.downError(mHttpDownInfo);
         }
+        mHandler.sendEmptyMessage(HttpDownStatus.ERROR);
     }
 
     @Override
@@ -96,6 +99,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
         if (mResultListener != null) {
             mResultListener.downFinish(mHttpDownInfo);
         }
+        mHandler.sendEmptyMessage(HttpDownStatus.FINISH);
         HttpDownMethods.getInstance().remove(mHttpDownInfo);
     }
 
@@ -107,6 +111,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
         if (mHttpDownListener != null) {
             mHttpDownListener.downStart();
         }
+        mHandler.sendEmptyMessage(HttpDownStatus.START);
     }
 
     /**
@@ -117,6 +122,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
         if (mHttpDownListener != null) {
             mHttpDownListener.downPause(mHttpDownInfo.getReadLength());
         }
+        mHandler.sendEmptyMessage(HttpDownStatus.PAUSE);
     }
 
     /**
@@ -129,6 +135,34 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
         if (mHttpDownListener != null) {
             mHttpDownListener.downStop();
         }
+        mHandler.sendEmptyMessage(HttpDownStatus.STOP);
     }
+
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case HttpDownStatus.START:
+                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.START);
+                    break;
+                case HttpDownStatus.PAUSE:
+                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.PAUSE);
+                    break;
+                case HttpDownStatus.STOP:
+                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.STOP);
+                    break;
+                case HttpDownStatus.FINISH:
+                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.FINISH);
+                    break;
+                case HttpDownStatus.ERROR:
+                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.ERROR);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 }

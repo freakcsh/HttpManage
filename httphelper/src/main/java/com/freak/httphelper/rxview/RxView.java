@@ -40,7 +40,7 @@ public class RxView {
      * @param target 目标view
      * @param action 监听器
      */
-    public static void setOnClickListeners(final Action1<View> action, @NonNull View... target) {
+    public static void setOnClickListeners(final OnRxViewClickListener<View> action, @NonNull View... target) {
         for (View view : target) {
             RxView.onClick(view).throttleFirst(intervalTime == 0 ? 1000 : intervalTime, TimeUnit.MILLISECONDS).subscribe(new Consumer<View>() {
                 @Override
@@ -97,7 +97,7 @@ public class RxView {
      *
      * @param <T> the first argument type
      */
-    public interface Action1<T> {
+    public interface OnRxViewClickListener<T> {
         /**
          * 点击事件
          *

@@ -25,6 +25,9 @@ public class HttpDownInfo {
     private boolean isStartMoreThread = false;
     private int downThreadCount = 3;
 
+    public HttpDownInfo() {
+        setState(HttpDownStatus.WAITING);
+    }
 
     public long getId() {
         return this.id;
