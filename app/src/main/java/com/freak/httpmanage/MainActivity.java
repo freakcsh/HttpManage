@@ -11,6 +11,7 @@ import com.freak.httphelper.rxview.RxView;
 import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.down.DownActivity;
+import com.freak.httpmanage.down.DownTaskListActivity;
 import com.freak.httpmanage.down.SystemDownloadActivity;
 import com.freak.httpmanage.event.RxEvent;
 import com.freak.httpmanage.net.log.LogUtil;
@@ -141,5 +142,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
             default:
                 break;
         }
+    }
+
+    public void downTask(View view) {
+        DownTaskListActivity.startAction(this);
     }
 }

@@ -47,6 +47,11 @@
         android:layout_height="wrap_content"
         android:onClick="systemDownOnclick"
         android:text="系统自带下载器下载" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="downTask"
+        android:text="下载任务列表下载" />
 
     <Button
         android:layout_width="match_parent"

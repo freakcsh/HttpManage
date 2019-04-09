@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.freak.httphelper.HttpMethods;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,8 +54,8 @@ public class HttpDownMethods {
     private Map<String, HttpDownCallBack<HttpDownInfo>> mCallBackMap;
     private static HttpDownMethods mHttpDownMethods;
     private List<HttpDownInfo> mTaskList;
-    private int mTaskCount = 0;
-    private static final int TASK_COUNT = 3;
+    private static int mTaskCount = 0;
+    private static final int TASK_COUNT = 2;
     private HttpDownListener mHttpDownListener;
     /**
      * 取消下载\停止下载时，是否删除未下载完成的文件，默认不删除
@@ -83,11 +84,11 @@ public class HttpDownMethods {
      *
      * @param mTaskCount
      */
-    public void setTaskCount(int mTaskCount) {
-        this.mTaskCount = mTaskCount;
+    public static void setTaskCount(int mTaskCount) {
+        HttpDownMethods.mTaskCount = mTaskCount;
     }
 
-    public int getTaskCount() {
+    public static int getTaskCount() {
         return mTaskCount;
     }
 
@@ -127,7 +128,7 @@ public class HttpDownMethods {
      * @param httpDownInfo
      */
     public synchronized void addDownTask(HttpDownInfo httpDownInfo) {
-        if (!mTaskList.contains(httpDownInfo)) {
+        if (mTaskList != null && !mTaskList.contains(httpDownInfo)) {
             mTaskList.add(httpDownInfo);
             moreTaskDownloadStart(mTaskList);
         }
@@ -150,19 +151,23 @@ public class HttpDownMethods {
 
     private void downStartAll(List<HttpDownInfo> httpDownInfoList) {
         for (HttpDownInfo httpDownInfo : httpDownInfoList) {
+            Logger.e("剩余下载任务数："+getTaskCount());
             if (getTaskCount() > 0) {
                 if (httpDownInfo.getState() == HttpDownStatus.FINISH) {
-                    httpDownInfoList.remove(httpDownInfo);
-                    return;
+                    mTaskList.remove(httpDownInfo);
+                    handleTask(7);
+                    Logger.e("有完成任务");
+                   break;
                 }
                 if (httpDownInfo.getState() == HttpDownStatus.WAITING) {
+                    Logger.e("等待任务");
                     httpDownInfoList.remove(httpDownInfo);
                     if (mHttpDownListener != null) {
                         downStart(httpDownInfo, mHttpDownListener);
                     } else {
                         downStart(httpDownInfo, null);
                     }
-                    setTaskCount(TASK_COUNT - 1);
+                    setTaskCount(getTaskCount() - 1);
                 }
             }
 
@@ -173,22 +178,26 @@ public class HttpDownMethods {
     public void handleTask(int type) {
         switch (type) {
             case HttpDownStatus.START:
-                Log.d("DownTask","开始下载,下载总数量"+mTaskList.size());
+                Log.d("DownTask", "开始下载,下载总数量" + mTaskList.size());
                 break;
             case HttpDownStatus.PAUSE:
-                setTaskCount(TASK_COUNT + 1);
+                setTaskCount(getTaskCount() + 1);
                 moreTaskDownloadStart(mTaskList);
                 break;
             case HttpDownStatus.STOP:
-                setTaskCount(TASK_COUNT + 1);
+                setTaskCount(getTaskCount() + 1);
                 moreTaskDownloadStart(mTaskList);
                 break;
             case HttpDownStatus.FINISH:
-                setTaskCount(TASK_COUNT + 1);
+                setTaskCount(getTaskCount() + 1);
+                Logger.e("下载完成，释放任务之后的任务数量："+getTaskCount());
                 moreTaskDownloadStart(mTaskList);
                 break;
             case HttpDownStatus.ERROR:
-                setTaskCount(TASK_COUNT + 1);
+                setTaskCount(getTaskCount() + 1);
+                moreTaskDownloadStart(mTaskList);
+                break;
+            case 7:
                 moreTaskDownloadStart(mTaskList);
                 break;
             default:

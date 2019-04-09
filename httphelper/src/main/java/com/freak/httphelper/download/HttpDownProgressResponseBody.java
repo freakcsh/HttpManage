@@ -55,7 +55,12 @@ public class HttpDownProgressResponseBody extends ResponseBody {
 
             @Override
             public long read(Buffer sink, long byteCount) throws IOException {
-                long byteRead = super.read(sink, byteCount);
+                long byteRead = 0;
+                try {
+                    byteRead = super.read(sink, byteCount);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 //不断统计当前下载好的数据
                 totalBytesRead += byteRead != -1 ? byteRead : 0;
                 //接口回调

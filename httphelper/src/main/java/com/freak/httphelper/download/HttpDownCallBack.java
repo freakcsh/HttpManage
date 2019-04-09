@@ -60,7 +60,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
             Observable.just(bytesRead).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
                 @Override
                 public void accept(Long aLong) throws Exception {
-                    Log.d("DownloadProgress", "Progress = " + aLong);
+//                    Log.d("DownloadProgress", "Progress = " + aLong);
                     mHttpDownListener.downProgress(aLong, mHttpDownInfo.getCountLength());
                 }
             });
