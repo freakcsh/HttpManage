@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -128,6 +129,12 @@ public class HttpDownMethods {
      * @param httpDownInfo
      */
     public synchronized void addDownTask(HttpDownInfo httpDownInfo) {
+//        if (mTaskList != null && mTaskList.contains(httpDownInfo)) {
+//            if (httpDownInfo.getState() == HttpDownStatus.PAUSE ||
+//                    httpDownInfo.getState() == HttpDownStatus.ERROR) {
+//
+//            }
+//        }
         if (mTaskList != null && !mTaskList.contains(httpDownInfo)) {
             mTaskList.add(httpDownInfo);
             moreTaskDownloadStart(mTaskList);
@@ -149,19 +156,32 @@ public class HttpDownMethods {
         downStartAll(httpDownInfoList);
     }
 
-    private void downStartAll(List<HttpDownInfo> httpDownInfoList) {
-        for (HttpDownInfo httpDownInfo : httpDownInfoList) {
-            Logger.e("剩余下载任务数："+getTaskCount());
+    private synchronized void downStartAll(List<HttpDownInfo> httpDownInfoList) {
+
+        for (ListIterator<HttpDownInfo> iterator = httpDownInfoList.listIterator(); iterator.hasNext(); ) {
+            Logger.e("剩余下载任务数：" + getTaskCount());
+            HttpDownInfo httpDownInfo = iterator.next();
             if (getTaskCount() > 0) {
-                if (httpDownInfo.getState() == HttpDownStatus.FINISH) {
-                    mTaskList.remove(httpDownInfo);
-                    handleTask(7);
-                    Logger.e("有完成任务");
-                   break;
-                }
                 if (httpDownInfo.getState() == HttpDownStatus.WAITING) {
-                    Logger.e("等待任务");
-                    httpDownInfoList.remove(httpDownInfo);
+                    Logger.e("下载等待任务");
+                    if (mHttpDownListener != null) {
+                        downStart(httpDownInfo, mHttpDownListener);
+                    } else {
+                        downStart(httpDownInfo, null);
+                    }
+                    setTaskCount(getTaskCount() - 1);
+                }
+                if (httpDownInfo.getState() == HttpDownStatus.PAUSE) {
+                    Logger.e("下载暂停任务");
+                    if (mHttpDownListener != null) {
+                        downStart(httpDownInfo, mHttpDownListener);
+                    } else {
+                        downStart(httpDownInfo, null);
+                    }
+                    setTaskCount(getTaskCount() - 1);
+                }
+                if (httpDownInfo.getState() == HttpDownStatus.ERROR) {
+                    Logger.e("下载错误任务");
                     if (mHttpDownListener != null) {
                         downStart(httpDownInfo, mHttpDownListener);
                     } else {
@@ -171,8 +191,8 @@ public class HttpDownMethods {
                 }
             }
 
-
         }
+
     }
 
     public void handleTask(int type) {
@@ -190,7 +210,7 @@ public class HttpDownMethods {
                 break;
             case HttpDownStatus.FINISH:
                 setTaskCount(getTaskCount() + 1);
-                Logger.e("下载完成，释放任务之后的任务数量："+getTaskCount());
+                Logger.e("下载完成，释放任务之后的任务数量：" + getTaskCount());
                 moreTaskDownloadStart(mTaskList);
                 break;
             case HttpDownStatus.ERROR:
@@ -198,7 +218,6 @@ public class HttpDownMethods {
                 moreTaskDownloadStart(mTaskList);
                 break;
             case 7:
-                moreTaskDownloadStart(mTaskList);
                 break;
             default:
                 break;
@@ -358,6 +377,11 @@ public class HttpDownMethods {
      */
     public HttpDownInfo downStop(HttpDownInfo httpDownInfo) {
         if (httpDownInfo != null) {
+            if (httpDownInfo.getState() == HttpDownStatus.PAUSE) {
+                if (mHttpDownListener != null) {
+                    mHttpDownListener.downStop();
+                }
+            }
             if (mCallBackMap.containsKey(httpDownInfo.getUrl())) {
                 HttpDownCallBack<HttpDownInfo> callBack = mCallBackMap.get(httpDownInfo.getUrl());
                 assert callBack != null;
@@ -389,6 +413,7 @@ public class HttpDownMethods {
                 callBack.getDisposable().dispose();
                 callBack.downPause();
                 httpDownInfo.setState(HttpDownStatus.PAUSE);
+                mTaskList.remove(httpDownInfo);
                 mCallBackMap.remove(httpDownInfo.getUrl());
             }
         }
@@ -403,6 +428,7 @@ public class HttpDownMethods {
             downStop(httpDownInfo);
         }
         mCallBackMap.clear();
+        mTaskList.clear();
         mHttpDownInfoSet.clear();
     }
 

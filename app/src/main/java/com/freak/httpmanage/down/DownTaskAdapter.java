@@ -32,7 +32,7 @@ public class DownTaskAdapter extends BaseQuickAdapter<HttpDownInfo, BaseViewHold
 
             @Override
             public void downPause(long progress) {
-                LogUtil.e("暂停了");
+                LogUtil.e("暂停了" + helper.getAdapterPosition());
                 item.setReadLength(progress);
                 item.setState(HttpDownStatus.PAUSE);
                 helper.setText(R.id.btn_download_task, "下载");
@@ -41,31 +41,29 @@ public class DownTaskAdapter extends BaseQuickAdapter<HttpDownInfo, BaseViewHold
 
             @Override
             public void downStop() {
-                LogUtil.e("停止了");
-                helper.setProgress(R.id.pb_progress_task, 0);
-                helper.setText(R.id.tv_progress_task, 0 + "%");
-                item.setReadLength(0);
-                item.setCountLength(0);
-                helper.setText(R.id.btn_download_task, "重新下载");
-                helper.setText(R.id.tv_file_name_task, "下载停止：");
+                LogUtil.e("停止了" + helper.getAdapterPosition());
+                remove(helper.getAdapterPosition());
+                notifyDataSetChanged();
             }
 
             @Override
             public void downFinish(HttpDownInfo httpDownInfo) {
-                LogUtil.e("下载完成");
-                item.setReadLength(httpDownInfo.getReadLength());
-                item.setCountLength(httpDownInfo.getCountLength());
-                item.setState(HttpDownStatus.FINISH);
-                helper.setText(R.id.btn_download_task, "下载完成");
-                helper.setText(R.id.tv_file_name_task, "下载完成：");
-                int pro = (int) (httpDownInfo.getReadLength() * 100 / httpDownInfo.getCountLength());
-                helper.setProgress(R.id.pb_progress_task, pro);
-                helper.setText(R.id.tv_progress_task, pro + "%");
+                LogUtil.e("下载完成" + helper.getAdapterPosition() + "\n下载完成地址：" + httpDownInfo.getUrl());
+                remove(helper.getAdapterPosition());
+                notifyDataSetChanged();
+//                item.setReadLength(httpDownInfo.getReadLength());
+//                item.setCountLength(httpDownInfo.getCountLength());
+//                item.setState(HttpDownStatus.FINISH);
+//                helper.setText(R.id.btn_download_task, "下载完成");
+//                helper.setText(R.id.tv_file_name_task, "下载完成：");
+//                int pro = (int) (httpDownInfo.getReadLength() * 100 / httpDownInfo.getCountLength());
+//                helper.setProgress(R.id.pb_progress_task, pro);
+//                helper.setText(R.id.tv_progress_task, pro + "%");
             }
 
             @Override
             public void downError(HttpDownInfo httpDownInfo, String msg) {
-                LogUtil.e("出错了");
+                LogUtil.e("出错了" + helper.getAdapterPosition() + "\n下载完成地址：" + httpDownInfo.getUrl());
                 item.setReadLength(httpDownInfo.getReadLength());
                 item.setCountLength(httpDownInfo.getCountLength());
                 item.setState(HttpDownStatus.ERROR);
