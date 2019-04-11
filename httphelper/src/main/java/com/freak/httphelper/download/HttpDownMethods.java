@@ -128,16 +128,12 @@ public class HttpDownMethods {
      *
      * @param httpDownInfo
      */
-    public synchronized void addDownTask(HttpDownInfo httpDownInfo) {
-//        if (mTaskList != null && mTaskList.contains(httpDownInfo)) {
-//            if (httpDownInfo.getState() == HttpDownStatus.PAUSE ||
-//                    httpDownInfo.getState() == HttpDownStatus.ERROR) {
-//
-//            }
-//        }
+    public boolean addDownTask(HttpDownInfo httpDownInfo) {
         if (mTaskList != null && !mTaskList.contains(httpDownInfo)) {
             mTaskList.add(httpDownInfo);
-            moreTaskDownloadStart(mTaskList);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -152,8 +148,17 @@ public class HttpDownMethods {
         }
     }
 
-    public void moreTaskDownloadStart(List<HttpDownInfo> httpDownInfoList) {
-        downStartAll(httpDownInfoList);
+    public void moreTaskDownloadStart() {
+        if (mTaskList == null) {
+            new IllegalArgumentException("list is null");
+            return;
+        }
+        for (HttpDownInfo httpDownInfo : mTaskList) {
+            if (httpDownInfo.getState() == HttpDownStatus.FINISH || httpDownInfo.getState() == HttpDownStatus.STOP){
+//                mTaskList.remove()
+            }
+        }
+        downStartAll(mTaskList);
     }
 
     private synchronized void downStartAll(List<HttpDownInfo> httpDownInfoList) {
@@ -202,20 +207,20 @@ public class HttpDownMethods {
                 break;
             case HttpDownStatus.PAUSE:
                 setTaskCount(getTaskCount() + 1);
-                moreTaskDownloadStart(mTaskList);
+                moreTaskDownloadStart();
                 break;
             case HttpDownStatus.STOP:
                 setTaskCount(getTaskCount() + 1);
-                moreTaskDownloadStart(mTaskList);
+                moreTaskDownloadStart();
                 break;
             case HttpDownStatus.FINISH:
                 setTaskCount(getTaskCount() + 1);
                 Logger.e("下载完成，释放任务之后的任务数量：" + getTaskCount());
-                moreTaskDownloadStart(mTaskList);
+                moreTaskDownloadStart();
                 break;
             case HttpDownStatus.ERROR:
                 setTaskCount(getTaskCount() + 1);
-                moreTaskDownloadStart(mTaskList);
+                moreTaskDownloadStart();
                 break;
             case 7:
                 break;
