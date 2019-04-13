@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.freak.httphelper.HttpMethods;
+import com.freak.httpmanage.net.interceptor.CommonParametersInterceptor;
+import com.freak.httpmanage.net.interceptor.CommonParametersInterceptorHead;
 import com.freak.httpmanage.net.interceptor.CookieJarImpl;
 import com.freak.httpmanage.net.log.HttpLogger;
 import com.freak.httpmanage.net.log.LogUtil;
@@ -49,6 +51,7 @@ public class App extends Application {
         LogUtil.init("HttpHelper",true);
         HttpMethods.setBaseUrl(Constants.BASE_URL);
 //        HttpMethods.setInterceptor(new CommonParametersInterceptor());
+        HttpMethods.setInterceptors(new CommonParametersInterceptor(),new CommonParametersInterceptorHead());
         HttpMethods.setLevel(HttpMethods.BODY);
         HttpMethods.setLogger(new HttpLogger());
         HttpMethods.setCookieJar(new CookieJarImpl());

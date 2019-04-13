@@ -1,6 +1,8 @@
 package com.freak.httphelper;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -35,6 +37,7 @@ public class HttpMethods {
     private static Converter.Factory mFactory;
     private static Interceptor mInterceptor;
     private static Interceptor mNetworkInterceptor;
+    private static List<Interceptor> sInterceptorList;
     private static HttpLoggingInterceptor.Logger mLogger;
     private static CookieJar mCookieJar;
     /**
@@ -129,6 +132,18 @@ public class HttpMethods {
     }
 
     /**
+     * 设置多个拦截器
+     *
+     * @param interceptors
+     */
+    public static void setInterceptors(Interceptor... interceptors) {
+        sInterceptorList = new ArrayList<>();
+        for (Interceptor interceptor : interceptors) {
+            sInterceptorList.add(interceptor);
+        }
+    }
+
+    /**
      * 设置日志打印logger拦截器
      *
      * @param logger HttpLoggingInterceptor.Logger
@@ -204,8 +219,14 @@ public class HttpMethods {
         builder.readTimeout(readTimeOut == 0 ? READ_TIMEOUT : readTimeOut, TimeUnit.SECONDS);
 
         builder.writeTimeout(writeTimeOut == 0 ? WRITE_TIMEOUT : writeTimeOut, TimeUnit.SECONDS);
-        if (mInterceptor != null) {
-            builder.addInterceptor(mInterceptor);
+        if (sInterceptorList != null && sInterceptorList.size() > 0) {
+            for (Interceptor interceptor : sInterceptorList) {
+                builder.addInterceptor(interceptor);
+            }
+        } else {
+            if (mInterceptor != null) {
+                builder.addInterceptor(mInterceptor);
+            }
         }
         if (mLogger != null) {
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(mLogger);
