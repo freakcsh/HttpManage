@@ -1,10 +1,7 @@
 package com.freak.httphelper.download;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -60,7 +57,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
             Observable.just(bytesRead).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
                 @Override
                 public void accept(Long aLong) throws Exception {
-//                    Log.d("DownloadProgress", "Progress = " + aLong);
+                    Log.d("DownloadProgress", "Progress = " + aLong);
                     mHttpDownListener.downProgress(aLong, mHttpDownInfo.getCountLength());
                 }
             });
@@ -87,7 +84,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
         if (mResultListener != null) {
             mResultListener.downError(mHttpDownInfo);
         }
-        mHandler.sendEmptyMessage(HttpDownStatus.ERROR);
+//        mHandler.sendEmptyMessage(HttpDownStatus.ERROR);
     }
 
     @Override
@@ -99,7 +96,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
         if (mResultListener != null) {
             mResultListener.downFinish(mHttpDownInfo);
         }
-        mHandler.sendEmptyMessage(HttpDownStatus.FINISH);
+//        mHandler.sendEmptyMessage(HttpDownStatus.FINISH);
         HttpDownMethods.getInstance().remove(mHttpDownInfo);
     }
 
@@ -111,7 +108,7 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
         if (mHttpDownListener != null) {
             mHttpDownListener.downStart();
         }
-        mHandler.sendEmptyMessage(HttpDownStatus.START);
+//        mHandler.sendEmptyMessage(HttpDownStatus.START);
     }
 
     /**
@@ -120,9 +117,9 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
     public void downPause() {
         mHttpDownInfo.setState(HttpDownStatus.PAUSE);
         if (mHttpDownListener != null) {
-            mHttpDownListener.downPause(mHttpDownInfo.getReadLength());
+            mHttpDownListener.downPause(mHttpDownInfo,mHttpDownInfo.getReadLength());
         }
-        mHandler.sendEmptyMessage(HttpDownStatus.PAUSE);
+//        mHandler.sendEmptyMessage(HttpDownStatus.PAUSE);
     }
 
     /**
@@ -133,36 +130,36 @@ public class HttpDownCallBack<T> implements Observer<T>, ProgressListener {
     public void downStop() {
         mHttpDownInfo.setState(HttpDownStatus.STOP);
         if (mHttpDownListener != null) {
-            mHttpDownListener.downStop();
+            mHttpDownListener.downStop(mHttpDownInfo);
         }
-        mHandler.sendEmptyMessage(HttpDownStatus.STOP);
+//        mHandler.sendEmptyMessage(HttpDownStatus.STOP);
     }
 
 
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case HttpDownStatus.START:
-                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.START);
-                    break;
-                case HttpDownStatus.PAUSE:
-                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.PAUSE);
-                    break;
-                case HttpDownStatus.STOP:
-                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.STOP);
-                    break;
-                case HttpDownStatus.FINISH:
-                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.FINISH);
-                    break;
-                case HttpDownStatus.ERROR:
-                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.ERROR);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
+//    @SuppressLint("HandlerLeak")
+//    private Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case HttpDownStatus.START:
+//                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.START);
+//                    break;
+//                case HttpDownStatus.PAUSE:
+//                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.PAUSE);
+//                    break;
+//                case HttpDownStatus.STOP:
+//                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.STOP);
+//                    break;
+//                case HttpDownStatus.FINISH:
+//                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.FINISH);
+//                    break;
+//                case HttpDownStatus.ERROR:
+//                    HttpDownMethods.getInstance().handleTask(HttpDownStatus.ERROR);
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    };
 
 }

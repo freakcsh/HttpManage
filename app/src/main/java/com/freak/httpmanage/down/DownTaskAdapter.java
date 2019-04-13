@@ -31,7 +31,7 @@ public class DownTaskAdapter extends BaseQuickAdapter<HttpDownInfo, BaseViewHold
             }
 
             @Override
-            public void downPause(long progress) {
+            public void downPause(HttpDownInfo httpDownInfo,long progress) {
                 LogUtil.e("暂停了" + helper.getAdapterPosition());
                 item.setReadLength(progress);
                 item.setState(HttpDownStatus.PAUSE);
@@ -40,7 +40,7 @@ public class DownTaskAdapter extends BaseQuickAdapter<HttpDownInfo, BaseViewHold
             }
 
             @Override
-            public void downStop() {
+            public void downStop(HttpDownInfo httpDownInfo) {
                 LogUtil.e("停止了" + helper.getAdapterPosition());
                 remove(helper.getAdapterPosition());
                 notifyDataSetChanged();
@@ -81,6 +81,6 @@ public class DownTaskAdapter extends BaseQuickAdapter<HttpDownInfo, BaseViewHold
                 helper.setText(R.id.tv_progress_task, pro + "%");
             }
         });
-        mHttpDownMethods.addDownTask(item);
+//        mHttpDownMethods.addDownTask(item);
     }
 }

@@ -9,14 +9,15 @@ public interface HttpDownListener {
     /**
      * 下载暂停
      *
-     * @param progress 下载进度
+     * @param progress     下载进度
+     * @param httpDownInfo 下载信息
      */
-    void downPause(long progress);
+    void downPause(HttpDownInfo httpDownInfo, long progress);
 
     /**
      * 下载停止
      */
-    void downStop();
+    void downStop(HttpDownInfo httpDownInfo);
 
     /**
      * 下载完成

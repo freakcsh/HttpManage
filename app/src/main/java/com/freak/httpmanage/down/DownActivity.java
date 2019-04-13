@@ -94,14 +94,14 @@ public class DownActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void downPause(long progress) {
+                    public void downPause(HttpDownInfo httpDownInfo,long progress) {
                         LogUtil.e("暂停了");
                         mDownInfo.setReadLength(progress);
                         btn_download1.setText("下载");
                     }
 
                     @Override
-                    public void downStop() {
+                    public void downStop(HttpDownInfo httpDownInfo) {
                         LogUtil.e("停止了");
                         pb_progress1.setProgress(0);
                         tv_progress1.setText(0 + "%");
@@ -126,7 +126,12 @@ public class DownActivity extends AppCompatActivity {
 
                     @Override
                     public void downProgress(long readLength, long countLength) {
-                        int pro = (int) (readLength * 100 / countLength);
+                        int pro = 0;
+                        try {
+                            pro = (int) (readLength * 100 / countLength);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         pb_progress1.setProgress(pro);
                         tv_progress1.setText(pro + "%");
                     }
@@ -140,14 +145,14 @@ public class DownActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void downPause(long progress) {
+                    public void downPause(HttpDownInfo httpDownInfo,long progress) {
                         LogUtil.e("暂停了");
                         mDownInfo2.setReadLength(progress);
                         btn_download2.setText("下载");
                     }
 
                     @Override
-                    public void downStop() {
+                    public void downStop(HttpDownInfo httpDownInfo) {
                         LogUtil.e("停止了");
                         pb_progress2.setProgress(0);
                         tv_progress2.setText(0 + "%");
@@ -172,7 +177,12 @@ public class DownActivity extends AppCompatActivity {
 
                     @Override
                     public void downProgress(long readLength, long countLength) {
-                        int pro = (int) (readLength * 100 / countLength);
+                        int pro = 0;
+                        try {
+                            pro = (int) (readLength * 100 / countLength);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         pb_progress2.setProgress(pro);
                         tv_progress2.setText(pro + "%");
                     }
@@ -207,10 +217,10 @@ public class DownActivity extends AppCompatActivity {
 
         switch (view.getId()) {
             case R.id.btn_cancel1:
-                mHttpDownMethods.downStop(mDownInfo);
+//                mHttpDownMethods.downStop(mDownInfo);
                 break;
             case R.id.btn_cancel2:
-                mHttpDownMethods.downStop(mDownInfo2);
+//                mHttpDownMethods.downStop(mDownInfo2);
                 break;
             default:
                 break;
@@ -218,10 +228,10 @@ public class DownActivity extends AppCompatActivity {
     }
 
     public void cancelAll(View view) {
-        mHttpDownMethods.downStopAll();
-        btn_download1.setText("下载");
-        btn_download2.setText("下载");
-        btn_download_all.setText("全部下载");
+//        mHttpDownMethods.downStopAll();
+//        btn_download1.setText("下载");
+//        btn_download2.setText("下载");
+//        btn_download_all.setText("全部下载");
     }
 
     @Override
