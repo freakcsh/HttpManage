@@ -57,7 +57,6 @@ public class App extends Application {
         HttpMethods.setCookieJar(new CookieJarImpl());
     }
 
-    //##################################### 以下是activity的收litepal.xml集 ####################################
     public void addActivity(Activity act) {
         if (allActivities == null) {
             allActivities = new HashSet<>();
