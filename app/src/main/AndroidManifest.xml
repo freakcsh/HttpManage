@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RxBusActivity" />
+        <activity android:name=".rxbus.RxBusActivity" />
         <activity android:name=".down.DownActivity" />
         <activity android:name=".down.SystemDownloadActivity" />
 

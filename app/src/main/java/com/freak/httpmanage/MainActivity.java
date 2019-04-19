@@ -16,6 +16,7 @@ import com.freak.httpmanage.down.SystemDownloadActivity;
 import com.freak.httpmanage.event.RxEvent;
 import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.net.response.HttpResult;
+import com.freak.httpmanage.rxbus.RxBusActivity;
 import com.orhanobut.logger.Logger;
 
 import io.reactivex.disposables.Disposable;
