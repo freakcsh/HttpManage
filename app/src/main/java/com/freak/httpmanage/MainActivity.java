@@ -1,5 +1,6 @@
 package com.freak.httpmanage;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -7,7 +8,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.freak.httphelper.RxBus;
+import com.freak.httphelper.download.ProgressListener;
 import com.freak.httphelper.rxview.RxView;
+import com.freak.httphelper.uploading.MultipartUtil;
 import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.down.DownActivity;
@@ -19,8 +22,15 @@ import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.rxbus.RxBusActivity;
 import com.orhanobut.logger.Logger;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 
 /**
@@ -147,5 +157,27 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     public void downTask(View view) {
         DownTaskListActivity.startAction(this);
+    }
+
+
+    public void upload(){
+
+        Map<String, RequestBody> textBody= MultipartUtil.getInstance()
+                .addParam("text1","123")
+                .addParam("text2","456")
+                .Build();
+
+        List<File> files=new ArrayList<>();
+        File file=new File(Environment.getExternalStorageDirectory()+"test.png");
+        files.add(file);
+
+        //文件上传进度只支持单文件上传的时候使用
+        List<MultipartBody.Part> parts= MultipartUtil.makeMultipart("images", files, new ProgressListener() {
+            @Override
+            public void onProgress(long read, long length, boolean done) {
+
+            }
+        });
+
     }
 }

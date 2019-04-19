@@ -59,7 +59,7 @@ public class HttpDownMethods {
     private boolean mIsDeleteFile = false;
 
     public HttpDownMethods() {
-        this.baseUrl = HttpMethods.baseUrl;
+        this.baseUrl = HttpMethods.getInstanceBuilder().getBaseUrl();
         mHttpDownInfoSet = new HashSet<>();
         mCallBackMap = new HashMap<String, HttpDownCallBack<HttpDownInfo>>();
 //        mTaskList = Collections.synchronizedList(new ArrayList<HttpDownInfo>());
