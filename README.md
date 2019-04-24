@@ -518,8 +518,13 @@ mPresenter.doLogin1(username.getText().toString().trim(), pwd.getText().toString
   RxView.setIntervalTime(2000);//设置间隔时间
         RxView.setOnClickListeners(this, rx_view,tvResult);//设置需要控制重复点击的按钮，可设置多个
 ```  
-如果RxView使用觉得不方便，可以查看我的博文
+如果RxView使用觉得不方便，可以查看我的博文：  
+[Android处理按钮重复点击事件](https://blog.csdn.net/freak_csh/article/details/89477388)  
 
+[网络请求框架（基于okhttp+rxjava2+retrofit2的mvp模式网络请求框架+RxBus+RxView控制按钮重复点击](https://blog.csdn.net/freak_csh/article/details/86712826)  
+
+如果出现9.0系统无法请求网络可以查看博文：
+[Android9.0 http网络请求失败问题分析与解决方案](https://blog.csdn.net/freak_csh/article/details/86100031)
 
 
    
