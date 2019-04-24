@@ -30,6 +30,25 @@
         //添加自定义的cookieJar保存cookie
         HttpMethods.setCookieJar(new CookieJarImpl());
 ```  
+#### 1.3版本以前使用上面的初始化方式，1.3版本以后使用以下初始化方式  
+```
+  HttpMethods
+                .getInstanceBuilder()
+                .setBaseUrl(Constants.BASE_URL)//设置域名
+                .setLogLevel(LogLevel.ERROR)//设置日志打印级别，使用默认的日志打印才需要设置这个
+                .setLogName("123456")//设置默认日志打印名字
+                .setIsOpenLog(true)//设置是否开启框架默认的日志打印
+                .setCookieJar(new CookieJarImpl())//设置自定义的cookiejar
+//                .setLogger(new HttpLogger())//设置自定义logger，此设置是打印网络请求的数据（如果设置了自定义的，则框架默认的则不需要设置）
+//                .setLevel(LoggerLevel.BODY)//设置日志打印级别（自定义logger可设置，框架默认的是BODY级别，如果上架需要关闭日志打印，则设置setIsOpenLog(false)即可）
+                .setReadTimeOut(60)
+                .setConnectTimeOut(60)
+                .setWriteTimeOut(60)
+//                .setInterceptor(new CommonParametersInterceptor())//设置拦截器
+//                .setNetworkInterceptor(new CommonParametersInterceptor())//设置拦截器
+//                .setFactory(CustomConverterFactory.create())//设置自定义解析器
+                .setInterceptors(new CommonParametersInterceptor(), new CommonParametersInterceptorHead());//设置多个拦截器
+```  
 
 ### 二、MVP模式构建
 * 1、baseView：新建baseView接口，继承RxBaseView，可自定义方法，也可不自定义，示例如下：
@@ -492,6 +511,14 @@ mPresenter.doLogin1(username.getText().toString().trim(), pwd.getText().toString
                         }
                     });
 ```  
+### RxView使用  
+* 1、在需要使用RxView的activity或者fragment中实现接口：RxView.OnRxViewClickListener  
+* 2、添加点击事件  
+```
+  RxView.setIntervalTime(2000);//设置间隔时间
+        RxView.setOnClickListeners(this, rx_view,tvResult);//设置需要控制重复点击的按钮，可设置多个
+```  
+如果RxView使用觉得不方便，可以查看我的博文
 
 
 
