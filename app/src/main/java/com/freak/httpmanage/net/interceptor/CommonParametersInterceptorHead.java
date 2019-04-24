@@ -56,7 +56,7 @@ public class CommonParametersInterceptorHead implements Interceptor {
      * @return
      */
     public Request addHeader(Request oldRequest) {
-        Request.Builder builder = oldRequest.newBuilder().addHeader("user-agent", "fn-Android-APP");
+        Request.Builder builder = oldRequest.newBuilder().addHeader("user-agent", "fn-Android-APP").addHeader("Connection","close");
         return builder.build();
     }
 }

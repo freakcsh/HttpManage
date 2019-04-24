@@ -77,7 +77,6 @@ public class HttpMethods {
             builder.addNetworkInterceptor(getInstanceBuilder().getNetworkInterceptor());
         }
 
-
         /**
          * addConverterFactory 添加格式转换器工程  GsonConverterFactory
          * addCallAdapterFactory 添加调用适配器工程 RxJava2CallAdapterFactory

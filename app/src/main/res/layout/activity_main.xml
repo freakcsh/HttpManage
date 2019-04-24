@@ -71,6 +71,17 @@
             android:layout_height="wrap_content"
             android:text="RxView" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="图片上传"
+           android:onClick="uploadOnclick"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="aop点击"
+            android:onClick="aop"/>
+
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"

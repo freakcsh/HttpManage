@@ -9,6 +9,9 @@ import com.freak.httphelper.log.LoggerLevel;
 import com.freak.httpmanage.net.interceptor.CommonParametersInterceptor;
 import com.freak.httpmanage.net.interceptor.CommonParametersInterceptorHead;
 import com.freak.httpmanage.net.interceptor.CookieJarImpl;
+import com.freak.httpmanage.util.ImagePickerGlideLoader;
+import com.lzy.imagepicker.ImagePicker;
+import com.lzy.imagepicker.view.CropImageView;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -49,6 +52,7 @@ public class App extends Application {
 //        HttpMethods.setReadTimeOut(10);
 //        HttpMethods.setWriteTimeOut(10);
 //        LogUtil.init("HttpHelper",true);
+        initImagePicker();
         HttpMethods
                 .getInstanceBuilder()
                 .setBaseUrl(Constants.BASE_URL)
@@ -82,5 +86,28 @@ public class App extends Application {
         if (allActivities != null) {
             allActivities.remove(act);
         }
+    }
+    private void initImagePicker() {
+        ImagePicker imagePicker = ImagePicker.getInstance();
+//        //设置图片加载器
+        imagePicker.setImageLoader(new ImagePickerGlideLoader());
+        //显示拍照按钮
+        imagePicker.setShowCamera(true);
+        //允许裁剪（单选才有效）
+        imagePicker.setCrop(true);
+        //是否按矩形区域保存
+        imagePicker.setSaveRectangle(true);
+        //选中数量限制
+        imagePicker.setSelectLimit(9);
+        //裁剪框的形状
+        imagePicker.setStyle(CropImageView.Style.RECTANGLE);
+        //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
+        imagePicker.setFocusWidth(800);
+        //裁剪框的高度。单位像素（圆形自动取宽高最小值）
+        imagePicker.setFocusHeight(800);
+        //保存文件的宽度。单位像素
+        imagePicker.setOutPutX(1000);
+        //保存文件的高度。单位像素
+        imagePicker.setOutPutY(1000);
     }
 }

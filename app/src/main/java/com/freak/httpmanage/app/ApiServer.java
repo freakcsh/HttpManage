@@ -1,6 +1,7 @@
 package com.freak.httpmanage.app;
 
 
+import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.bean.LoginEntity;
 import com.freak.httpmanage.bean.LoginStatusEntity;
@@ -35,7 +36,7 @@ public interface ApiServer {
      */
     @POST("/login")
     Observable<HttpResult> login1(@Query("userName") String userName,
-                               @Query("pwd") String pwd);
+                                  @Query("pwd") String pwd);
 
     /**
      * 用户登陆
@@ -45,6 +46,10 @@ public interface ApiServer {
     @POST("/login")
     Observable<HttpResult<LoginBean>> login2(@Query("userName") String userName,
                                              @Query("pwd") String pwd);
+
+    @POST("/app/user/login")
+    Observable<BaseBean> login3(@Query("user_mobile") String user_mobile,
+                                @Query("user_password") String user_password);
 
     /**
      * apk文件下载
@@ -80,6 +85,10 @@ public interface ApiServer {
      * @return
      */
     @Multipart
-    @POST("user/uploadIdentyfyImg")
-    Observable<HttpResult> uploadingIdCard(@Part MultipartBody.Part body);
+    @POST("uploading")
+    Observable<HttpResult> uploading(@Query("tip") String tip, @Query("tip1") String tip1, @Part MultipartBody.Part body);
+
+    @Multipart
+    @POST("uploading1")
+    Observable<HttpResult> uploadingUserPhoto(@Part MultipartBody.Part body);
 }
