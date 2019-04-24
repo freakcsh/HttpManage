@@ -5,7 +5,6 @@ import android.app.Application;
 
 import com.freak.httphelper.HttpMethods;
 import com.freak.httphelper.log.LogLevel;
-import com.freak.httphelper.log.LoggerLevel;
 import com.freak.httpmanage.net.interceptor.CommonParametersInterceptor;
 import com.freak.httpmanage.net.interceptor.CommonParametersInterceptorHead;
 import com.freak.httpmanage.net.interceptor.CookieJarImpl;
@@ -55,17 +54,20 @@ public class App extends Application {
         initImagePicker();
         HttpMethods
                 .getInstanceBuilder()
-                .setBaseUrl(Constants.BASE_URL)
-                .setLogLevel(LogLevel.ERROR)
-                .setCookieJar(new CookieJarImpl())
-//                .setLogger(new HttpLogger())
-                .setLogName("123456")
-                .setIsOpenLog(true)
-                .setLevel(LoggerLevel.BODY)
+                .setBaseUrl(Constants.BASE_URL)//设置域名
+                .setLogLevel(LogLevel.ERROR)//设置日志打印级别，使用默认的日志打印才需要设置这个
+                .setLogName("123456")//设置默认日志打印名字
+                .setIsOpenLog(true)//设置是否开启框架默认的日志打印
+                .setCookieJar(new CookieJarImpl())//设置自定义的cookiejar
+//                .setLogger(new HttpLogger())//设置自定义logger，此设置是打印网络请求的数据（如果设置了自定义的，则框架默认的则不需要设置）
+//                .setLevel(LoggerLevel.BODY)//设置日志打印级别（自定义logger可设置，框架默认的是BODY级别，如果上架需要关闭日志打印，则设置setIsOpenLog(false)即可）
                 .setReadTimeOut(60)
                 .setConnectTimeOut(60)
                 .setWriteTimeOut(60)
-                .setInterceptors(new CommonParametersInterceptor(), new CommonParametersInterceptorHead());
+//                .setInterceptor(new CommonParametersInterceptor())//设置拦截器
+//                .setNetworkInterceptor(new CommonParametersInterceptor())//设置拦截器
+//                .setFactory(CustomConverterFactory.create())//设置自定义解析器
+                .setInterceptors(new CommonParametersInterceptor(), new CommonParametersInterceptorHead());//设置多个拦截器
 //        HttpMethods.setBaseUrl(Constants.BASE_URL);
 ////        HttpMethods.setInterceptor(new CommonParametersInterceptor());
 //        HttpMethods.getInstance().setInterceptors(new CommonParametersInterceptor(), new CommonParametersInterceptorHead()).setIsOpenLog(true);

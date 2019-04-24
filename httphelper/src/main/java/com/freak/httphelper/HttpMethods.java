@@ -354,7 +354,7 @@ public class HttpMethods {
          *
          * @param mNetworkInterceptor
          */
-        public Builder setmNetworkInterceptor(Interceptor mNetworkInterceptor) {
+        public Builder setNetworkInterceptor(Interceptor mNetworkInterceptor) {
             this.mNetworkInterceptor = mNetworkInterceptor;
             return this;
         }

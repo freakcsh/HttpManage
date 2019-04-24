@@ -27,7 +27,7 @@ public class CustomConverterFactory extends Converter.Factory {
      */
     public static CustomConverterFactory create() {
 //        return create(new Gson());
-        return create(new GsonBuilder().serializeNulls().create());
+        return create(new GsonBuilder().serializeNulls().disableHtmlEscaping() .registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create());
     }
 
     /**
