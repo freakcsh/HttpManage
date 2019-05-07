@@ -81,6 +81,11 @@
             android:layout_height="wrap_content"
             android:text="aop点击"
             android:onClick="aop"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="optional"
+            android:onClick="optionalOnclick"/>
 
         <EditText
             android:id="@+id/username"

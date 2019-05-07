@@ -114,6 +114,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void aop(View view) {
         LogUtil.e("点击了");
     }
+    public void optionalOnclick(View view) {
+        LogUtil.e("点击了");
+    }
 
     public void uploadOnclick(View view) {
         ImagePicker.getInstance().setSelectLimit(1);

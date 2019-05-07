@@ -2,6 +2,7 @@ package com.freak.httpmanage.app;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Environment;
 
 import com.freak.httphelper.HttpMethods;
 import com.freak.httphelper.log.LogLevel;
@@ -12,8 +13,14 @@ import com.freak.httpmanage.util.ImagePickerGlideLoader;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.view.CropImageView;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+
+import de.mindpipe.android.logging.log4j.LogConfigurator;
 
 
 /**
@@ -74,9 +81,22 @@ public class App extends Application {
 ////        HttpMethods.getInstance().setLevel(HttpMethods.BODY);
 ////        HttpMethods.getInstance().setLogger(new HttpLogger());
 //        HttpMethods.getInstance().setCookieJar(new CookieJarImpl());
-
+        configLog("log");
+        Logger log = Logger.getLogger(App.class);
+        log.info("My Application Created");
     }
-
+    private void configLog(String logFileNamePrefix) {
+        LogConfigurator logConfigurator = new LogConfigurator();
+        logConfigurator.setFileName(Environment.getExternalStorageDirectory()
+                + File.separator + "logdemo" + File.separator + "logs"
+                + File.separator + (logFileNamePrefix == null ? "" : logFileNamePrefix) + "log4j.txt");
+        logConfigurator.setRootLevel(Level.DEBUG);
+        logConfigurator.setLevel("org.apache", Level.ERROR);
+        logConfigurator.setFilePattern("%d %-5p [%c{2}]-[%L] %m%n");
+        logConfigurator.setMaxFileSize(1024 * 1024 * 2);
+        logConfigurator.setImmediateFlush(true);
+        logConfigurator.configure();
+    }
     public void addActivity(Activity act) {
         if (allActivities == null) {
             allActivities = new HashSet<>();

@@ -11,6 +11,10 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -35,10 +39,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
     implementation project(':httphelper')
-// https://mvnrepository.com/artifact/com.tamic.fastdownloader/Android-FastDownloader
-    implementation group: 'com.tamic.fastdownloader', name: 'Android-FastDownloader', version: '1.0.3'
+    // https://mvnrepository.com/artifact/com.tamic.fastdownloader/Android-FastDownloader
+    implementation 'com.tamic.fastdownloader:Android-FastDownloader:1.0.3'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     //recycle Adapter
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
@@ -49,4 +53,8 @@ dependencies {
         exclude group: 'com.android.support'
     }
     implementation 'org.aspectj:aspectjrt:1.8.13'
+    implementation files('libs/android-logging-log4j-1.0.3.jar')
+    implementation files('libs/log4j-1.2.17.jar')
+    implementation files('libs/slf4j-api-1.7.12.jar')
+    implementation files('libs/slf4j-log4j12-1.7.12.jar')
 }
