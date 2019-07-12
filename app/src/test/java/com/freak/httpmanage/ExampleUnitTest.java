@@ -2,7 +2,6 @@ package com.freak.httpmanage;
 
 import com.freak.httpmanage.bean.UserEntity;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import java.util.NoSuchElementException;
@@ -18,7 +17,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class ExampleUnitTest {
     UserEntity mUserEntity;
-    Logger mLogger = Logger.getLogger(ExampleUnitTest.class);
 
 
     @Test

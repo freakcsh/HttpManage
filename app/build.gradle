@@ -53,8 +53,8 @@ dependencies {
         exclude group: 'com.android.support'
     }
     implementation 'org.aspectj:aspectjrt:1.8.13'
-    implementation files('libs/android-logging-log4j-1.0.3.jar')
-    implementation files('libs/log4j-1.2.17.jar')
-    implementation files('libs/slf4j-api-1.7.12.jar')
-    implementation files('libs/slf4j-log4j12-1.7.12.jar')
+//    implementation files('libs/android-logging-log4j-1.0.3.jar')
+//    implementation files('libs/log4j-1.2.17.jar')
+//    implementation files('libs/slf4j-api-1.7.12.jar')
+//    implementation files('libs/slf4j-log4j12-1.7.12.jar')
 }

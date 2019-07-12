@@ -15,7 +15,8 @@
     <!-- DownloadManager -->
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
+    <!--电池优化 忽略电池优化-->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <application
         android:name=".app.App"
         android:allowBackup="false"
@@ -44,7 +45,8 @@
         </receiver>
 
         <activity android:name=".down.DownTaskListActivity" />
-        <activity android:name=".optional.OptionalActivity"></activity>
+        <activity android:name=".optional.OptionalActivity" />
+        <activity android:name=".property.BatteryActivity"></activity>
     </application>
 
 </manifest>

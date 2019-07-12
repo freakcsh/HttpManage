@@ -23,6 +23,7 @@ import com.freak.httpmanage.down.SystemDownloadActivity;
 import com.freak.httpmanage.event.RxEvent;
 import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.net.response.HttpResult;
+import com.freak.httpmanage.property.BatteryActivity;
 import com.freak.httpmanage.rxbus.RxBusActivity;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -114,8 +115,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void aop(View view) {
         LogUtil.e("点击了");
     }
+
     public void optionalOnclick(View view) {
         LogUtil.e("点击了");
+    }
+
+    public void batteryOnclick(View view) {
+        BatteryActivity.actionStart(this);
     }
 
     public void uploadOnclick(View view) {
