@@ -163,7 +163,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     public void cookieLogin(View view) {
-        mPresenter.doLogin("13790994100", "caishouhui0524");
+        mPresenter.doLogin("", "");
     }
 
     public void cookieLoginStatus(View view) {
