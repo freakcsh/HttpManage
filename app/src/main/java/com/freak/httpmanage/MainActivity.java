@@ -146,6 +146,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 //        jsonTest();
     }
 
+    @Override
+    protected void onResume() {
+        LogUtil.e("onResume in MainActivity");
+        super.onResume();
+    }
 
     @Override
     protected void onDestroy() {

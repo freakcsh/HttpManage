@@ -8,6 +8,8 @@ import com.freak.httphelper.RxBus;
 import com.freak.httpmanage.R;
 import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.event.RxEvent;
+import com.freak.httpmanage.net.log.LogUtil;
+import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.util.ToastUtil;
 
 
@@ -44,5 +46,38 @@ public class RxBusActivity extends BaseActivity<RxBusPresenter> implements RxBus
 
     public void test(View view) {
         mPresenter.doTest();
+        mPresenter.doLogin1("1","2");
+//        mPresenter.test();
     }
+
+    @Override
+    protected void onDestroy() {
+        LogUtil.e("onDestroy in RxBusActivity");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onSuccess(HttpResult loginBean) {
+
+    }
+
+    @Override
+    public void onError(String msg) {
+
+    }
+
+    @Override
+    public void rxTestSuccess() {
+
+    }
+
+//    @Override
+//    public void testSuccess() {
+//
+//    }
+//
+//    @Override
+//    public void RxTestSuccess() {
+//
+//    }
 }
