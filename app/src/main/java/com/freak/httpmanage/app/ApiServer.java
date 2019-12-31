@@ -15,7 +15,9 @@ import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -91,4 +93,14 @@ public interface ApiServer {
     @Multipart
     @POST("uploading1")
     Observable<HttpResult> uploadingUserPhoto(@Part MultipartBody.Part body);
+
+    /**
+     * 登录
+     *
+     * @param body 默认为全部，0未支付 1处理中 2待收货 3待取货 4已完成
+     * @return
+     */
+    @Headers("Content-Type:application/json")
+    @POST("api/staff/v1/staff/login")
+    Observable<HttpResult<LoginEntity>> login(@Body RequestBody body);
 }

@@ -13,6 +13,7 @@ import com.freak.httpmanage.bean.LoginStatusEntity;
 import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.net.response.HttpResultFunc;
+import com.freak.httpmanage.util.RequestUtils;
 import com.freak.httpmanage.util.ToastUtil;
 import com.orhanobut.logger.Logger;
 
@@ -203,6 +204,27 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
             @Override
             public void onFailure(String msg) {
                 ToastUtil.shortShow(msg);
+                LogUtil.e(msg);
+            }
+        }));
+    }
+
+    @Override
+    public void login11(String account, String pwd, String app_type) {
+        RequestBody requestBody = RequestUtils.newParams()
+                .addParams("account", account)
+                .addParams("pwd", pwd)
+                .addParams("app_type", app_type)
+                .createRequestBody();
+        Observable<LoginEntity> observable = apiServer.login(requestBody).map(new HttpResultFunc<LoginEntity>());
+        addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<LoginEntity>() {
+            @Override
+            public void onSuccess(LoginEntity model) {
+                LogUtil.e(model.toString());
+            }
+
+            @Override
+            public void onFailure(String msg) {
                 LogUtil.e(msg);
             }
         }));

@@ -164,7 +164,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     public void login2(View view) {
-        mPresenter.doLogin2(username.getText().toString().trim(), pwd.getText().toString().trim());
+//        mPresenter.doLogin2(username.getText().toString().trim(), pwd.getText().toString().trim());
+        mPresenter.login11("123456", "123456", "1");
     }
 
     public void cookieLogin(View view) {

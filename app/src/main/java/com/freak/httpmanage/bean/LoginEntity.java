@@ -22,6 +22,33 @@ public class LoginEntity {
     private AccountBean account;
     private ProfileBean profile;
     private List<BindingsBean> bindings;
+    private String token;
+    private String huanxin_id;
+    private String huanxin_pwd;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getHuanxin_id() {
+        return huanxin_id;
+    }
+
+    public void setHuanxin_id(String huanxin_id) {
+        this.huanxin_id = huanxin_id;
+    }
+
+    public String getHuanxin_pwd() {
+        return huanxin_pwd;
+    }
+
+    public void setHuanxin_pwd(String huanxin_pwd) {
+        this.huanxin_pwd = huanxin_pwd;
+    }
 
     public int getLoginType() {
         return loginType;

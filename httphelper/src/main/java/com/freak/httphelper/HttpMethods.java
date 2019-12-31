@@ -5,10 +5,19 @@ import android.text.TextUtils;
 
 import com.freak.httphelper.log.HttpLogger;
 import com.freak.httphelper.log.LogUtil;
+import com.freak.httphelper.ssl.HttpsUtils;
+import com.freak.httphelper.ssl.SSLSocketFactoryUtil;
+import com.freak.httphelper.ssl.TrustAllCerts;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.CookieJar;
@@ -49,6 +58,32 @@ public class HttpMethods {
         builder.readTimeout(getInstanceBuilder().getReadTimeOut() == 0 ? READ_TIMEOUT : getInstanceBuilder().getReadTimeOut(), TimeUnit.SECONDS);
 
         builder.writeTimeout(getInstanceBuilder().getWriteTimeOut() == 0 ? WRITE_TIMEOUT : getInstanceBuilder().getWriteTimeOut(), TimeUnit.SECONDS);
+        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
+        if (getInstanceBuilder().isUseDefaultSSLSocketFactory()){
+            builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
+            builder.hostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+        }else {
+            if (getInstanceBuilder().getsSLSocketFactory() != null) {
+                if (getInstanceBuilder().getTrustManager() != null) {
+                    builder.sslSocketFactory(getInstanceBuilder().getsSLSocketFactory());
+                }else {
+                    builder.sslSocketFactory(getInstanceBuilder().getsSLSocketFactory(), getInstanceBuilder().getTrustManager());
+                }
+                builder.hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                });
+            }
+
+        }
+
         if (getInstanceBuilder().getsInterceptorList() != null && getInstanceBuilder().getsInterceptorList().size() > 0) {
             for (Interceptor interceptor : getInstanceBuilder().getsInterceptorList()) {
                 builder.addInterceptor(interceptor);
@@ -154,6 +189,37 @@ public class HttpMethods {
         private boolean isOpenLog;
         private String logName;
 
+        private SSLSocketFactory sSLSocketFactory;
+        private X509TrustManager trustManager;
+
+        private boolean useDefaultSSLSocketFactory;
+
+        public boolean isUseDefaultSSLSocketFactory() {
+            return useDefaultSSLSocketFactory;
+        }
+
+        public Builder setUseDefaultSSLSocketFactory(boolean useDefaultSSLSocketFactory) {
+            this.useDefaultSSLSocketFactory = useDefaultSSLSocketFactory;
+            return this;
+        }
+
+        public SSLSocketFactory getsSLSocketFactory() {
+            return sSLSocketFactory;
+        }
+
+        public Builder setsSLSocketFactory(SSLSocketFactory sSLSocketFactory) {
+            this.sSLSocketFactory = sSLSocketFactory;
+            return this;
+        }
+
+        public X509TrustManager getTrustManager() {
+            return trustManager;
+        }
+
+        public Builder setTrustManager(X509TrustManager trustManager) {
+            this.trustManager = trustManager;
+            return this;
+        }
 
         public boolean isIsOpenLog() {
             return isOpenLog;

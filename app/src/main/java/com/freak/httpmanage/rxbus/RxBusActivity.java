@@ -46,7 +46,7 @@ public class RxBusActivity extends BaseActivity<RxBusPresenter> implements RxBus
 
     public void test(View view) {
         mPresenter.doTest();
-        mPresenter.doLogin1("1","2");
+//        mPresenter.doLogin1("1","2");
 //        mPresenter.test();
     }
 
@@ -56,15 +56,15 @@ public class RxBusActivity extends BaseActivity<RxBusPresenter> implements RxBus
         super.onDestroy();
     }
 
-    @Override
-    public void onSuccess(HttpResult loginBean) {
-
-    }
-
-    @Override
-    public void onError(String msg) {
-
-    }
+//    @Override
+//    public void onSuccess(HttpResult loginBean) {
+//
+//    }
+//
+//    @Override
+//    public void onError(String msg) {
+//
+//    }
 
     @Override
     public void rxTestSuccess() {

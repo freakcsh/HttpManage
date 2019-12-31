@@ -38,5 +38,7 @@ public interface MainContract {
         void uploading2(String path);
 
         void doLogin3(String userName, String pwd);
+
+        void login11(String account, String pwd, String app_type);
     }
 }

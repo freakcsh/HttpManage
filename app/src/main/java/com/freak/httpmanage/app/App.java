@@ -5,6 +5,8 @@ import android.app.Application;
 
 import com.freak.httphelper.HttpMethods;
 import com.freak.httphelper.log.LogLevel;
+import com.freak.httphelper.ssl.HttpsUtils;
+import com.freak.httphelper.ssl.SSLSocketFactoryUtil;
 import com.freak.httpmanage.net.interceptor.CommonParametersInterceptor;
 import com.freak.httpmanage.net.interceptor.CommonParametersInterceptorHead;
 import com.freak.httpmanage.net.interceptor.CookieJarImpl;
@@ -64,6 +66,10 @@ public class App extends Application {
                 .setReadTimeOut(60)
                 .setConnectTimeOut(60)
                 .setWriteTimeOut(60)
+                .setUseDefaultSSLSocketFactory(false)//是否使用默认的ssl
+                .setsSLSocketFactory(HttpsUtils.getSslSocketFactory(null,null,null).sSLSocketFactory)//配置sSLSocketFactory
+//                .setsSLSocketFactory(SSLSocketFactoryUtil.createSSLSocketFactory())
+                .setTrustManager(HttpsUtils.getSslSocketFactory(null,null,null).trustManager)//配置TrustManager，如果没有这个配置，则只回调用一个参数的sslSocketFactory
 //                .setInterceptor(new CommonParametersInterceptor())//设置拦截器
 //                .setNetworkInterceptor(new CommonParametersInterceptor())//设置拦截器
 //                .setFactory(CustomConverterFactory.create())//设置自定义解析器
