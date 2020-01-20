@@ -8,11 +8,11 @@ import com.freak.httpmanage.app.BaseView;
  */
 
 public class RxBusContract {
-     interface View extends BaseView {
+   public   interface View extends BaseView {
         void rxTestSuccess();
     }
 
-     interface Presenter extends BasePresenter<View> {
+   public   interface Presenter extends BasePresenter<View> {
         void doTest();
     }
 }

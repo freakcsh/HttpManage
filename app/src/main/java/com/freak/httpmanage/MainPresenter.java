@@ -19,14 +19,20 @@ import com.orhanobut.logger.Logger;
 
 import java.io.File;
 
+import javax.inject.Inject;
+
+import dagger.Module;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-
 public class MainPresenter extends RxPresenter<MainContract.View> implements MainContract.Presenter {
     ApiServer apiServer = HttpMethods.getInstance().create(ApiServer.class);
+
+    @Inject
+    public MainPresenter() {
+    }
 
     @Override
     public void doLogin1(String userName, String pwd) {
@@ -81,6 +87,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
             }
         }));
     }
+
     @Override
     public void loadLoginStatusEntity() {
         Observable<LoginStatusEntity> observable = apiServer.loadLoginStatus();
@@ -131,7 +138,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 //        MultipartBody.Part part= MultipartUtil.makeMultipart("image",file);
         RequestBody fileRQ = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), fileRQ);
-        LogUtil.d("path"+path);
+        LogUtil.d("path" + path);
         Observable<HttpResult> observable = apiServer.uploading(tip, tip1, part);
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<HttpResult>() {
             @Override

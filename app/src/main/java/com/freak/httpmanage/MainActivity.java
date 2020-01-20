@@ -25,6 +25,8 @@ import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.property.BatteryActivity;
 import com.freak.httpmanage.rxbus.RxBusActivity;
+import com.freak.httpmanage.rxbus.RxBusContract;
+import com.freak.httpmanage.rxbus.RxBusPresenter;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -35,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import okhttp3.MultipartBody;
@@ -44,13 +48,15 @@ import okhttp3.RequestBody;
 /**
  * @author Administrator
  */
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, RxView.OnRxViewClickListener {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, RxBusContract.View,RxView.OnRxViewClickListener {
     private final static String TAG = "MainActivity";
     private EditText username, pwd;
     private TextView tvResult;
     private Disposable mSubscribe;
     private Button rx_view;
     private final int RESULT_CODE_IMAGE = 1001;
+    @Inject
+    RxBusPresenter rxBusPresenter;
 
     @Override
     protected int getLayout() {
@@ -142,8 +148,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     public void rxBusOnclick(View view) {
-        RxBusActivity.startAction(this);
+//        RxBusActivity.startAction(this);
 //        jsonTest();
+        rxBusPresenter.doTest();
     }
 
     @Override
@@ -237,5 +244,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
             }
         }
+    }
+
+    @Override
+    public void rxTestSuccess() {
+        LogUtil.e("调用成功");
     }
 }

@@ -47,4 +47,9 @@ dependencies {
 //    implementation files('libs/log4j-1.2.17.jar')
 //    implementation files('libs/slf4j-api-1.7.12.jar')
 //    implementation files('libs/slf4j-log4j12-1.7.12.jar')
+    api 'com.google.dagger:dagger:2.23.2'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.23.2'
+    api 'com.google.dagger:dagger-android:2.23.2'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.23.2'
+    api 'com.google.dagger:dagger-android-support:2.23.2' // if you use the support libraries
 }
