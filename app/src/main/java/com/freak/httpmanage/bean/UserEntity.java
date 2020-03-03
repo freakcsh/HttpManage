@@ -1,7 +1,7 @@
 package com.freak.httpmanage.bean;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import java.util.Optional;
 

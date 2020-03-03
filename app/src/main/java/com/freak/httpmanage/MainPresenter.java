@@ -5,11 +5,13 @@ import com.freak.httphelper.ApiCallback;
 import com.freak.httphelper.HttpMethods;
 import com.freak.httphelper.RxPresenter;
 import com.freak.httphelper.SubscriberCallBack;
+import com.freak.httphelper.download.ProgressListener;
 import com.freak.httpmanage.app.ApiServer;
 import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.bean.LoginEntity;
 import com.freak.httpmanage.bean.LoginStatusEntity;
+import com.freak.httpmanage.bean.UpLoadEntity;
 import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.net.response.HttpResultFunc;
@@ -236,4 +238,28 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
             }
         }));
     }
+
+    @Override
+    public void upLoadVideo(File file) {
+        RequestBody requestBody = RequestUtils.newParams().createRequestMultipartBodyWithProgress(file, "file", new ProgressListener() {
+            @Override
+            public void onProgress(long l, long l1, boolean b) {
+                LogUtil.e("上传好的数据 "+l+"  总上传大小 "+l1+"   是否下载完成 "+b);
+            }
+        });
+        Observable<UpLoadEntity> observable = apiServer.upLoadVideo(requestBody).map(new HttpResultFunc<>());
+        addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<UpLoadEntity>() {
+            @Override
+            public void onSuccess(UpLoadEntity model) {
+                mView.upLoadSuccess(model);
+            }
+
+            @Override
+            public void onFailure(String msg) {
+
+                LogUtil.e("错误 "+msg);
+            }
+        }));
+    }
+
 }

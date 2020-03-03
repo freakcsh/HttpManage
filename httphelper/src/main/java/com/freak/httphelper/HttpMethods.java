@@ -10,6 +10,7 @@ import com.freak.httphelper.ssl.SSLSocketFactoryUtil;
 import com.freak.httphelper.ssl.TrustAllCerts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +24,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.CookieJar;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -111,7 +113,7 @@ public class HttpMethods {
         if (getInstanceBuilder().getNetworkInterceptor() != null) {
             builder.addNetworkInterceptor(getInstanceBuilder().getNetworkInterceptor());
         }
-
+       builder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
         /**
          * addConverterFactory 添加格式转换器工程  GsonConverterFactory
          * addCallAdapterFactory 添加调用适配器工程 RxJava2CallAdapterFactory

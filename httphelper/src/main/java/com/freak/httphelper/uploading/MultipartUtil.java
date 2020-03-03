@@ -1,6 +1,6 @@
 package com.freak.httphelper.uploading;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.freak.httphelper.download.ProgressListener;
 

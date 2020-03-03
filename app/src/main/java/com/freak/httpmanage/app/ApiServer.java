@@ -5,6 +5,7 @@ import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.bean.LoginEntity;
 import com.freak.httpmanage.bean.LoginStatusEntity;
+import com.freak.httpmanage.bean.UpLoadEntity;
 import com.freak.httpmanage.net.response.HttpResult;
 import com.google.gson.JsonObject;
 
@@ -103,4 +104,14 @@ public interface ApiServer {
     @Headers("Content-Type:application/json")
     @POST("api/staff/v1/staff/login")
     Observable<HttpResult<LoginEntity>> login(@Body RequestBody body);
+
+    /**
+     * 上传视频
+     *
+     * @param body 图片上传的key
+     * @return
+     */
+    @POST("api/staff/v1/qiniu")
+    Observable<HttpResult<UpLoadEntity>> upLoadVideo(@Body RequestBody body);
+
 }

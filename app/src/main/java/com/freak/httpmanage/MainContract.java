@@ -5,7 +5,10 @@ import com.freak.httphelper.BasePresenter;
 import com.freak.httpmanage.app.BaseView;
 import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
+import com.freak.httpmanage.bean.UpLoadEntity;
 import com.freak.httpmanage.net.response.HttpResult;
+
+import java.io.File;
 
 /**
  * Created by Administrator on 2018/12/25.
@@ -20,6 +23,8 @@ public interface MainContract {
         void onSuccess(BaseBean loginBean);
 
         void onError(String msg);
+
+        void upLoadSuccess(UpLoadEntity upLoadEntity);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -40,5 +45,7 @@ public interface MainContract {
         void doLogin3(String userName, String pwd);
 
         void login11(String account, String pwd, String app_type);
+
+        void upLoadVideo(File file);
     }
 }

@@ -11,7 +11,7 @@ import dagger.Module;
 /**
  * Created by Administrator on 2019/4/19.
  */
-@Module
+//@Module
 public class RxBusPresenter extends RxPresenter<RxBusContract.View> implements RxBusContract.Presenter{
     @Inject
     public RxBusPresenter() {
