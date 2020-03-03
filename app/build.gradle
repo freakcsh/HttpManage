@@ -52,4 +52,7 @@ dependencies {
     api 'com.google.dagger:dagger-android-support:2.23.2' // if you use the support libraries
     //图片选择
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.4.6'
+    implementation 'com.rxjava.rxhttp:rxhttp:1.4.3' //必须
+    annotationProcessor 'com.rxjava.rxhttp:rxhttp-compiler:1.4.3' //注解处理器，生成RxHttp类,必须
+    implementation 'com.rxjava.rxlife:rxlife:1.1.0'  //页面销毁，关闭请求，非必须
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.freak.httphelper.RxBus;
 import com.freak.httphelper.download.ProgressListener;
 import com.freak.httphelper.rxview.RxView;
+import com.freak.httphelper.uploading.FileUploadObserver;
 import com.freak.httphelper.uploading.MultipartUtil;
 import com.freak.httpmanage.aop.AopOnclick;
 import com.freak.httpmanage.app.BaseActivity;
@@ -29,7 +30,6 @@ import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.property.BatteryActivity;
 import com.freak.httpmanage.rxbus.RxBusContract;
 import com.freak.httpmanage.rxbus.RxBusPresenter;
-import com.freak.httpmanage.upload.FileUploadObserver;
 import com.freak.httpmanage.upload.RetrofitClient;
 import com.freak.httpmanage.util.picture.PictureSelectorUtil;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -194,31 +194,31 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 //                                    }
                 mPresenter.upLoadVideo(new File(videoSelectList.get(0).getPath()));
 
-                dialog.show();
-                RetrofitClient
-                        .getInstance()
-                        .upLoadFile("https://test.huang-dou.com/api/staff/v1/qiniu", new File(videoSelectList.get(0).getPath()), new FileUploadObserver<ResponseBody>() {
-                            @Override
-                            public void onUpLoadSuccess(ResponseBody responseBody) {
-                                Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
-                                try {
-                                    Log.d("上传进度",responseBody.string());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                dialog.dismiss();
-                            }
-
-                            @Override
-                            public void onUpLoadFail(Throwable e) {
-                                Toast.makeText(MainActivity.this, "上传失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                            }
-                            @Override
-                            public void onProgress(int progress) {
-                                dialog.setProgress(progress);
-                            }
-                        });
+//                dialog.show();
+//                RetrofitClient
+//                        .getInstance()
+//                        .upLoadFile("https://test.huang-dou.com/api/staff/v1/qiniu", new File(videoSelectList.get(0).getPath()), new FileUploadObserver<ResponseBody>() {
+//                            @Override
+//                            public void onUpLoadSuccess(ResponseBody responseBody) {
+//                                Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+//                                try {
+//                                    Log.d("上传进度",responseBody.string());
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                dialog.dismiss();
+//                            }
+//
+//                            @Override
+//                            public void onUpLoadFail(Throwable e) {
+//                                Toast.makeText(MainActivity.this, "上传失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                dialog.dismiss();
+//                            }
+//                            @Override
+//                            public void onProgress(int progress) {
+//                                dialog.setProgress(progress);
+//                            }
+//                        });
             }
         }, videoSelectList);
     }
@@ -311,9 +311,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         files.add(file);
 
         //文件上传进度只支持单文件上传的时候使用
-        List<MultipartBody.Part> parts = MultipartUtil.makeMultipart("image", files, new ProgressListener() {
+        List<MultipartBody.Part> parts = MultipartUtil.makeMultipart("image", files, new FileUploadObserver<ResponseBody>() {
             @Override
-            public void onProgress(long read, long length, boolean done) {
+            public void onUpLoadSuccess(ResponseBody responseBody) {
+
+            }
+
+            @Override
+            public void onUpLoadFail(Throwable e) {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
 
             }
         });

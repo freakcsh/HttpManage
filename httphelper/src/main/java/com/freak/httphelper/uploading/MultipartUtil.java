@@ -12,6 +12,7 @@ import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 
 /**
@@ -59,11 +60,11 @@ public class MultipartUtil {
         return makeMultipart(key, file, null);
     }
 
-    public static MultipartBody.Part makeMultipart(String key, @NonNull File file, ProgressListener listener) {
+    public static MultipartBody.Part makeMultipart(String key, @NonNull File file, FileUploadObserver<ResponseBody> fileUploadObserver) {
 
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
-        if (file == null || !file.exists()) {
+        if (!file.exists()) {
             try {
                 throw new UploadRequestException("文件为null");
             } catch (UploadRequestException e) {
@@ -71,9 +72,8 @@ public class MultipartUtil {
             }
             return null;
         }
-        RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        HttpUploadProgressResponseBody upLoadBody = new HttpUploadProgressResponseBody(body, listener);
-        builder.addFormDataPart(key, file.getName(), upLoadBody);
+        UploadFileRequestBody uploadFileRequestBody = new UploadFileRequestBody(file, fileUploadObserver);
+        builder.addFormDataPart(key, file.getName(), uploadFileRequestBody);
         return builder.build().parts().get(0);
     }
 
@@ -81,15 +81,15 @@ public class MultipartUtil {
     /**
      * @param key      文件key
      * @param files    文件
-     * @param listener 文件上传进度监听，只支持一个文件的时候使用，多文件不生效
+     * @param fileUploadObserver 文件上传进度监听，只支持一个文件的时候使用，多文件不生效
      * @return List<MultipartBody.Part>
      */
-    public static List<MultipartBody.Part> makeMultipart(String key, @NonNull List<File> files, ProgressListener listener) {
+    public static List<MultipartBody.Part> makeMultipart(String key, @NonNull List<File> files, FileUploadObserver<ResponseBody> fileUploadObserver) {
 
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         if (files.size() > 1) {
-            listener = null;
+            fileUploadObserver = null;
         }
         for (int i = 0; i < files.size(); i++) {
             if (files.get(i) == null) {
@@ -101,9 +101,8 @@ public class MultipartUtil {
                 return null;
             }
 
-            RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), files.get(i));
-            HttpUploadProgressResponseBody upLoadBody = new HttpUploadProgressResponseBody(body, listener);
-            builder.addFormDataPart(key, files.get(i).getName(), upLoadBody);
+            UploadFileRequestBody uploadFileRequestBody = new UploadFileRequestBody(files.get(i), fileUploadObserver);
+            builder.addFormDataPart(key, files.get(i).getName(), uploadFileRequestBody);
         }
         return builder.build().parts();
     }

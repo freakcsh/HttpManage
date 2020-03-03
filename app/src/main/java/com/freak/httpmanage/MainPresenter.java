@@ -15,6 +15,7 @@ import com.freak.httpmanage.bean.UpLoadEntity;
 import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.net.response.HttpResultFunc;
+import com.freak.httpmanage.upload.FileUploadObserver;
 import com.freak.httpmanage.util.RequestUtils;
 import com.freak.httpmanage.util.ToastUtil;
 import com.orhanobut.logger.Logger;
@@ -28,6 +29,7 @@ import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 public class MainPresenter extends RxPresenter<MainContract.View> implements MainContract.Presenter {
     ApiServer apiServer = HttpMethods.getInstance().create(ApiServer.class);
@@ -241,10 +243,20 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 
     @Override
     public void upLoadVideo(File file) {
-        RequestBody requestBody = RequestUtils.newParams().createRequestMultipartBodyWithProgress(file, "file", new ProgressListener() {
+        RequestBody requestBody = RequestUtils.newParams().createRequestMultipartBodyWithProgress(file, "file", new FileUploadObserver<ResponseBody>() {
             @Override
-            public void onProgress(long l, long l1, boolean b) {
-                LogUtil.e("上传好的数据 "+l+"  总上传大小 "+l1+"   是否下载完成 "+b);
+            public void onUpLoadSuccess(ResponseBody responseBody) {
+
+            }
+
+            @Override
+            public void onUpLoadFail(Throwable e) {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
+                LogUtil.e("当前进度 " + progress);
             }
         });
         Observable<UpLoadEntity> observable = apiServer.upLoadVideo(requestBody).map(new HttpResultFunc<>());
@@ -257,7 +269,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
             @Override
             public void onFailure(String msg) {
 
-                LogUtil.e("错误 "+msg);
+                LogUtil.e("错误 " + msg);
             }
         }));
     }
