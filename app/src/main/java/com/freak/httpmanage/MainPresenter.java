@@ -5,7 +5,6 @@ import com.freak.httphelper.ApiCallback;
 import com.freak.httphelper.HttpMethods;
 import com.freak.httphelper.RxPresenter;
 import com.freak.httphelper.SubscriberCallBack;
-import com.freak.httphelper.download.ProgressListener;
 import com.freak.httpmanage.app.ApiServer;
 import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
@@ -22,9 +21,6 @@ import com.orhanobut.logger.Logger;
 
 import java.io.File;
 
-import javax.inject.Inject;
-
-import dagger.Module;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -34,9 +30,6 @@ import okhttp3.ResponseBody;
 public class MainPresenter extends RxPresenter<MainContract.View> implements MainContract.Presenter {
     ApiServer apiServer = HttpMethods.getInstance().create(ApiServer.class);
 
-    @Inject
-    public MainPresenter() {
-    }
 
     @Override
     public void doLogin1(String userName, String pwd) {

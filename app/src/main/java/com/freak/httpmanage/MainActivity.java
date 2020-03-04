@@ -3,16 +3,15 @@ package com.freak.httpmanage;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Environment;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.freak.httphelper.RxBus;
-import com.freak.httphelper.download.ProgressListener;
 import com.freak.httphelper.rxview.RxView;
 import com.freak.httphelper.uploading.FileUploadObserver;
 import com.freak.httphelper.uploading.MultipartUtil;
@@ -21,6 +20,7 @@ import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.bean.UpLoadEntity;
+import com.freak.httpmanage.dagger.DaggerDaggerComponent;
 import com.freak.httpmanage.down.DownActivity;
 import com.freak.httpmanage.down.DownTaskListActivity;
 import com.freak.httpmanage.down.SystemDownloadActivity;
@@ -30,7 +30,6 @@ import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.property.BatteryActivity;
 import com.freak.httpmanage.rxbus.RxBusContract;
 import com.freak.httpmanage.rxbus.RxBusPresenter;
-import com.freak.httpmanage.upload.RetrofitClient;
 import com.freak.httpmanage.util.picture.PictureSelectorUtil;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
@@ -40,7 +39,6 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -57,14 +55,14 @@ import okhttp3.ResponseBody;
 /**
  * @author Administrator
  */
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, RxBusContract.View,RxView.OnRxViewClickListener {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, RxBusContract.View, RxView.OnRxViewClickListener {
     private final static String TAG = "MainActivity";
     private EditText username, pwd;
     private TextView tvResult;
     private Disposable mSubscribe;
     private Button rx_view;
     private final int RESULT_CODE_IMAGE = 1001;
-//    @Inject
+    @Inject
     RxBusPresenter rxBusPresenter;
     private ProgressDialog dialog;
     private List<LocalMedia> videoSelectList = new ArrayList<>();
@@ -95,6 +93,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         dialog.setMessage("上传文件中");
         RxView.setIntervalTime(2000);
         RxView.setOnClickListeners(this, rx_view);
+        DaggerDaggerComponent.builder().view(this)
+                .build().inject(this);
+
     }
 
     @Override
@@ -155,6 +156,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         Intent intent = new Intent(this, ImageGridActivity.class);
         startActivityForResult(intent, RESULT_CODE_IMAGE);
     }
+
+    public void daggerOnclick(View view) {
+        LogUtil.d("dagger "+rxBusPresenter.toString());
+        rxBusPresenter.doTest();
+    }
+
     public void uploadVideoOnclick(View view) {
         //选择视频
         PictureSelectorUtil.getInstance().upAnimationWindowStyle().getWeChatStyle(MainActivity.this).createVideo(MainActivity.this, new OnResultCallbackListener() {
@@ -345,6 +352,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     public void rxTestSuccess() {
-        LogUtil.e("调用成功");
+        LogUtil.e("rxTestSuccess 调用成功");
     }
 }

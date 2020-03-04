@@ -9,7 +9,6 @@ import com.freak.httpmanage.R;
 import com.freak.httpmanage.app.BaseActivity;
 import com.freak.httpmanage.event.RxEvent;
 import com.freak.httpmanage.net.log.LogUtil;
-import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.util.ToastUtil;
 
 
@@ -31,7 +30,7 @@ public class RxBusActivity extends BaseActivity<RxBusPresenter> implements RxBus
 
     @Override
     protected RxBusPresenter createPresenter() {
-        return new RxBusPresenter();
+        return new RxBusPresenter(this);
     }
 
     public void rxBus(View view) {
