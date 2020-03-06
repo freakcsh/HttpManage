@@ -25,6 +25,7 @@ public interface MainContract {
         void onError(String msg);
 
         void upLoadSuccess(UpLoadEntity upLoadEntity);
+        void onProgress(int progress);
     }
 
     interface Presenter extends BasePresenter<View> {

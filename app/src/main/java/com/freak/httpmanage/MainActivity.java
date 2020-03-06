@@ -130,7 +130,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     public void upLoadSuccess(UpLoadEntity upLoadEntity) {
+        dialog.dismiss();
         LogUtil.e("上传成功");
+        Log.e("TAG","上传成功");
+    }
+
+    @Override
+    public void onProgress(int progress) {
+        dialog.setProgress(progress);
     }
 
 
@@ -199,6 +206,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 //                                    } catch (IOException e) {
 //                                        e.printStackTrace();
 //                                    }
+                dialog.show();
                 mPresenter.upLoadVideo(new File(videoSelectList.get(0).getPath()));
 
 //                dialog.show();

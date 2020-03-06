@@ -1,6 +1,8 @@
 package com.freak.httpmanage;
 
 
+import android.util.Log;
+
 import com.freak.httphelper.ApiCallback;
 import com.freak.httphelper.HttpMethods;
 import com.freak.httphelper.RxPresenter;
@@ -230,6 +232,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
             @Override
             public void onFailure(String msg) {
                 LogUtil.e(msg);
+
             }
         }));
     }
@@ -249,19 +252,21 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 
             @Override
             public void onProgress(int progress) {
-                LogUtil.e("当前进度 " + progress);
+//                LogUtil.e("当前进度 " + progress);
+                mView.onProgress(progress);
             }
         });
         Observable<UpLoadEntity> observable = apiServer.upLoadVideo(requestBody).map(new HttpResultFunc<>());
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<UpLoadEntity>() {
             @Override
             public void onSuccess(UpLoadEntity model) {
+                Log.e("TAG","上传成功");
                 mView.upLoadSuccess(model);
             }
 
             @Override
             public void onFailure(String msg) {
-
+                Log.e("TAG","错误 " + msg);
                 LogUtil.e("错误 " + msg);
             }
         }));

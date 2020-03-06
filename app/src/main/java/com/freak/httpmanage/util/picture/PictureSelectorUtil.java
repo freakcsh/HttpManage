@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+
 import androidx.core.content.ContextCompat;
 
 import com.freak.httpmanage.R;
@@ -26,7 +27,6 @@ public class PictureSelectorUtil {
     private PictureCropParameterStyle mCropParameterStyle;
     private PictureWindowAnimationStyle mWindowAnimationStyle;
     private static PictureSelectorUtil pictureSelectorUtil;
-
     public static PictureSelectorUtil getInstance() {
         if (pictureSelectorUtil == null) {
             synchronized (PictureSelectorUtil.class) {
@@ -218,7 +218,7 @@ public class PictureSelectorUtil {
                 .imageSpanCount(3)// 每行显示个数 int
                 .isReturnEmpty(false)// 未选择数据时点击按钮是否可以返回
                 .isNotPreviewDownload(true)// 预览图片长按是否可以下载
-                .queryMaxFileSize(10)// 只查多少M以内的图片、视频、音频  单位M
+//                .queryMaxFileSize(10)// 只查多少M以内的图片、视频、音频  单位M
                 .querySpecifiedFormatSuffix(PictureMimeType.ofMP4())// 查询指定后缀格式资源
                 .cameraFileName(System.currentTimeMillis() + "camera.png") // 重命名拍照文件名、注意这个只在使用相机时可以使用
                 .renameCompressFile(System.currentTimeMillis() + "compress.png")// 重命名压缩文件名、 注意这个不要重复，只适用于单张图压缩使用
@@ -264,7 +264,7 @@ public class PictureSelectorUtil {
                 .videoQuality(1)// 视频录制质量 0 or 1 int
                 .videoMaxSecond(15)// 显示多少秒以内的视频or音频也可适用 int
 //                .videoMinSecond(10)// 显示多少秒以内的视频or音频也可适用 int
-//                .recordVideoSecond(60)//视频秒数录制 默认60s int
+                .recordVideoSecond(30)//视频秒数录制 默认60s int
                 .isDragFrame(true)// 是否可拖动裁剪框(固定)
 //                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
                 .forResult(listener);//Callback回调方式
