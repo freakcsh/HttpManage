@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutSupplementPhotoDetailHead"
+        android:layout_width="match_parent"
+        android:layout_height="40pt"
+        android:background="@color/color_white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutSupplementPhotoDetailBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="20pt"
+            android:paddingRight="20pt"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <ImageView
+                android:layout_width="10pt"
+                android:layout_height="16pt"
+                android:background="@mipmap/ic_icon_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品补图详情"
+            android:textColor="@color/color_black"
+            android:textSize="18pt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewSupplementPhotoDetailSave"
+            android:layout_width="54pt"
+            android:layout_height="27pt"
+            android:layout_marginRight="12pt"
+            android:background="@drawable/selector_24ba85_e5e5e5"
+            android:gravity="center"
+            android:text="保存"
+            android:textColor="@color/color_white"
+            android:textSize="15pt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/textViewSupplementPhotoDetailContext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12pt"
+        android:layout_marginTop="10pt"
+        android:layout_marginRight="12pt"
+        android:includeFontPadding="false"
+        android:textColor="#353535"
+        android:textSize="15pt"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutSupplementPhotoDetailHead" />
+
+    <TextView
+        android:id="@+id/textViewSupplementPhotoDetailContext2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12pt"
+        android:layout_marginTop="10pt"
+        android:layout_marginRight="12pt"
+        android:includeFontPadding="false"
+        android:textColor="#353535"
+        android:textSize="12pt"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSupplementPhotoDetailContext" />
+
+    <TextView
+        android:id="@+id/textViewSupplementPhotoDetailPath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12pt"
+        android:layout_marginTop="10pt"
+        android:layout_marginRight="12pt"
+        android:includeFontPadding="false"
+        android:textColor="#353535"
+        android:textSize="12pt"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSupplementPhotoDetailContext2" />
+
+    <View
+        android:id="@+id/viewSupplementPhotoDetail"
+        android:layout_width="match_parent"
+        android:layout_height="1pt"
+        android:layout_marginLeft="12pt"
+        android:layout_marginTop="12pt"
+        android:layout_marginRight="12pt"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSupplementPhotoDetailPath" />
+
+    <TextView
+        android:id="@+id/textViewSupplementPhotoDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12pt"
+        android:layout_marginTop="12pt"
+        android:text="主轮播图"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12pt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewSupplementPhotoDetail" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSupplementPhotoDetail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12pt"
+        android:overScrollMode="never"
+        android:paddingLeft="12pt"
+        android:paddingRight="12pt"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayoutSupplementPhotoDetailItemDel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSupplementPhotoDetail" />
+
+    <View
+        android:id="@+id/view_supplement_camera"
+        android:layout_width="1pt"
+        android:layout_height="1pt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_view_supplement_camera"
+        android:layout_width="300pt"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutSupplementPhotoDetailItemDel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewSupplementPhotoDetailItemDel"
+            android:layout_width="25pt"
+            android:layout_height="25pt"
+            android:layout_marginTop="3pt"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_supplement_camera_delete_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="3pt"
+            android:paddingBottom="3pt"
+            android:text="实打实的"
+            android:textColor="@color/color_white"
+            android:textSize="14pt"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewSupplementPhotoDetailItemDel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

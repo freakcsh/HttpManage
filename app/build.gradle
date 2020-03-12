@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-aspectjx'
-
+apply plugin: 'com.jakewharton.butterknife'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -21,6 +22,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dexOptions {
+        jumboMode true
+//        incremental true
+        javaMaxHeapSize "4g"
+    }
+
 }
 
 dependencies {
@@ -34,6 +41,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.tamic.fastdownloader/Android-FastDownloader
     implementation 'com.tamic.fastdownloader:Android-FastDownloader:1.0.3'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    //application
+    implementation 'androidx.multidex:multidex:2.0.1'
     //recycle Adapter
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
     implementation('com.lzy.widget:imagepicker:0.6.1') {
@@ -55,4 +64,26 @@ dependencies {
     implementation 'com.rxjava.rxhttp:rxhttp:1.4.3' //必须
     annotationProcessor 'com.rxjava.rxhttp:rxhttp-compiler:1.4.3' //注解处理器，生成RxHttp类,必须
     implementation 'com.rxjava.rxlife:rxlife:1.1.0'  //页面销毁，关闭请求，非必须
+
+    //竖直方向tabLayout
+    implementation 'q.rorbin:VerticalTabLayout:1.2.5'
+    //竖直方向viewpager
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    //butterknife
+    implementation 'com.jakewharton:butterknife:10.2.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+
+    //下拉刷新
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'
+    //tablayout
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    //弹窗
+    implementation 'com.lxj:xpopup:1.8.10-x'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+    //饺子视频播放器
+    implementation 'cn.jzvd:jiaozivideoplayer:7.2.1'
+    implementation 'com.google.android.material:material:1.1.0'
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="11pt"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageViewSupplementPhotoDetailImageItemDel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10pt"
+        android:paddingBottom="10pt"
+        android:scaleType="centerInside"
+        android:src="@mipmap/ic_delete_menu"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewSupplementPhotoDetailImageItemBg"
+        android:layout_width="110pt"
+        android:layout_height="110pt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewSupplementPhotoDetailImageItemDuration"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@drawable/picture_icon_shadow_bg"
+        android:drawableLeft="@drawable/picture_icon_video"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/color_white"
+        android:textSize="12pt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/imageViewSupplementPhotoDetailImageItemBg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

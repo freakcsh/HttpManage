@@ -96,6 +96,11 @@
             android:layout_height="wrap_content"
             android:text="optional"
             android:onClick="optionalOnclick"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="自动取消测试"
+            android:onClick="autoCancel"/>
 
         <Button
             android:layout_width="match_parent"

@@ -6,13 +6,13 @@ import android.view.View;
 
 import com.freak.httphelper.RxBus;
 import com.freak.httpmanage.R;
-import com.freak.httpmanage.app.BaseActivity;
+import com.freak.httpmanage.app.BaseAbstractMvpActivity;
 import com.freak.httpmanage.event.RxEvent;
 import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.util.ToastUtil;
 
 
-public class RxBusActivity extends BaseActivity<RxBusPresenter> implements RxBusContract.View{
+public class RxBusActivity extends BaseAbstractMvpActivity<RxBusPresenter> implements RxBusContract.View{
     public static void startAction(Context context) {
         Intent intent = new Intent(context, RxBusActivity.class);
         context.startActivity(intent);
@@ -25,6 +25,26 @@ public class RxBusActivity extends BaseActivity<RxBusPresenter> implements RxBus
 
     @Override
     protected void initEventAndData() {
+
+    }
+
+    @Override
+    protected void onCreateLoadData() {
+
+    }
+
+    @Override
+    protected void onDestroyRelease() {
+
+    }
+
+    @Override
+    protected void onResumeLoadData() {
+
+    }
+
+    @Override
+    protected void initView() {
 
     }
 

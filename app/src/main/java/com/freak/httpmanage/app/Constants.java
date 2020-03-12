@@ -16,8 +16,8 @@ public class Constants {
 //    public static final String BASE_URL = "http://169.254.246.219:9999";
 //    public static final String BASE_URL = "http://192.168.1.118:9999";
 //    public static final String BASE_URL = "https://jplife.huang-dou.com/";
-//    public static final String BASE_URL = "https://test.huang-dou.com/";
-    public static final String BASE_URL = "https://jplife.huang-dou.com/";
+    public static final String BASE_URL = "https://test.huang-dou.com/";
+//    public static final String BASE_URL = "https://jplife.huang-dou.com/";
     public static final String TOKEN_ABLE = "token_able";
     public static final String RENOVATE = "renovate";
     public static final String COOKIE = "cookie";

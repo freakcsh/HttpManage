@@ -46,7 +46,9 @@
 
         <activity android:name=".down.DownTaskListActivity" />
         <activity android:name=".optional.OptionalActivity" />
-        <activity android:name=".property.BatteryActivity"></activity>
+        <activity android:name=".property.BatteryActivity"/>
+        <activity android:name=".test.supplement.SupplementPhotoActivity"/>
+        <activity android:name=".test.supplement.detail.SupplementPhotoDetailActivity"/>
     </application>
 
 </manifest>

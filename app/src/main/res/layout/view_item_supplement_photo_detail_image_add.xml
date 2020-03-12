@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+<ImageView
+    android:id="@+id/imageViewSupplementPhotoDetailImageItemAdd"
+    android:layout_width="110pt"
+    android:layout_height="110pt"
+    android:layout_marginTop="11pt"
+    android:background="@mipmap/ic_icon_add_1"/>
+</LinearLayout>

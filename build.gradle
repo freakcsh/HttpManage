@@ -5,12 +5,20 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
+        mavenCentral()
+//        maven { url 'http://developer.huawei.com/repo'} //如果需要使用华为推送HMS，则需要加上此句
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.1'
 
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.0'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -21,7 +29,12 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
-
+        mavenCentral()
+//        maven { url 'http://developer.huawei.com/repo'} //如果需要使用华为推送HMS，则需要加上此句
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 }
 

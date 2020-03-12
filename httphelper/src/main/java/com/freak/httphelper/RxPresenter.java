@@ -1,8 +1,8 @@
 package com.freak.httphelper;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -16,7 +16,10 @@ public class RxPresenter<T extends RxBaseView> implements BasePresenter<T> {
      * 解除订阅
      */
     protected void unSubscribe() {
-        HttpMethods.getCompositeDisposableInstance().clear();
+//        HttpMethods.getCompositeDisposableInstance().dispose();
+        if (mView != null) {
+            RxApiManager.getInstance().cancel(mView.getClass().getSimpleName());
+        }
     }
 
     /**
@@ -27,10 +30,13 @@ public class RxPresenter<T extends RxBaseView> implements BasePresenter<T> {
      * @param observer
      * @param <T>
      */
-    public <T> void addSubscription(Observable<T> observable, Observer<T> observer) {
+    public <T> void addSubscription(Observable<T> observable, DisposableObserver<T> observer) {
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
+        if (mView != null) {
+            RxApiManager.getInstance().add(mView.getClass().getSimpleName(), observer);
+        }
     }
 
     /**
@@ -48,7 +54,7 @@ public class RxPresenter<T extends RxBaseView> implements BasePresenter<T> {
      */
     @Override
     public void detachView() {
-        this.mView = null;
         unSubscribe();
+        this.mView = null;
     }
 }

@@ -16,11 +16,10 @@ import com.freak.httphelper.rxview.RxView;
 import com.freak.httphelper.uploading.FileUploadObserver;
 import com.freak.httphelper.uploading.MultipartUtil;
 import com.freak.httpmanage.aop.AopOnclick;
-import com.freak.httpmanage.app.BaseActivity;
+import com.freak.httpmanage.app.BaseAbstractMvpActivity;
 import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.bean.UpLoadEntity;
-import com.freak.httpmanage.dagger.DaggerDaggerComponent;
 import com.freak.httpmanage.down.DownActivity;
 import com.freak.httpmanage.down.DownTaskListActivity;
 import com.freak.httpmanage.down.SystemDownloadActivity;
@@ -30,6 +29,7 @@ import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.property.BatteryActivity;
 import com.freak.httpmanage.rxbus.RxBusContract;
 import com.freak.httpmanage.rxbus.RxBusPresenter;
+import com.freak.httpmanage.test.supplement.SupplementPhotoActivity;
 import com.freak.httpmanage.util.picture.PictureSelectorUtil;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
@@ -55,7 +55,7 @@ import okhttp3.ResponseBody;
 /**
  * @author Administrator
  */
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, RxBusContract.View, RxView.OnRxViewClickListener {
+public class MainActivity extends BaseAbstractMvpActivity<MainPresenter> implements MainContract.View, RxBusContract.View, RxView.OnRxViewClickListener {
     private final static String TAG = "MainActivity";
     private EditText username, pwd;
     private TextView tvResult;
@@ -93,8 +93,26 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         dialog.setMessage("上传文件中");
         RxView.setIntervalTime(2000);
         RxView.setOnClickListeners(this, rx_view);
-        DaggerDaggerComponent.builder().view(this)
-                .build().inject(this);
+
+    }
+
+    @Override
+    protected void onCreateLoadData() {
+
+    }
+
+    @Override
+    protected void onDestroyRelease() {
+
+    }
+
+    @Override
+    protected void onResumeLoadData() {
+
+    }
+
+    @Override
+    protected void initView() {
 
     }
 
@@ -132,7 +150,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void upLoadSuccess(UpLoadEntity upLoadEntity) {
         dialog.dismiss();
         LogUtil.e("上传成功");
-        Log.e("TAG","上传成功");
+        Log.e("TAG", "上传成功");
     }
 
     @Override
@@ -164,8 +182,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         startActivityForResult(intent, RESULT_CODE_IMAGE);
     }
 
+    public void autoCancel(View view) {
+        gotoActivity(SupplementPhotoActivity.class);
+    }
+
     public void daggerOnclick(View view) {
-        LogUtil.d("dagger "+rxBusPresenter.toString());
+        LogUtil.d("dagger " + rxBusPresenter.toString());
         rxBusPresenter.doTest();
     }
 
@@ -257,7 +279,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     protected void onResume() {
-        LogUtil.e("onResume in MainActivity");
         super.onResume();
     }
 

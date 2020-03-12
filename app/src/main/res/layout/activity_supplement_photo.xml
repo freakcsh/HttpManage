@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/relative_layout_supplement_photo"
+            android:layout_width="0dp"
+            android:layout_height="25pt"
+            android:layout_marginLeft="12pt"
+            android:layout_marginTop="12pt"
+            android:layout_marginRight="12pt"
+            android:background="@drawable/bg_shape_f5f5f5_5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/linear_layout_supplement_photo_scan"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="12pt"
+                android:layout_height="12pt"
+                android:layout_marginRight="7pt"
+                app:layout_constraintBottom_toBottomOf="@+id/text_view_supplement_photo_search"
+                app:layout_constraintRight_toLeftOf="@+id/text_view_supplement_photo_search"
+                app:layout_constraintTop_toTopOf="@+id/text_view_supplement_photo_search" />
+
+            <TextView
+                android:id="@+id/text_view_supplement_photo_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center"
+                android:text="搜索"
+                android:textColor="@color/color_a7a7a7a7"
+                android:textSize="12pt"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_supplement_photo_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12pt"
+            android:paddingRight="12pt"
+            app:layout_constraintLeft_toRightOf="@+id/relative_layout_supplement_photo"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/relative_layout_supplement_photo">
+
+            <ImageView
+                android:layout_width="23pt"
+                android:layout_height="23pt"
+                />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10pt"
+        android:orientation="horizontal"
+        android:background="@color/color_f5f5f5"
+        >
+
+        <q.rorbin.verticaltablayout.VerticalTabLayout
+            android:id="@+id/vertical_tab_layout_supplement_photo_left"
+            android:layout_width="95pt"
+            android:layout_height="match_parent"
+            app:indicator_color="@color/color_white"
+            android:background="@color/color_f5f5f5"
+            android:layout_marginTop="13pt"
+            app:indicator_gravity="fill"
+            app:tab_height="47pt"
+            app:tab_margin="8pt"
+            app:tab_mode="scrollable" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager_supplement_photo_right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/color_white"
+                android:overScrollMode="never" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

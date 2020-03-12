@@ -7,15 +7,15 @@ import com.google.gson.JsonSyntaxException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeoutException;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+
+import io.reactivex.observers.DisposableObserver;
 
 
 /**
  * @author freak
  * @date 2019/01/25
  */
-public class SubscriberCallBack<T> implements Observer<T> {
+public class SubscriberCallBack<T> extends DisposableObserver<T> {
     private ApiCallback<T> apiCallback;
 
     public SubscriberCallBack(ApiCallback<T> apiCallback) {
@@ -60,11 +60,10 @@ public class SubscriberCallBack<T> implements Observer<T> {
 
     }
 
-    @Override
-    public void onSubscribe(Disposable disposable) {
-        HttpMethods.getCompositeDisposableInstance().add(disposable);
-    }
-
+//    @Override
+//    public void onSubscribe(Disposable disposable) {
+//        HttpMethods.getCompositeDisposableInstance().add(disposable);
+//    }
     /**
      * 成功时调用
      *

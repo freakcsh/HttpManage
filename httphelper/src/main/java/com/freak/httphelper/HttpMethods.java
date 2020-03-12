@@ -6,25 +6,20 @@ import android.text.TextUtils;
 import com.freak.httphelper.log.HttpLogger;
 import com.freak.httphelper.log.LogUtil;
 import com.freak.httphelper.ssl.HttpsUtils;
-import com.freak.httphelper.ssl.SSLSocketFactoryUtil;
-import com.freak.httphelper.ssl.TrustAllCerts;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.CookieJar;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -61,7 +56,7 @@ public class HttpMethods {
 
         builder.writeTimeout(getInstanceBuilder().getWriteTimeOut() == 0 ? WRITE_TIMEOUT : getInstanceBuilder().getWriteTimeOut(), TimeUnit.SECONDS);
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
-        if (getInstanceBuilder().isUseDefaultSSLSocketFactory()){
+        if (getInstanceBuilder().isUseDefaultSSLSocketFactory()) {
             builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
             builder.hostnameVerifier(new HostnameVerifier() {
                 @Override
@@ -69,11 +64,11 @@ public class HttpMethods {
                     return true;
                 }
             });
-        }else {
+        } else {
             if (getInstanceBuilder().getsSLSocketFactory() != null) {
                 if (getInstanceBuilder().getTrustManager() != null) {
                     builder.sslSocketFactory(getInstanceBuilder().getsSLSocketFactory());
-                }else {
+                } else {
                     builder.sslSocketFactory(getInstanceBuilder().getsSLSocketFactory(), getInstanceBuilder().getTrustManager());
                 }
                 builder.hostnameVerifier(new HostnameVerifier() {
