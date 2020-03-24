@@ -1,4 +1,4 @@
-package com.freak.httpmanage;
+package com.freak.httpmanage.main;
 
 
 import com.freak.httphelper.BasePresenter;

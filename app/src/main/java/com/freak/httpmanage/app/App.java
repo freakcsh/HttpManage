@@ -60,7 +60,7 @@ public class App extends MultiDexApplication {
      */
     public HashMap<Class<?>, Activity> allActivities;
 
-
+    private static ApiServer apiServer;
 
     private boolean isSend = false;
 
@@ -80,6 +80,17 @@ public class App extends MultiDexApplication {
         App.instance = instance;
     }
 
+    public static ApiServer getApiServer() {
+        if (apiServer == null) {
+            synchronized (ApiServer.class) {
+                if (apiServer == null) {
+                    apiServer = HttpMethods.getInstance().create(ApiServer.class);
+                }
+            }
+        }
+        return apiServer;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -89,7 +100,6 @@ public class App extends MultiDexApplication {
         // 初始化环信sdk
 //        initHyphenate();
         //友盟初始化
-LogUtil.init("HttpManager",true);
         HttpMethods
                 .getInstanceBuilder()
                 .setBaseUrl(Constants.BASE_URL)//设置域名
@@ -112,7 +122,7 @@ LogUtil.init("HttpManager",true);
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 //限制竖屏
                 //8.0.0版本系统，同时设置竖屏和设置全屏透明冲突，
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                 resetDensity(getApplicationContext(), DESIGN_WIDTH);
                 resetDensity(activity, DESIGN_WIDTH);
                 setImmersiveStatusBar(activity);
@@ -154,10 +164,7 @@ LogUtil.init("HttpManager",true);
         });
 
 
-
-
     }
-
 
 
     @Override
@@ -464,7 +471,6 @@ LogUtil.init("HttpManager",true);
     public <T extends AppCompatActivity> T getActivity(Class<T> clazz) {
         return (T) allActivities.get(clazz);
     }
-
 
 
     /**

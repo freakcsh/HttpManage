@@ -4,7 +4,7 @@ import com.freak.httphelper.ApiCallback;
 import com.freak.httphelper.HttpMethods;
 import com.freak.httphelper.RxPresenter;
 import com.freak.httphelper.SubscriberCallBack;
-import com.freak.httpmanage.app.ApiService;
+import com.freak.httpmanage.app.ApiServer;
 import com.freak.httpmanage.net.response.HttpResultFunc;
 import com.freak.httpmanage.test.supplement.entity.ClassifyDetailEntity;
 import com.freak.httpmanage.util.RequestUtils;
@@ -13,7 +13,7 @@ import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
 public class SupplementPhotoDetailFragmentPresenter extends RxPresenter<SupplementPhotoDetailFragmentContract.View> implements SupplementPhotoDetailFragmentContract.Presenter {
-    private ApiService apiService = HttpMethods.getInstance().create(ApiService.class);
+    private ApiServer apiService = HttpMethods.getInstance().create(ApiServer.class);
 
     /**
      * @param id 全部二级分类id传一级分类id，否则传二级分类id

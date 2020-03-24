@@ -4,10 +4,7 @@ import com.freak.httphelper.ApiCallback;
 import com.freak.httphelper.HttpMethods;
 import com.freak.httphelper.RxPresenter;
 import com.freak.httphelper.SubscriberCallBack;
-import com.freak.httphelper.log.LogUtil;
-import com.freak.httphelper.uploading.FileUploadObserver;
-import com.freak.httpmanage.app.ApiService;
-import com.freak.httpmanage.bean.UpLoadEntity;
+import com.freak.httpmanage.app.ApiServer;
 import com.freak.httpmanage.net.response.HttpResultFunc;
 import com.freak.httpmanage.test.supplement.detail.adapter.entity.CommodityDetailEntity;
 import com.freak.httpmanage.util.RequestUtils;
@@ -17,10 +14,9 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 public class SupplementPhotoDetailPresenter extends RxPresenter<SupplementPhotoDetailContract.View> implements SupplementPhotoDetailContract.Presenter {
-    private ApiService apiService = HttpMethods.getInstance().create(ApiService.class);
+    private ApiServer apiService = HttpMethods.getInstance().create(ApiServer.class);
 
     @Override
     public void goodsDetail(String sign, String id) {

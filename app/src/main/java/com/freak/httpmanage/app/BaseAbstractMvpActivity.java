@@ -14,7 +14,6 @@ import com.freak.httphelper.BasePresenter;
 import com.freak.httphelper.RxBaseView;
 import com.freak.httpmanage.R;
 import com.freak.httpmanage.load.LoadingViewPopupWindow;
-import com.freak.httpmanage.net.log.LogUtil;
 
 import butterknife.ButterKnife;
 

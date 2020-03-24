@@ -1,7 +1,7 @@
 package com.freak.httpmanage.dagger;
 
 
-import com.freak.httpmanage.MainActivity;
+import com.freak.httpmanage.main.MainActivity;
 import com.freak.httpmanage.rxbus.RxBusContract;
 
 import dagger.BindsInstance;

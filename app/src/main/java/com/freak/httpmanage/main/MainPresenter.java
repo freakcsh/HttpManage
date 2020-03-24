@@ -1,4 +1,4 @@
-package com.freak.httpmanage;
+package com.freak.httpmanage.main;
 
 
 import android.util.Log;
@@ -8,6 +8,7 @@ import com.freak.httphelper.HttpMethods;
 import com.freak.httphelper.RxPresenter;
 import com.freak.httphelper.SubscriberCallBack;
 import com.freak.httpmanage.app.ApiServer;
+import com.freak.httpmanage.app.App;
 import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.bean.LoginEntity;
@@ -30,8 +31,8 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 public class MainPresenter extends RxPresenter<MainContract.View> implements MainContract.Presenter {
-    ApiServer apiServer = HttpMethods.getInstance().create(ApiServer.class);
-
+    private ApiServer apiServer = HttpMethods.getInstance().create(ApiServer.class);
+//    private ApiServer apiServer = App.getApiServer();
 
     @Override
     public void doLogin1(String userName, String pwd) {
@@ -53,7 +54,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 
     @Override
     public void doLogin2(String userName, String pwd) {
-        Observable<LoginBean> observable = apiServer.login2(userName, pwd).map(new HttpResultFunc<LoginBean>());
+        Observable<LoginBean> observable = App.getApiServer().login2(userName, pwd).map(new HttpResultFunc<LoginBean>());
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<LoginBean>() {
             @Override
             public void onSuccess(LoginBean model) {
@@ -71,7 +72,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 
     @Override
     public void doLogin3(String userName, String pwd) {
-        Observable<BaseBean> observable = apiServer.login3(userName, pwd);
+        Observable<BaseBean> observable = App.getApiServer().login3(userName, pwd);
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean model) {
@@ -89,7 +90,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 
     @Override
     public void loadLoginStatusEntity() {
-        Observable<LoginStatusEntity> observable = apiServer.loadLoginStatus();
+        Observable<LoginStatusEntity> observable = App.getApiServer().loadLoginStatus();
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<LoginStatusEntity>() {
             @Override
             public void onSuccess(LoginStatusEntity model) {
@@ -105,7 +106,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
 
     @Override
     public void doLogin(String phone, String password) {
-        Observable<LoginEntity> observable = apiServer.login(phone, password);
+        Observable<LoginEntity> observable = App.getApiServer().login(phone, password);
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<LoginEntity>() {
             @Override
             public void onSuccess(LoginEntity model) {
@@ -138,7 +139,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
         RequestBody fileRQ = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), fileRQ);
         LogUtil.d("path" + path);
-        Observable<HttpResult> observable = apiServer.uploading(tip, tip1, part);
+        Observable<HttpResult> observable = App.getApiServer().uploading(tip, tip1, part);
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<HttpResult>() {
             @Override
             public void onSuccess(HttpResult model) {
@@ -169,7 +170,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
         File file = new File(path);
         RequestBody fileRQ = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), fileRQ);
-        Observable<HttpResult> observable = apiServer.uploading(tip, tip1, part);
+        Observable<HttpResult> observable = App.getApiServer().uploading(tip, tip1, part);
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<HttpResult>() {
             @Override
             public void onSuccess(HttpResult model) {
@@ -200,7 +201,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
         File file = new File(path);
         RequestBody fileRQ = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("image", file.getName(), fileRQ);
-        Observable<HttpResult> observable = apiServer.uploadingUserPhoto(part);
+        Observable<HttpResult> observable = App.getApiServer().uploadingUserPhoto(part);
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<HttpResult>() {
             @Override
             public void onSuccess(HttpResult model) {
@@ -222,7 +223,7 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
                 .addParams("pwd", pwd)
                 .addParams("app_type", app_type)
                 .createRequestBody();
-        Observable<LoginEntity> observable = apiServer.login(requestBody).map(new HttpResultFunc<LoginEntity>());
+        Observable<LoginEntity> observable = App.getApiServer().login(requestBody).map(new HttpResultFunc<LoginEntity>());
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<LoginEntity>() {
             @Override
             public void onSuccess(LoginEntity model) {
@@ -256,17 +257,17 @@ public class MainPresenter extends RxPresenter<MainContract.View> implements Mai
                 mView.onProgress(progress);
             }
         });
-        Observable<UpLoadEntity> observable = apiServer.upLoadVideo(requestBody).map(new HttpResultFunc<>());
+        Observable<UpLoadEntity> observable = App.getApiServer().upLoadVideo(requestBody).map(new HttpResultFunc<>());
         addSubscription(observable, new SubscriberCallBack<>(new ApiCallback<UpLoadEntity>() {
             @Override
             public void onSuccess(UpLoadEntity model) {
-                Log.e("TAG","上传成功");
+                Log.e("TAG", "上传成功");
                 mView.upLoadSuccess(model);
             }
 
             @Override
             public void onFailure(String msg) {
-                Log.e("TAG","错误 " + msg);
+                Log.e("TAG", "错误 " + msg);
                 LogUtil.e("错误 " + msg);
             }
         }));

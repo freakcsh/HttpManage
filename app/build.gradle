@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-aspectjx'
 apply plugin: 'com.jakewharton.butterknife'
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     defaultConfig {
         applicationId "com.freak.httpmanage"
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -22,68 +22,54 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    dexOptions {
-        jumboMode true
-//        incremental true
-        javaMaxHeapSize "4g"
-    }
+//    dexOptions {
+//        jumboMode true
+////        incremental true
+//        javaMaxHeapSize "4g"
+//    }
 
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation rootProject.ext.dependencies["appcompat"]
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    testImplementation rootProject.ext.dependencies["junit"]
+    androidTestImplementation rootProject.ext.dependencies["ext"]
+    androidTestImplementation rootProject.ext.dependencies["espresso"]
     implementation project(':httphelper')
     // https://mvnrepository.com/artifact/com.tamic.fastdownloader/Android-FastDownloader
     implementation 'com.tamic.fastdownloader:Android-FastDownloader:1.0.3'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.lzy.widget:imagepicker:0.6.1'
     //application
-    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation rootProject.ext.dependencies["multidex"]
     //recycle Adapter
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
-    implementation('com.lzy.widget:imagepicker:0.6.1') {
-        exclude group: 'com.android.support'
-    }
-    implementation 'com.github.bumptech.glide:glide:4.10.0'
-    implementation 'org.aspectj:aspectjrt:1.8.13'
-//    implementation files('libs/android-logging-log4j-1.0.3.jar')
-//    implementation files('libs/log4j-1.2.17.jar')
-//    implementation files('libs/slf4j-api-1.7.12.jar')
-//    implementation files('libs/slf4j-log4j12-1.7.12.jar')
-    api 'com.google.dagger:dagger:2.23.2'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.23.2'
-    api 'com.google.dagger:dagger-android:2.23.2'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.23.2'
-    api 'com.google.dagger:dagger-android-support:2.23.2' // if you use the support libraries
+    implementation rootProject.ext.dependencies["AdapterHelper"]
+    implementation rootProject.ext.dependencies["glide"]
+    implementation rootProject.ext.dependencies["aspectj"]
     //图片选择
-    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.4.6'
-    implementation 'com.rxjava.rxhttp:rxhttp:1.4.3' //必须
-    annotationProcessor 'com.rxjava.rxhttp:rxhttp-compiler:1.4.3' //注解处理器，生成RxHttp类,必须
-    implementation 'com.rxjava.rxlife:rxlife:1.1.0'  //页面销毁，关闭请求，非必须
-
+    implementation rootProject.ext.dependencies["PictureSelector"]
     //竖直方向tabLayout
-    implementation 'q.rorbin:VerticalTabLayout:1.2.5'
+    implementation rootProject.ext.dependencies["VerticalTabLayout"]
     //竖直方向viewpager
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
-
+    implementation rootProject.ext.dependencies["viewpager2"]
     //butterknife
-    implementation 'com.jakewharton:butterknife:10.2.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
-
+    implementation rootProject.ext.dependencies["butterknife"]
+    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     //下拉刷新
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
-    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'
+    implementation rootProject.ext.dependencies["SmartRefreshLayout"]
+    implementation rootProject.ext.dependencies["SmartRefreshHeader"]
     //tablayout
-    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    implementation rootProject.ext.dependencies["tablayout"]
     //弹窗
-    implementation 'com.lxj:xpopup:1.8.10-x'
-    implementation 'org.greenrobot:eventbus:3.1.1'
-
+    implementation rootProject.ext.dependencies["xpopup"]
+    //eventbus
+    implementation rootProject.ext.dependencies["eventbus"]
     //饺子视频播放器
-    implementation 'cn.jzvd:jiaozivideoplayer:7.2.1'
+    implementation rootProject.ext.dependencies["jiaozivideoplayer"]
+    annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
+    annotationProcessor rootProject.ext.dependencies["dagger2-android-processor"]
+
     implementation 'com.google.android.material:material:1.1.0'
 }

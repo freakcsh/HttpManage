@@ -1,4 +1,4 @@
-package com.freak.httpmanage;
+package com.freak.httpmanage.main;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,11 +15,13 @@ import com.freak.httphelper.RxBus;
 import com.freak.httphelper.rxview.RxView;
 import com.freak.httphelper.uploading.FileUploadObserver;
 import com.freak.httphelper.uploading.MultipartUtil;
+import com.freak.httpmanage.R;
 import com.freak.httpmanage.aop.AopOnclick;
 import com.freak.httpmanage.app.BaseAbstractMvpActivity;
 import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.bean.UpLoadEntity;
+import com.freak.httpmanage.dagger.DaggerDaggerComponent;
 import com.freak.httpmanage.down.DownActivity;
 import com.freak.httpmanage.down.DownTaskListActivity;
 import com.freak.httpmanage.down.SystemDownloadActivity;
@@ -55,7 +57,7 @@ import okhttp3.ResponseBody;
 /**
  * @author Administrator
  */
-public class MainActivity extends BaseAbstractMvpActivity<MainPresenter> implements MainContract.View, RxBusContract.View, RxView.OnRxViewClickListener {
+public class MainActivity extends BaseAbstractMvpActivity<MainPresenter> implements MainContract.View, RxView.OnRxViewClickListener , RxBusContract.View {
     private final static String TAG = "MainActivity";
     private EditText username, pwd;
     private TextView tvResult;
@@ -113,7 +115,7 @@ public class MainActivity extends BaseAbstractMvpActivity<MainPresenter> impleme
 
     @Override
     protected void initView() {
-
+        DaggerDaggerComponent.builder().view(this).build().inject(this);
     }
 
     @Override
@@ -262,6 +264,7 @@ public class MainActivity extends BaseAbstractMvpActivity<MainPresenter> impleme
 
 
     public void login(View view) {
+        LogUtil.e("点击");
         mPresenter.doLogin1(username.getText().toString().trim(), pwd.getText().toString().trim());
 //        mPresenter.doLogin3("180");
     }
@@ -274,7 +277,7 @@ public class MainActivity extends BaseAbstractMvpActivity<MainPresenter> impleme
     public void rxBusOnclick(View view) {
 //        RxBusActivity.startAction(this);
 //        jsonTest();
-        rxBusPresenter.doTest();
+//        rxBusPresenter.doTest();
     }
 
     @Override

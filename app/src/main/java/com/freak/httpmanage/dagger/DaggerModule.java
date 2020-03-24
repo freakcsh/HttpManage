@@ -1,6 +1,6 @@
 package com.freak.httpmanage.dagger;
 
-import com.freak.httpmanage.MainActivity;
+import com.freak.httpmanage.main.MainActivity;
 
 import dagger.Module;
 
