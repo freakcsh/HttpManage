@@ -107,6 +107,11 @@
             android:layout_height="wrap_content"
             android:text="电池设置"
             android:onClick="batteryOnclick"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="dagger MVP请求"
+            android:onClick="daggerMvpOnclick"/>
 
         <EditText
             android:id="@+id/username"

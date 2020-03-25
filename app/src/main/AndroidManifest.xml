@@ -47,6 +47,13 @@
         <activity android:name=".property.BatteryActivity" />
         <activity android:name=".test.supplement.SupplementPhotoActivity" />
         <activity android:name=".test.supplement.detail.SupplementPhotoDetailActivity" />
+        <activity android:name=".mvpdagger.frame.mvp.view.DaggerMvpDemoActivity"/>
+
+        <!-- 网络请求配置 -->
+        <meta-data
+            android:name="me.jessyan.mvparms.demo.app.GlobalConfiguration"
+            android:value="ConfigModule"/>
+
     </application>
 
 </manifest>

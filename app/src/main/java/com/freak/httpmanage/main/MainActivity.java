@@ -21,11 +21,11 @@ import com.freak.httpmanage.app.BaseAbstractMvpActivity;
 import com.freak.httpmanage.bean.BaseBean;
 import com.freak.httpmanage.bean.LoginBean;
 import com.freak.httpmanage.bean.UpLoadEntity;
-import com.freak.httpmanage.dagger.DaggerDaggerComponent;
 import com.freak.httpmanage.down.DownActivity;
 import com.freak.httpmanage.down.DownTaskListActivity;
 import com.freak.httpmanage.down.SystemDownloadActivity;
 import com.freak.httpmanage.event.RxEvent;
+import com.freak.httpmanage.mvpdagger.frame.mvp.view.DaggerMvpDemoActivity;
 import com.freak.httpmanage.net.log.LogUtil;
 import com.freak.httpmanage.net.response.HttpResult;
 import com.freak.httpmanage.property.BatteryActivity;
@@ -115,7 +115,7 @@ public class MainActivity extends BaseAbstractMvpActivity<MainPresenter> impleme
 
     @Override
     protected void initView() {
-        DaggerDaggerComponent.builder().view(this).build().inject(this);
+//        DaggerDaggerComponent.builder().view(this).build().inject(this);
     }
 
     @Override
@@ -267,6 +267,9 @@ public class MainActivity extends BaseAbstractMvpActivity<MainPresenter> impleme
         LogUtil.e("点击");
         mPresenter.doLogin1(username.getText().toString().trim(), pwd.getText().toString().trim());
 //        mPresenter.doLogin3("180");
+    }
+    public void daggerMvpOnclick(View view) {
+        gotoActivity(DaggerMvpDemoActivity.class);
     }
 
     @Override

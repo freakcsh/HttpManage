@@ -11,12 +11,20 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import com.freak.httphelper.RxApiManager;
+import com.freak.httphelper.lifecycle.RxLifecycleUtils;
 import com.freak.httphelper.rxview.Preconditions;
 import com.trello.rxlifecycle2.RxLifecycle;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class BaseDaggerPresenter<M extends IDaggerModel, V extends IDaggerView> implements IDaggerPresenter, LifecycleObserver {
     protected CompositeDisposable mCompositeDisposable;
@@ -70,7 +78,18 @@ public class BaseDaggerPresenter<M extends IDaggerModel, V extends IDaggerView> 
      */
     @Override
     public void onDestroy() {
-        unDispose();//解除订阅
+        /**
+         * 此方式会存在一个问题（出现场景不常见），在一个activity A有fragment多层嵌套的情况下
+         * （特别是tabLayout+viewPager的方式，并且viewPager的fragment需要根据后台返回数据的情况去创建的时候），
+         * 从A到B，然后在B返回A的时候，需要刷新所有的fragment，A已经是onResume状态，但是数据还没有返回，此时B执行了onDestroy，但是此时fragment的子fragment还没有完成创建完，
+         * 此时执行{@link BaseDaggerPresenter#unDispose()}
+         * 会解除所有订阅，如果A的fragment存在订阅关系，则也会取消，导致okHttp请求取消
+         * 所以使用{@link RxApiManager}去管理订阅关系
+         */
+//        unDispose();//解除订阅
+        if (mRootView != null) {
+            RxApiManager.getInstance().cancel(mRootView.getClass().getSimpleName());
+        }
         if (mModel != null)
             mModel.onDestroy();
         this.mModel = null;
@@ -119,4 +138,25 @@ public class BaseDaggerPresenter<M extends IDaggerModel, V extends IDaggerView> 
             mCompositeDisposable.clear();//保证 Activity 结束时取消所有正在执行的订阅
         }
     }
+
+    public <T> void addSubscription(@NonNull Observable<T> observable, @NonNull DisposableObserver<T> observer, @Nullable DoFinallyListener doFinallyListener, @Nullable IDaggerView mRootView) {
+        Preconditions.checkNotNull(observable, "%s cannot be null", observable.getClass().getName());
+        Preconditions.checkNotNull(observer, "%s cannot be null", observer.getClass().getName());
+        Preconditions.checkNotNull(mRootView, "%s cannot be null", mRootView.getClass().getName());
+        observable.subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(3, 2))////遇到错误时重试,第一个参数为重试几次,第二个参数为重试的间隔，单位为s
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        if (doFinallyListener != null) {
+                            doFinallyListener.doFinally();
+                        }
+                    }
+                })
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(observer);
+        RxApiManager.getInstance().add(mRootView.getClass().getSimpleName(), observer);
+    }
+
 }
