@@ -17,8 +17,19 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
-        release {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "USE_CANARY", "true"
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "USE_CANARY", "false"
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -66,6 +77,10 @@ dependencies {
     implementation rootProject.ext.dependencies["xpopup"]
     //eventbus
     implementation rootProject.ext.dependencies["eventbus"]
+    //内存泄露检测
+    debugImplementation rootProject.ext.dependencies["canary-debug"]
+    releaseImplementation rootProject.ext.dependencies["canary-release"]
+    testImplementation rootProject.ext.dependencies["canary-release"]
     //饺子视频播放器
     implementation rootProject.ext.dependencies["jiaozivideoplayer"]
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]

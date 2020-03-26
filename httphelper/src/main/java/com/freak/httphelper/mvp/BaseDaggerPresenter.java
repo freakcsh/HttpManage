@@ -13,6 +13,7 @@ import androidx.lifecycle.OnLifecycleEvent;
 
 import com.freak.httphelper.RxApiManager;
 import com.freak.httphelper.lifecycle.RxLifecycleUtils;
+import com.freak.httphelper.log.LogUtil;
 import com.freak.httphelper.rxview.Preconditions;
 import com.trello.rxlifecycle2.RxLifecycle;
 
@@ -42,6 +43,7 @@ public class BaseDaggerPresenter<M extends IDaggerModel, V extends IDaggerView> 
         Preconditions.checkNotNull(rootView, "%s cannot be null", IDaggerView.class.getName());
         this.mModel = model;
         this.mRootView = rootView;
+        LogUtil.e("开始创建onCreate");
         onCreate();
     }
 
@@ -88,6 +90,7 @@ public class BaseDaggerPresenter<M extends IDaggerModel, V extends IDaggerView> 
          */
 //        unDispose();//解除订阅
         if (mRootView != null) {
+            LogUtil.e("取消");
             RxApiManager.getInstance().cancel(mRootView.getClass().getSimpleName());
         }
         if (mModel != null)

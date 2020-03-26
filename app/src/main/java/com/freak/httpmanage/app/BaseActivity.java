@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.freak.httphelper.lifecycle.AppManager;
 import com.freak.httpmanage.event.RxEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,7 +20,7 @@ public class BaseActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         //活动控制器
         mActivity = this;
-        App.getInstance().addActivity(this, this.getClass());
+        AppManager.getAppManager().addActivity(this, this.getClass());
         EventBus.getDefault().register(this);
     }
 
@@ -53,7 +54,7 @@ public class BaseActivity extends AppCompatActivity  {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        App.getInstance().removeActivity(this);
+        AppManager.getAppManager().removeActivity(this);
 
         EventBus.getDefault().unregister(this);
     }

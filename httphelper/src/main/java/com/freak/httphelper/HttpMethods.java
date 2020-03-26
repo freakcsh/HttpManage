@@ -116,7 +116,7 @@ public class HttpMethods {
         retrofit = new Retrofit.Builder().client(builder.build())
                 .addConverterFactory(getInstanceBuilder().getFactory() == null ? GsonConverterFactory.create() : getInstanceBuilder().getFactory())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(getInstanceBuilder().getBaseUrl())
+                .baseUrl(TextUtils.isEmpty(getInstanceBuilder().getBaseUrl())?"https://www.baidu.com/":getInstanceBuilder().getBaseUrl())
                 .build();
     }
 

@@ -51,7 +51,7 @@ import java.util.Set;
  * @date 2019/9/11.
  */
 
-
+@Deprecated
 public class App extends MultiDexApplication {
     public static final int DESIGN_WIDTH = 375;
     private static App instance;
@@ -60,7 +60,6 @@ public class App extends MultiDexApplication {
      */
     public HashMap<Class<?>, Activity> allActivities;
 
-    private static ApiServer apiServer;
 
     private boolean isSend = false;
 
@@ -78,17 +77,6 @@ public class App extends MultiDexApplication {
 
     public static void setInstance(App instance) {
         App.instance = instance;
-    }
-
-    public static ApiServer getApiServer() {
-        if (apiServer == null) {
-            synchronized (ApiServer.class) {
-                if (apiServer == null) {
-                    apiServer = HttpMethods.getInstance().create(ApiServer.class);
-                }
-            }
-        }
-        return apiServer;
     }
 
     @Override

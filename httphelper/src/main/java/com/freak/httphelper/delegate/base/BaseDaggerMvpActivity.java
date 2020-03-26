@@ -26,8 +26,8 @@ public abstract class BaseDaggerMvpActivity<P extends IDaggerPresenter> extends 
     protected final String TAG = this.getClass().getSimpleName();
     private Cache<String, Object> mCache;
     private final BehaviorSubject<ActivityEvent> mLifecycleSubject = BehaviorSubject.create();
-    @Inject
     @Nullable
+    @Inject
     protected P mPresenter;//如果当前页面逻辑简单, Presenter 可以为 null
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -89,7 +89,7 @@ public class RequestUtils {
 
     public static RequestBody transformToRequestBody(Map<String, Object> requestDataMap) {
 //        requestDataMap.put("token", TextUtils.isEmpty((String) SPUtils.get(App.getInstance().getApplicationContext(), Constants.ACCESS_TOKEN, "")) ? "" : (String) SPUtils.get(App.getInstance().getApplicationContext(), Constants.ACCESS_TOKEN, ""));
-        requestDataMap.put("token", "5c993338db203e839dda127136f5ba47");
+//        requestDataMap.put("token", "ec4596c4bb1b73c521e62e8fd88c144d");
         LogUtil.e("请求参数--》" + requestDataMap.toString());
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), new Gson().toJson(requestDataMap));
         return requestBody;

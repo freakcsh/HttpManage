@@ -78,7 +78,6 @@ public class AppDelegate implements App, AppLifecycle {
 
     @Override
     public void attachBaseContext(@NonNull Context base) {
-
         //遍历 mAppLifecycles, 执行所有已注册的 AppLifecycles 的 attachBaseContext() 方法 (框架外部, 开发者扩展的逻辑)
         for (AppLifecycle lifecycle : mAppLifecycles) {
             lifecycle.attachBaseContext(base);
