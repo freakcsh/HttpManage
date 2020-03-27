@@ -71,7 +71,7 @@ public class DataHelper {
      * @param key
      * @param value
      */
-    public static void setIntergerSF(Context context, String key, int value) {
+    public static void setIntegerSF(Context context, String key, int value) {
         if (mSharedPreferences == null) {
             mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         }
@@ -84,8 +84,9 @@ public class DataHelper {
      * @param key
      * @return
      */
-    public static int getIntergerSF(Context context, String key) {
+    public static int getIntegerSF(Context context, String key) {
         if (mSharedPreferences == null) {
+
             mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         }
         return mSharedPreferences.getInt(key, -1);
@@ -102,9 +103,9 @@ public class DataHelper {
     }
 
     /**
-     * 清除Shareprefrence
+     * 清除SharedPreferences
      */
-    public static void clearShareprefrence(Context context) {
+    public static void clearSharedPreferences(Context context) {
         if (mSharedPreferences == null) {
             mSharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         }
@@ -112,7 +113,7 @@ public class DataHelper {
     }
 
     /**
-     * 将对象储存到sharepreference
+     * 将对象储存到SharedPreferences
      *
      * @param key
      * @param device

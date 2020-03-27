@@ -25,46 +25,40 @@ import com.freak.httphelper.dagger.module.GlobalConfigModule;
 import com.freak.httphelper.delegate.AppLifecycle;
 import com.freak.httphelper.lifecycle.ConfigModule;
 import com.freak.httphelper.log.HttpLogger;
+import com.freak.httphelper.ssl.HttpsUtils;
 import com.freak.httpmanage.app.Constants;
 import com.freak.httpmanage.mvpdagger.base.ActivityLifecycleCallbacksImpl;
 import com.freak.httpmanage.mvpdagger.base.AppLifecycleImpl;
 import com.freak.httpmanage.mvpdagger.base.FragmentLifecycleCallbacksImpl;
+import com.freak.httpmanage.net.factory.CustomConverterFactory;
+import com.freak.httpmanage.net.interceptor.CookieJarImpl;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * App 的全局配置信息在此配置, 需要将此实现类声明到 AndroidManifest 中
+ *  <meta-data
+ *             android:name="com.freak.httpmanage.mvpdagger.config.GlobalConfiguration"
+ *             android:value="ConfigModule"/>
  * ConfigModule 的实现类可以有无数多个, 在 Application 中只是注册回调, 并不会影响性能 (多个 ConfigModule 在多 Module 环境下尤为受用)
  * ConfigModule 接口的实现类对象是通过反射生成的, 这里会有些性能损耗
+ *
  *
  */
 public final class GlobalConfiguration  implements ConfigModule{
 
-//    public static String sDomain = Api.APP_DOMAIN;
 
     @Override
     public void applyOptions(@NonNull Context context, @NonNull GlobalConfigModule.Builder builder) {
 
 
         builder.baseUrl(Constants.BASE_URL)
-                //强烈建议自己自定义图片加载逻辑, 因为 arms-imageloader-glide 提供的 GlideImageLoaderStrategy 并不能满足复杂的需求
-                //请参考 https://github.com/JessYanCoding/MVPArms/wiki#3.4
-
-                //想支持多 BaseUrl, 以及运行时动态切换任意一个 BaseUrl, 请使用 https://github.com/JessYanCoding/RetrofitUrlManager
-                //如果 BaseUrl 在 App 启动时不能确定, 需要请求服务器接口动态获取, 请使用以下代码
-                //以下方式是 Arms 框架自带的切换 BaseUrl 的方式, 在整个 App 生命周期内只能切换一次, 若需要无限次的切换 BaseUrl, 以及各种复杂的应用场景还是需要使用 RetrofitUrlManager 框架
-                //以下代码只是配置, 还要使用 Okhttp (AppComponent 中提供) 请求服务器获取到正确的 BaseUrl 后赋值给 GlobalConfiguration.sDomain
-                //切记整个过程必须在第一次调用 Retrofit 接口之前完成, 如果已经调用过 Retrofit 接口, 此种方式将不能切换 BaseUrl
-//                .baseurl(new BaseUrl() {
-//                    @Override
-//                    public HttpUrl url() {
-//                        return HttpUrl.parse(sDomain);
-//                    }
-//                })
-
                 //可根据当前项目的情况以及环境为框架某些部件提供自定义的缓存策略, 具有强大的扩展性
 //                .cacheFactory(new Cache.Factory() {
 //                    @NonNull
@@ -81,57 +75,36 @@ public final class GlobalConfiguration  implements ConfigModule{
 //                    }
 //                })
 
-                //若觉得框架默认的打印格式并不能满足自己的需求, 可自行扩展自己理想的打印格式 (以下只是简单实现)
-//                .formatPrinter(new FormatPrinter() {
-//                    @Override
-//                    public void printJsonRequest(Request request, String bodyString) {
-//                        Timber.i("printJsonRequest:" + bodyString);
-//                    }
-//
-//                    @Override
-//                    public void printFileRequest(Request request) {
-//                        Timber.i("printFileRequest:" + request.url().toString());
-//                    }
-//
-//                    @Override
-//                    public void printJsonResponse(long chainMs, boolean isSuccessful, int code,
-//                                                  String headers, MediaType contentType, String bodyString,
-//                                                  List<String> segments, String message, String responseUrl) {
-//                        Timber.i("printJsonResponse:" + bodyString);
-//                    }
-//
-//                    @Override
-//                    public void printFileResponse(long chainMs, boolean isSuccessful, int code, String headers,
-//                                                  List<String> segments, String message, String responseUrl) {
-//                        Timber.i("printFileResponse:" + responseUrl);
-//                    }
-//                })
-
                 //可以自定义一个单例的线程池供全局使用
 //                .executorService(Executors.newCachedThreadPool())
 
-                //这里提供一个全局处理 Http 请求和响应结果的处理类, 可以比客户端提前一步拿到服务器返回的结果, 可以做一些操作, 比如 Token 超时后, 重新获取 Token
-                //用来处理 RxJava 中发生的所有错误, RxJava 中发生的每个错误都会回调此接口
-                //RxJava 必须要使用 ErrorHandleSubscriber (默认实现 Subscriber 的 onError 方法), 此监听才生效
                 .gsonConfiguration((context1, gsonBuilder) -> {//这里可以自己自定义配置 Gson 的参数
                     gsonBuilder
                             .serializeNulls()//支持序列化值为 null 的参数
                             .enableComplexMapKeySerialization();//支持将序列化 key 为 Object 的 Map, 默认只能序列化 key 为 String 的 Map
                 })
                 .retrofitConfiguration((context1, retrofitBuilder) -> {//这里可以自己自定义配置 Retrofit 的参数, 甚至您可以替换框架配置好的 OkHttpClient 对象 (但是不建议这样做, 这样做您将损失框架提供的很多功能)
-//                    retrofitBuilder.addConverterFactory(FastJsonConverterFactory.create());//比如使用 FastJson 替代 Gson
+                    retrofitBuilder.addConverterFactory(CustomConverterFactory.create());//自定义解析器
                 })
-                .okHttpConfiguration((context1, okhttpBuilder) -> {//这里可以自己自定义配置 Okhttp 的参数
-//                    okhttpBuilder.sslSocketFactory(); //支持 Https, 详情请百度
-                    okhttpBuilder.writeTimeout(10, TimeUnit.SECONDS);
+                .okHttpConfiguration((context1, okHttpBuilder) -> {//这里可以自己自定义配置 Okhttp 的参数
+                    okHttpBuilder.connectTimeout(30,TimeUnit.SECONDS);
+                    okHttpBuilder.readTimeout(30, TimeUnit.SECONDS);
+                    okHttpBuilder.writeTimeout(30, TimeUnit.SECONDS);
+                    //支持 Https
+                    HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
+                    okHttpBuilder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
+                    okHttpBuilder.hostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    });
                     HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLogger());
                     //设置日志界级别
                     httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                    okhttpBuilder.addInterceptor(httpLoggingInterceptor);
-                    //使用一行代码监听 Retrofit／Okhttp 上传下载进度监听,以及 Glide 加载进度监听, 详细使用方法请查看 https://github.com/JessYanCoding/ProgressManager
-//                    ProgressManager.getInstance().with(okhttpBuilder);
-                    //让 Retrofit 同时支持多个 BaseUrl 以及动态改变 BaseUrl, 详细使用方法请查看 https://github.com/JessYanCoding/RetrofitUrlManager
-//                    RetrofitUrlManager.getInstance().with(okhttpBuilder);
+                    okHttpBuilder.addNetworkInterceptor(httpLoggingInterceptor);//设置NetworkInterceptor
+//                    okHttpBuilder.addInterceptor();//设置拦截器
+                    okHttpBuilder.cookieJar(new CookieJarImpl());//同步cookie，框架提供默认的，也可自己实现自定义
                 })
                 .rxCacheConfiguration((context1, rxCacheBuilder) -> {//这里可以自己自定义配置 RxCache 的参数
                     rxCacheBuilder.useExpiredDataIfLoaderNotAvailable(true);
@@ -143,10 +116,10 @@ public final class GlobalConfiguration  implements ConfigModule{
 
 
     @Override
-    public void injectAppLifecycle(@NonNull Context context, @NonNull List<AppLifecycle> lifecycles) {
-        //AppLifecycles 中的所有方法都会在基类 Application 的对应生命周期中被调用, 所以在对应的方法中可以扩展一些自己需要的逻辑
+    public void injectAppLifecycle(@NonNull Context context, @NonNull List<AppLifecycle> lifecycle) {
+        //AppLifecycle 中的所有方法都会在基类 Application 的对应生命周期中被调用, 所以在对应的方法中可以扩展一些自己需要的逻辑
         //可以根据不同的逻辑添加多个实现类
-        lifecycles.add(new AppLifecycleImpl());
+        lifecycle.add(new AppLifecycleImpl());
     }
 
     @Override

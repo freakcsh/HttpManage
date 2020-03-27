@@ -31,7 +31,6 @@ public abstract class BaseDaggerMvpActivity<P extends IDaggerPresenter> extends 
     protected P mPresenter;//如果当前页面逻辑简单, Presenter 可以为 null
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         try {
             int layoutResID = initView(savedInstanceState);
             //如果initView返回0,框架则不会调用setContentView(),当然也不会 Bind ButterKnife
@@ -42,6 +41,7 @@ public abstract class BaseDaggerMvpActivity<P extends IDaggerPresenter> extends 
             if (e instanceof InflateException) throw e;
             e.printStackTrace();
         }
+        super.onCreate(savedInstanceState);
         initData(savedInstanceState);
     }
 

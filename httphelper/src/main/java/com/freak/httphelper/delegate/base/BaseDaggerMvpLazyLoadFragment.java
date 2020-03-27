@@ -1,5 +1,8 @@
 package com.freak.httphelper.delegate.base;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -77,5 +80,65 @@ public abstract class BaseDaggerMvpLazyLoadFragment<P extends IDaggerPresenter> 
                 dispatchParentVisibleState();
             }
         }
+    }
+    /**
+     * 打开一个Activity 默认 不关闭当前activity
+     *
+     * @param className
+     */
+    public void gotoActivity(Class<?> className) {
+        gotoActivity(className, false);
+    }
+
+    /**
+     * 打开一个Activity  关闭当前activity
+     *
+     * @param className
+     */
+    public void gotoActivityWithFinish(Class<?> className) {
+        gotoActivity(className, true);
+    }
+
+    /**
+     * 打开一个Activity，并控制是否finish
+     *
+     * @param className              className
+     * @param isCloseCurrentActivity 是否关闭
+     */
+    public void gotoActivity(Class<?> className, boolean isCloseCurrentActivity) {
+        gotoActivity(className, isCloseCurrentActivity, null);
+    }
+
+    /**
+     * 打开一个activity，并传递数据
+     *
+     * @param className              className
+     * @param isCloseCurrentActivity 是否关闭
+     * @param bundle                 bundle数据
+     */
+    public void gotoActivity(Class<?> className, boolean isCloseCurrentActivity, Bundle bundle) {
+        Intent intent = new Intent(mActivity, className);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+        if (isCloseCurrentActivity) {
+            mActivity.finish();
+        }
+    }
+
+    /**
+     * 打开一个带结果返回的activity，并传递数据
+     *
+     * @param className   className
+     * @param bundle      bundle数据
+     * @param requestCode 请求码
+     */
+    public void gotoActivityWithResult(Class<?> className, Bundle bundle, int requestCode) {
+        Intent intent = new Intent(mActivity, className);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivityForResult(intent, requestCode);
     }
 }

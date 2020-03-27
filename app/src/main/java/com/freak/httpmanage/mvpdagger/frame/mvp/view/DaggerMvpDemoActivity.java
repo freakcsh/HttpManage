@@ -21,6 +21,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 如需自定义BaseActivity的，可参考BaseDaggerMvpActivity代码自定义即可,记住一定要实现{@link com.freak.httphelper.delegate.IActivity}
+ */
 public class DaggerMvpDemoActivity extends BaseDaggerMvpActivity<DaggerMvpDemoPresenter> implements DaggerMvpDemoContract.View {
     @BindView(R.id.btnNet)
     Button btnNet;

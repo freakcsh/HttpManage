@@ -11,8 +11,6 @@ import com.freak.httphelper.cache.CacheType;
 import com.freak.httphelper.cache.IntelligentCache;
 import com.freak.httphelper.cache.LruCache;
 import com.freak.httphelper.lifecycle.IRepositoryManager;
-import com.freak.httphelper.mvp.BaseUrl;
-import com.freak.httphelper.rxview.Preconditions;
 import com.freak.httphelper.utils.DataHelper;
 
 import java.io.File;
@@ -38,9 +36,7 @@ import okhttp3.internal.Util;
 @Module
 public class GlobalConfigModule {
     private HttpUrl mApiUrl;
-    private BaseUrl mBaseUrl;
     private List<Interceptor> mInterceptors;
-    private Interceptor interceptor;
     private File mCacheFile;
     private ClientModule.RetrofitConfiguration mRetrofitConfiguration;
     private ClientModule.OkHttpConfiguration mOkHttpConfiguration;
@@ -52,7 +48,6 @@ public class GlobalConfigModule {
 
     private GlobalConfigModule(Builder builder) {
         this.mApiUrl = builder.apiUrl;
-        this.mBaseUrl = builder.baseUrl;
         this.mInterceptors = builder.interceptors;
         this.mCacheFile = builder.cacheFile;
         this.mRetrofitConfiguration = builder.retrofitConfiguration;
@@ -83,12 +78,6 @@ public class GlobalConfigModule {
     @Singleton
     @Provides
     HttpUrl provideBaseUrl() {
-        if (mBaseUrl != null) {
-            HttpUrl httpUrl = mBaseUrl.url();
-            if (httpUrl != null) {
-                return httpUrl;
-            }
-        }
         return mApiUrl == null ? HttpUrl.parse("https://api.github.com/") : mApiUrl;
     }
 
@@ -166,7 +155,7 @@ public class GlobalConfigModule {
     @Provides
     ExecutorService provideExecutorService() {
         return mExecutorService == null ? new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>(), Util.threadFactory("Arms Executor", false)) : mExecutorService;
+                new SynchronousQueue<Runnable>(), Util.threadFactory("HttpManager Executor", false)) : mExecutorService;
     }
 
     @Singleton
@@ -178,7 +167,6 @@ public class GlobalConfigModule {
 
     public static final class Builder {
         private HttpUrl apiUrl;
-        private BaseUrl baseUrl;
         private List<Interceptor> interceptors;
         private File cacheFile;
         private ClientModule.RetrofitConfiguration retrofitConfiguration;
@@ -197,11 +185,6 @@ public class GlobalConfigModule {
                 throw new NullPointerException("BaseUrl can not be empty");
             }
             this.apiUrl = HttpUrl.parse(baseUrl);
-            return this;
-        }
-
-        public Builder baseUrl(BaseUrl baseUrl) {
-            this.baseUrl = Preconditions.checkNotNull(baseUrl, BaseUrl.class.getCanonicalName() + "can not be null.");
             return this;
         }
 

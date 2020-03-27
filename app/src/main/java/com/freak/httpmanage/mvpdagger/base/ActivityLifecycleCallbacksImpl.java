@@ -104,7 +104,6 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
         Logger.i(activity + " - onActivityDestroyed");
     }
 
-
     /**
      * 设置ToolBar
      *

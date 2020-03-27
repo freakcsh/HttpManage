@@ -20,6 +20,7 @@ import android.app.Application;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -62,6 +63,8 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        AppCompatActivity appCompatActivity = (AppCompatActivity) activity;
+        AppManager.getAppManager().addActivity(appCompatActivity, activity.getClass());
         //配置ActivityDelegate
         if (activity instanceof IActivity) {
             ActivityDelegate activityDelegate = fetchActivityDelegate(activity);
@@ -120,6 +123,8 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityDestroyed(Activity activity) {
+        AppCompatActivity appCompatActivity = (AppCompatActivity) activity;
+        AppManager.getAppManager().removeActivity(appCompatActivity);
         ActivityDelegate activityDelegate = fetchActivityDelegate(activity);
         if (activityDelegate != null) {
             activityDelegate.onDestroy();

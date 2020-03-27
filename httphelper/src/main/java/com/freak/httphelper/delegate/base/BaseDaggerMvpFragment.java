@@ -33,6 +33,8 @@ public abstract class BaseDaggerMvpFragment<P extends IDaggerPresenter> extends 
     @Inject
     @Nullable
     protected P mPresenter;//如果当前页面逻辑简单, Presenter 可以为 null
+
+
     @NonNull
     @Override
     public Cache<String, Object> provideCache() {
@@ -52,7 +54,7 @@ public abstract class BaseDaggerMvpFragment<P extends IDaggerPresenter> extends 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return initView(inflater, container, savedInstanceState);
+        return inflater.inflate(getLayoutId(), null);
     }
 
     @Override

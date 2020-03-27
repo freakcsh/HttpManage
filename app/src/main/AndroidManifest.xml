@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 电池优化 忽略电池优化 -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-
+    <!--BaseApplication 无需自定义，可直接使用，如需要在application中添加第三方初始化操作、则在AppLifecycleImpl的onCreate方法中进行初始化即可-->
     <application
         android:name="com.freak.httphelper.delegate.base.BaseApplication"
         android:allowBackup="false"
@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-<!--        <activity android:name=".main.MainActivity"/>-->
+        <!--        <activity android:name=".main.MainActivity"/>-->
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,12 +47,12 @@
         <activity android:name=".property.BatteryActivity" />
         <activity android:name=".test.supplement.SupplementPhotoActivity" />
         <activity android:name=".test.supplement.detail.SupplementPhotoDetailActivity" />
-        <activity android:name=".mvpdagger.frame.mvp.view.DaggerMvpDemoActivity"/>
+        <activity android:name=".mvpdagger.frame.mvp.view.DaggerMvpDemoActivity" />
 
         <!-- 网络请求配置 -->
         <meta-data
             android:name="com.freak.httpmanage.mvpdagger.config.GlobalConfiguration"
-            android:value="ConfigModule"/>
+            android:value="ConfigModule" />
 
     </application>
 

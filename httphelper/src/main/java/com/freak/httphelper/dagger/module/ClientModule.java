@@ -67,7 +67,6 @@ public abstract class ClientModule {
      * @param application     {@link Application}
      * @param configuration   {@link OkHttpConfiguration}
      * @param builder         {@link OkHttpClient.Builder}
-     * @param intercept       {@link Interceptor}
      * @param interceptors    {@link List<Interceptor>}
      * @param executorService {@link ExecutorService}
      * @return {@link OkHttpClient}
